@@ -181,6 +181,9 @@ window.applicationCache.addEventListener('updateready', function(e) {
 	  document.getElementById("loader").innerHTML+='A changed manifest file has been found and downloaded. Reloading app<br>';
 	  console.log('A changed manifest file has been found and downloaded. Reloading app');
 	  window.applicationCache.swapCache();
-	  window.location.reload();
+	  //window.location.reload();
+	  if (confirm('A new version of this site is available. Load it?')) {
+			window.location.reload();
+	  }	  
 	}
 }, false);
