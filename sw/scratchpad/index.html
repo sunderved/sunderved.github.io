@@ -1,0 +1,53 @@
+<html manifest="appcache.manifest" lang="en-US"> 
+
+<head>                                                                                          
+  <title>SW Scratchpad</title>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name = "viewport" content="user-scalable=no"/>
+  <html manifest="cache.appcache">
+  <link rel="apple-touch-icon" href="./img/icon.jpg" />
+  <script type="text/javascript" src="../../interact-1.2.4.min.js"></script> 
+  <script type="text/javascript" src="../../debugcache.js"></script>     
+  <script type="text/javascript" src="dnd.js"></script> 
+  <script type="text/javascript" src="swscratchpad.js"></script> 
+  <link rel="stylesheet" href="styles.css" media="screen"/>                             
+</head>                                                                                         
+
+<body onLoad=init();>    
+
+  <div id="loader"></div>
+  <div id="container">
+    <div id="boardpic">
+      <div id="board"></div>
+    </div>
+    <div id="selector">
+      <select id="pulldown" onchange="selectHandler(event)">
+        <option value="Benders">Benders</option>
+        <option value="CaveGoblins">Cave Goblins</option>
+        <option value="Cloaks">Cloaks</option>
+        <option value="DeepDwarves">Deep Dwarves</option>
+        <option value="FallenKingdom">Fallen Kingdom</option>
+        <option value="Filth">Filth</option>
+        <option value="GuildDwarves">Guild Dwarves</option>
+        <option value="JungleElves">Jungle Elves</option>
+        <option value="Mercenaries">Mercenaries</option>
+        <option value="MountainVargath">Mountain Vargath</option>
+        <option value="PhoenixElves">Phoenix Elves</option>
+        <option value="SandGoblins">Sand Goblins</option>
+        <option value="ShadowElves">Shadow Elves</option>
+        <option value="SwampOrcs">Swamp Orcs</option>
+        <option value="TundraOrcs">Tundra Orcs</option>
+        <option value="Vanguards">Vanguards</option>
+      </select>
+            
+      <div id="units"></div>
+      <div id="new" class="cardspace cardsize dropzone"></div>
+    </div>
+  </div>
+  
+  <div id="aaa"></div>
+
+</body>
+
+</html>
