@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+  <head>                                                                                          
+    <title>Sunderved</title> 
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <script type="text/javascript"> 
+    function init() {      
+      var str = "";
+      str+="<br>";                                                                              
+      str+="window.innerWidth                       = " + window.innerWidth                     ;
+      str+="<br>";                                                                              
+      str+="document.documentElement.clientWidth    = " + document.documentElement.clientWidth  ;
+      str+="<br>";                                                                              
+      str+="document.body.clientWidth               = " + document.body.clientWidth             ;
+      str+="<br>";                                                                              
+                                                                                                
+      str+="<br>";                                                                              
+      str+="window.innerHeight                       = " + window.innerHeight                   ;
+      str+="<br>";                                                                              
+      str+="document.documentElement.clientHeight    = " + document.documentElement.clientHeight;
+      str+="<br>";                                                                              
+      str+="document.body.clientHeight               = " + document.body.clientHeight           ;
+      str+="<br>";
+      
+      
+      str+="<br>";                                                                              
+      str+=" window.navigator.standalone             = " +  window.navigator.standalone         ;
+      str+="<br>";                                                                              
+      
+      console.log(str);                                                                             
+      
+      document.getElementById("txt").innerHTML=str;                                                                             
+    }
+    </script>  
+  </head>                                                                                         
+  <body onLoad="init()">    
+    <h1>Hello World</h1>
+    <div id="txt"></div>
+  </body>
+</html>
