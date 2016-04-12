@@ -178,6 +178,7 @@ window.applicationCache.addEventListener('updateready', function(e) {
 	if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
 	  // A changed manifest file has been found and downloaded by
 	  // the browser. Swap cache and reload the page to use the new files.
+	  document.getElementById("loader").innerHTML+='A changed manifest file has been found and downloaded. Reloading app<br>';
 	  console.log('A changed manifest file has been found and downloaded. Reloading app');
 	  window.applicationCache.swapCache();
 	  window.location.reload();
