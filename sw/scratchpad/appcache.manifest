@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # This is a comment.
-# Cache manifest version 0.0.2
+# Cache manifest version 0.0.3
 # If you change the version number in this comment,
 # the cache manifest is no longer byte-for-byte identical
 
@@ -8,6 +8,7 @@ index.html
 swscratchpad.js
 dnd.js
 styles.css
+../../debugcache.js
 ../../interact-1.2.4.min.js
 ../images/Benders-Breaker.png
 ../images/Benders-Controller.png
