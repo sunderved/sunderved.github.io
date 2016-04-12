@@ -3,14 +3,11 @@ CACHE MANIFEST
 # Cache manifest version 0.0.1
 # If you change the version number in this comment,
 # the cache manifest is no longer byte-for-byte identical
-
 index.html
 onirim.js
 onirim.css
 menu.js
 menu.css
-
-
 images/bluedoor.jpg
 images/bluekey.jpg
 images/bluemoon.jpg
@@ -36,7 +33,6 @@ images/lpane.jpg
 images/onirim.jpg
 images/rpane.jpg
 sounds/click.wav
-
 sounds/nightmare.wav
 sounds/opendoor.wav
 sounds/prophecy.wav
