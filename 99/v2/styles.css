@@ -1,0 +1,99 @@
+body {
+  user-select: none;	
+}
+
+@font-face {
+  font-family: myImpact;
+  src: url('./fonts/impact.ttf');
+}
+
+.size {
+	position:absolute;
+  height:120px;
+	width:80px; 
+	border-radius:8px;
+  font-size:40px;  
+  text-align: center;
+  line-height:120px; /* same as heigth */
+  font-family: myImpact;	
+}
+
+.zone {
+  border-style:dashed;
+  border-width: 1px;
+  border-color: gray;  
+  background:white;
+}
+
+.info {
+  background:white;
+  color:gray;
+}
+
+.card {
+  background:gray;
+  border-color:black;
+  border-width:1px;
+  border-style:solid;
+  color:white;
+}
+
+#u1   { top:  50px; left: 260px; }
+#u2   { top: 200px; left: 260px; }
+#d1   { top:  50px; left: 390px; }
+#d2   { top: 200px; left: 390px; }
+
+#b1   { top:  50px; left: 170px; }
+#b2   { top: 200px; left: 170px; }
+#b3   { top:  50px; left: 480px; }
+#b4   { top: 200px; left: 480px; }
+
+#c0   { top: 430px; left:  10px; }
+#c1   { top: 430px; left: 100px; }
+#c2   { top: 430px; left: 190px; }
+#c3   { top: 430px; left: 280px; }
+#c4   { top: 430px; left: 370px; }
+#c5   { top: 430px; left: 460px; }
+#c6   { top: 430px; left: 550px; }
+#c7   { top: 430px; left: 640px; }
+
+
+.valid-drop-target {
+  box-shadow: 0px 0px 30px 0px #29e;
+}
+
+.drop-target {
+  box-shadow: 0px 0px 30px 0px #2247A2;
+}
+
+.circle {
+  width:100px;
+  height:100px;
+  position:absolute;
+  overflow:hidden;
+  box-sizing: border-box;
+  border-width:0px;
+  border-radius:50px; /* half of width/heigth to make a circle */  
+}
+
+#draw { 
+	top: 140px; left: 600px; 
+  background:gray;
+  color: white;  
+  font-size:20px;  
+  text-align: center;
+  line-height:100px; 
+  font-family: myImpact;
+}
+
+#container { 
+  border-width:0px;
+  background:white;
+  width:750px;
+  height:600px;
+  border-color:black;
+  border-width:1px;
+  border-style:solid;
+  position:absolute;
+  visibility:visible;
+}

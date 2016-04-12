@@ -1,0 +1,43 @@
+CACHE MANIFEST
+# This is a comment.
+# Cache manifest version 0.0.1
+# If you change the version number in this comment,
+# the cache manifest is no longer byte-for-byte identical
+
+index.html
+onirim.js
+onirim.css
+menu.js
+menu.css
+
+
+images/bluedoor.jpg
+images/bluekey.jpg
+images/bluemoon.jpg
+images/bluesun.jpg
+images/browndoor.jpg
+images/brownkey.jpg
+images/brownmoon.jpg
+images/brownsun.jpg
+images/cardback.jpg
+images/greendoor.jpg
+images/greenkey.jpg
+images/greenmoon.jpg
+images/greensun.jpg
+images/icon.png
+images/nightmare.jpg
+images/reddoor.jpg
+images/redkey.jpg
+images/redmoon.jpg
+images/redsun.jpg
+images/sun.png
+images/icon.jpg
+images/lpane.jpg
+images/onirim.jpg
+images/rpane.jpg
+sounds/click.wav
+
+sounds/nightmare.wav
+sounds/opendoor.wav
+sounds/prophecy.wav
+sounds/startgame.wav

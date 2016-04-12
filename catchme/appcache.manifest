@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# This is a comment.
+# Cache manifest version 0.0.3
+# If you change the version number in this comment,
+# the cache manifest is no longer byte-for-byte identical
+
+index.html
+catchme.js
+catchme.css
+fonts/impact.ttf
+images/icon.png
+sounds/clear.wav
+sounds/decoy.mp3
+sounds/timeout.mp3

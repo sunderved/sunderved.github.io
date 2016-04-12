@@ -1,0 +1,30 @@
+
+
+#menuLpane {  
+/*  background:blue; */
+  background-image:url("images/lpane.jpg");  
+}
+
+#menuRpane {
+/*  background:blue; */
+  background-image:url("images/rpane.jpg");  
+}
+
+#menuChoice1 { 
+  top:600px;
+  left:00px;
+  width:300px; 
+  height:50px; 
+  position:absolute;  
+  background:rgba(255,255,255,0.5); 
+  border-radius:6px;
+  z-index:100;  
+  font-size:16px;  
+  font-family: Georgia, serif;  
+  line-height: 50px;  
+  border-radius:0px;  
+  padding:10px;
+  font-size:24px;  
+  text-align: left; 
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.5);
+}

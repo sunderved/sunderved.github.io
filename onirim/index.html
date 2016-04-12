@@ -1,0 +1,33 @@
+<html manifest="appcache.manifest" lang="en-US"> 
+  <head>                                                                                          
+    <title>Onirim</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <html manifest="onirim.appcache">
+    <script type="text/javascript" src="onirim.js"></script> 
+    <script type="text/javascript" src="menu.js"></script> 
+    <script type="text/javascript" src="../debugcache.js"></script>     
+    <link rel="stylesheet" href="onirim.css" media="screen"/>                             
+    <link rel="stylesheet" href="menu.css" media="screen"/>     
+    <link rel="apple-touch-icon" href="./images/icon.jpg" />
+  </head>                                                                                         
+  <body onLoad="init();">    
+    <div id="container"> 
+      <div id="game"> 
+        <div id="backdrop"></div> 
+        <div id="endMessage"></div> 
+        <div id="info1box" class="infobox">                                                                                           
+          <div id="info1img" class="infoimg"></div>
+          <div id="info1val" class="infoval"></div>
+        </div> 
+        <div id="info2box" class="infobox">                                                                                           
+          <div id="info2img" class="infoimg"></div>
+          <div id="info2val" class="infoval"></div>
+        </div>
+        <div id="infoMessage"></div>
+        <div id="iconButton"></div>
+        <div id="menuButton"></div>
+      </div>                                                                                             
+    </div>                                                                                         
+  </body>                                                                                         
+</html>                                                                                         

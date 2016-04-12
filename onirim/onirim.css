@@ -1,0 +1,225 @@
+body {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 	
+}
+
+/* Cards */
+.brownsun  { content:url("images/brownsun.jpg");  box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.brownkey  { content:url("images/brownkey.jpg");  box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.brownmoon { content:url("images/brownmoon.jpg"); box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.bluesun   { content:url("images/bluesun.jpg");   box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.bluekey   { content:url("images/bluekey.jpg");   box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.bluemoon  { content:url("images/bluemoon.jpg");  box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.greensun  { content:url("images/greensun.jpg");  box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.greenkey  { content:url("images/greenkey.jpg");  box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.greenmoon { content:url("images/greenmoon.jpg"); box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.redsun    { content:url("images/redsun.jpg");    box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.redkey    { content:url("images/redkey.jpg");    box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.redmoon   { content:url("images/redmoon.jpg");   box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.reddoor   { content:url("images/reddoor.jpg");   box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.browndoor { content:url("images/browndoor.jpg"); box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.bluedoor  { content:url("images/bluedoor.jpg");  box-shadow: 0px 2px 6px rgba(0,0,0,0.5); } 
+.greendoor { content:url("images/greendoor.jpg"); box-shadow: 0px 2px 6px rgba(0,0,0,0.5); }
+.nightmare { content:url("images/nightmare.jpg"); box-shadow: 0px 0px 46px 2px red; }
+.cardback  { content:url("images/cardback.jpg");  }
+
+/* Sizes */
+.small     { width:60px;  border-radius:8px; }
+.med       { width:100px; border-radius:8px; }
+.big       { width:120px; border-radius:8px; }
+
+/* Positions */
+.limbes  { top: 50px; left: -150px; position:absolute; }
+.draw    { top:999px; left: -150px; position:absolute; }
+.discard { top:999px; left: 1100px; position:absolute; }
+
+.door1   { top:20px; left:150px; position:absolute; }
+.door2   { top:20px; left:230px; position:absolute; }
+.door3   { top:20px; left:310px; position:absolute; }
+.door4   { top:20px; left:390px; position:absolute; }
+.door5   { top:20px; left:470px; position:absolute; }
+.door6   { top:20px; left:550px; position:absolute; }
+.door7   { top:20px; left:630px; position:absolute; }
+.door8   { top:20px; left:710px; position:absolute; }
+
+.hand1   { top:330px; left:150px; position:absolute; }
+.hand2   { top:330px; left:280px; position:absolute; }
+.hand3   { top:330px; left:410px; position:absolute; }
+.hand4   { top:330px; left:540px; position:absolute; }
+.hand5   { top:330px; left:670px; position:absolute; }
+
+.spec5   { top:460px; left:100px; position:absolute; }
+.spec4   { top:460px; left:230px; position:absolute; }
+.spec3   { top:460px; left:360px; position:absolute; }
+.spec2   { top:460px; left:490px; position:absolute; }
+.spec1   { top:460px; left:620px; position:absolute; }
+
+/* http://www.cssmatic.com/box-shadow */
+.focused { box-shadow: 0px 0px 46px 2px rgba(250,250,250,1); }
+.nightmare.focused { box-shadow: 0px 0px 46px 2px red; }
+
+
+/* Styles */
+.infoval { 
+  width:20px; 
+  height:20px;
+  top:0px; 
+  left:15px;    
+  position:absolute;    
+  background:black; 
+  color:white;
+  border-radius:10px; 
+  z-index:2;
+  line-height:20px; 
+  text-align: center; 
+  font-family: Georgia, serif;
+  font-size:13px;    
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.5);  
+}
+
+.infoimg { 
+  width:30px;
+  top:5px; 
+  left:0px;    
+  position:absolute;
+  border-radius:3px; 
+  z-index:1;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.5);  
+}
+
+.infobox { 
+  width:40px;
+  position:absolute;
+  border-radius:3px; 
+  z-index:101;
+}
+
+/* Static objects */
+#info1img   { 
+  content:url("images/cardback.jpg");
+}
+
+#info2img   { 
+  content:url("images/nightmare.jpg");
+}
+
+#info1box { 
+  top:40px; 
+  left:20px; 
+  position:absolute; 
+}
+
+#info2box { 
+  top:40px; 
+  left:60px; 
+  position:absolute; 
+}
+
+
+#infoMessage {
+  top:700px;
+  left:20px;
+  width:960px; 
+  height:30px; 
+  position:absolute;
+  border-radius:8px;
+  z-index:2;  
+  padding:10px;
+  font-size:16px;  
+  text-align: left; 
+  color: white;  
+  font-family: Georgia, serif;
+}
+
+#iconButton { 
+  content:url("images/icon.png");
+  width:100px; 
+  top:370px;
+  left:850px;
+  position:absolute;  
+  border-radius:100px;
+  z-index:100;  
+}
+
+#menuButton { 
+  top:20px;
+  left:850px;
+  width:150px; 
+  height:30px; 
+  position:absolute;  
+  background:rgba(255,255,255,0.2); 
+  border-radius:6px;
+  z-index:100;  
+  font-size:16px;  
+  font-family: Georgia, serif; 
+  text-align: center;
+  line-height: 30px; 
+}
+
+#backdrop {
+  width:1024px;
+  height:768px;
+  top:0px;
+  left:0px;
+  position:absolute;
+  z-index:-10;
+  content:url("images/onirim.jpg");
+  border-width:0px;
+}
+
+#endMessage {
+  width:900px;
+  height:120px;
+  line-height: 30px;  
+  top:555px;
+  left:62px;
+  position:absolute; 
+  z-index:200;
+  visibility: hidden;
+  background:rgba(255,255,255,0.5);
+  border-radius:8px;  
+  padding:10px;
+  font-size:20px;  
+  text-align: center; 
+  color: black;  
+  font-family: Georgia, serif;
+}
+
+#game {
+  top:0px;
+  left:0px;  
+  position:absolute;  
+  border-width:0px;
+  z-index:1;
+}
+
+/*
+#container {
+  width:1024px;
+  height:768px;
+  top:50%;
+  left:50%;
+  margin:-384px 0 0 -512px;
+  position:absolute;
+  overflow:hidden;
+  border-width:0px;
+  visibility:hidden;
+}
+
+iPad Safari window size 980x623
+iPad atual screen size 1024x768
+
+*/
+
+#container {
+  width:1024px;
+  height:768px;
+  top:0px;
+  left:0px;
+  position:absolute;
+  overflow:hidden;
+  border-width:0px;
+  visibility:hidden;
+}
