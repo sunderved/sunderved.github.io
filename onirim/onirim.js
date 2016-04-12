@@ -1187,3 +1187,21 @@ var au_click     = new Audio("sounds/click.wav");
 var au_start     = new Audio("sounds/startgame.wav");
 var au_door      = new Audio("sounds/opendoor.wav");
 var au_prophecy  = new Audio("sounds/prophecy.wav");
+
+
+// ------------------------------------------------------
+// App version and cache management 
+// ------------------------------------------------------
+
+// When the manifest file has changed and the browser has updated the files, 
+// it won’t use them for the current session. The application must be reloaded 
+window.applicationCache.addEventListener('updateready', function(e) {
+	if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+	  // A changed manifest file has been found and downloaded by
+	  // the browser. Swap cache and reload the page to use the new files.
+	  console.log('A changed manifest file has been found and downloaded. Reloading app');
+	  window.applicationCache.swapCache();
+	  window.location.reload();
+	}
+}, false);
+
