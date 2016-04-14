@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html manifest="appcache.manifest" lang="en-US"> 
+
+<head>                                                                                          
+  <title>SW Events</title>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="viewport" content="user-scalable=no"/>
+  <link rel="apple-touch-icon" href="icon.jpg" />
+</head>                                                                                         
+
+
+<script>
+function fact(n)
+{
+  var fact = 1;
+  
+  for (var c = 1; c <= n; c++)
+    fact = fact * c;  
+    
+  return fact;
+}
+
+function C(n, r)
+{
+  var nCr = fact(n) / (fact(r) * fact(n - r));
+  //console.log("%dC%d = %d\n", (int)n, (int)r, (int)nCr);
+  return nCr;   
+}
+
+function Stats(ndice, nface)
+{
+  this.ndice    = ndice;
+  this.nface    = nface;
+  this.nrolls   = Math.pow(this.nface,this.ndice);
+  this.cnt_exact    = [];
+  this.cnt_atleast  = [];
+  this.pct_exact    = [];
+  this.pct_atleast  = [];
+  
+  var nrolls_al = 0;
+  var nrolls_ex = 0;
+    
+  for (var i=0; i<=ndice; i++) {
+    this.cnt_exact.push( this.getnhits(ndice-i) );
+  }
+
+  var acc = 0;
+  for (var i=0; i<=ndice; i++) {
+	  acc += this.cnt_exact[i];
+    this.cnt_atleast.push( acc );
+  }
+
+  for (var i=0; i<=ndice; i++) {
+    this.pct_exact.push( this.cnt_exact[i] * 100 / this.nrolls );
+    this.pct_atleast.push( this.cnt_atleast[i] * 100 / this.nrolls);
+  }
+}
+
+Stats.prototype.getnhits = function(nhits) 
+{
+  var nmisses = this.ndice - nhits;
+  
+  var f = Math.pow((this.nface-1), (this.ndice-nmisses)) * C(this.ndice, nmisses);
+  return f;
+}
+
+Stats.prototype.gentable = function() 
+{
+  var table;
+  var row;
+  
+  table = document.createElement("table");  
+  
+  row = table.insertRow(-1);
+  row.insertCell(-1).innerHTML = "<b>Number of rolls landing<b>";
+  row.insertCell(-1).innerHTML = " ";
+  row.insertCell(-1).innerHTML = "<b>Exactly (%)</b>";
+  row.insertCell(-1).innerHTML = "<b>At Least (%)</b>";
+  row.insertCell(-1).innerHTML = " ";
+  row.insertCell(-1).innerHTML = "<b>Exactly (N)</b>";
+  row.insertCell(-1).innerHTML = "<b>At Least (N)</b>";
+
+  row.cells[0].style.width = "250px";
+  row.cells[1].style.width = " 30px";
+  row.cells[2].style.width = "120px";
+  row.cells[3].style.width = "120px";      
+  row.cells[4].style.width = " 30px";
+  row.cells[5].style.width = "120px";
+  row.cells[6].style.width = "120px";
+  
+  row.cells[1].style.borderStyle = "none";
+  row.cells[4].style.borderStyle = "none";
+      
+  for (var i=0; i<this.pct_exact.length; i++) {
+    row = table.insertRow(-1);
+    row.insertCell(-1).innerHTML = (this.ndice-i)+" hits ("+i+" misses) ";
+  	row.insertCell(-1).innerHTML = " "; 
+    row.insertCell(-1).innerHTML = this.pct_exact[i].toFixed(2) + '%';
+    row.insertCell(-1).innerHTML = this.pct_atleast[i].toFixed(2) + '%'; 
+  	row.insertCell(-1).innerHTML = " "; 
+    row.insertCell(-1).innerHTML = this.cnt_exact[i];
+    row.insertCell(-1).innerHTML = this.cnt_atleast[i];  
+    
+	  row.cells[1].style.borderStyle = "none";
+	  row.cells[4].style.borderStyle = "none";
+  }
+  
+  document.getElementById("output").innerHTML="<BR><BR>";
+  document.getElementById("output").appendChild(table);  	
+    
+}
+
+function centerContainer()
+{
+} 
+
+</script>
+
+<style>
+	#container {
+		position:absolute;
+		top:50px;
+		left:50px;
+	}
+  #input {
+      font-family: "Lucida Console", Monaco, monospace;
+      font-size:28px
+  }
+  #ndice {
+      font-family: "Lucida Console", Monaco, monospace;
+      font-size:28px
+  }
+  table, th, td {
+      border-collapse: collapse;
+      font-family: "Lucida Console", Monaco, monospace;
+      font-size:11
+  }
+  th, td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: right;
+  }
+  
+</style>    
+
+
+<body onLoad="centerContainer(); new Stats(parseInt(ndice.value), 3).gentable() ">    
+
+
+  <div id="container">
+	  <div id="input">
+	  	Summoner Wars Dice Odds<BR><BR><BR>
+			<form oninput=" new Stats(parseInt(ndice.value), 3).gentable() ">
+    		Number of Dice: 
+    		<input type="number" id="ndice" name="ndice" min="1" max="100" value="3">
+    		<BR><BR>
+    	</form>
+	  </div>
+	  <div id="output">
+	  </div>
+
+  </div>
+  
+</body>
+
+</html>
