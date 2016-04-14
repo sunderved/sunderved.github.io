@@ -120,6 +120,12 @@ function centerContainer()
 </script>
 
 <style>
+	body {
+	  -webkit-user-select: none;  /* Chrome all / Safari all */
+	  -moz-user-select: none;     /* Firefox all */
+	  -ms-user-select: none;      /* IE 10+ */
+	  user-select: none;          /* Likely future */ 	
+	}	
 	#container {
 		position:absolute;
 		top:50px;
@@ -143,7 +149,9 @@ function centerContainer()
       padding: 5px;
       text-align: right;
   }
-  
+	a {
+	    cursor:pointer;
+	}  
 </style>    
 
 
@@ -156,6 +164,8 @@ function centerContainer()
 			<form oninput=" new Stats(parseInt(ndice.value), 3).gentable() ">
     		Number of Dice: 
     		<input type="number" id="ndice" name="ndice" min="1" max="100" value="3">
+    		<a onclick="ndice.value++; new Stats(parseInt(ndice.value), 3).gentable()"><b>+</b></a>
+    		<a onclick="if (ndice.value>1) ndice.value--; new Stats(parseInt(ndice.value), 3).gentable()"><b>-</b></a>
     		<BR><BR>
     	</form>
 	  </div>
