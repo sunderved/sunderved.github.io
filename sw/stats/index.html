@@ -127,9 +127,23 @@
 		top:50px;
 		left:50px;
 	}
+	#logo {
+	  width:200px;
+	  height:200px;
+	  background-image: url("./icon.png"); 
+	  background-size: contain;
+	  display:inline-block;  
+	}	
+	#input {
+	  display:inline-block; 
+	}
   #input, input, button {
       font-family: "Lucida Console", Monaco, monospace;
       font-size:28px
+  }
+  #ndice {
+		width:100px; 
+		text-align: right;	   
   }
   #output {
       font-family: "Lucida Console", Monaco, monospace;
@@ -156,8 +170,6 @@
     display: inline-block;
   }
 
-  
-  
 </style>    
 
 
@@ -165,16 +177,19 @@
 
 
   <div id="container">
-	  <div id="input">
-	  	Summoner Wars Dice Odds<BR><BR><BR>
-			<form oninput=" new Stats(parseInt(ndice.value), 3).gentable() ">
-    		Number of Dice: 
-    		<input type="number" id="ndice" name="ndice" min="1" max="100" value="3">
-    		<button type="button" onclick="ndice.value++; new Stats(parseInt(ndice.value), 3).gentable()">+</button>
-				<button type="button" onclick="if (ndice.value>1) ndice.value--; new Stats(parseInt(ndice.value), 3).gentable()">-</button>
-    		<BR><BR>
-    	</form>
-	  </div>
+	  <div id="header">
+		  <div id="logo"></div>
+		  <div id="input">
+		  	Summoner Wars Dice Odds<BR><BR><BR>
+				<form oninput="new Stats(parseInt(ndice.value), 3).gentable()">
+	    		Number of Dice: 
+	    		<input  type="number" id="ndice" name="ndice" min="1" max="100" value="3">
+	    		<button type="button" onclick="ndice.value++; new Stats(parseInt(ndice.value), 3).gentable()">+</button>
+					<button type="button" onclick="if (ndice.value>1) ndice.value--; new Stats(parseInt(ndice.value), 3).gentable()">-</button>
+	    		<BR><BR>
+	    	</form>
+		  </div>
+    </div>
 	  <div id="output">
 	  </div>
 
