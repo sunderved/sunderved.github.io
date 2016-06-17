@@ -11,10 +11,10 @@ function init()
 {
 	createMap();
 		
-	players.push( new Player('Player 1', 1) );
-	players.push( new AI('Player 2', 2) );
-	players.push( new AI('Player 3', 3) );
-	players.push( new AI('Player 4', 4) );
+	players.push( new Player('P1 Blue  ', 1) );
+	players.push( new AI('P2 Red   ', 2) );
+	players.push( new AI('P3 Green ', 3) );
+	players.push( new AI('P4 Yellow', 4) );
 	
 	if (players.length==2) {
 		// 2 Player game only: Remove the first 2 tickets from each set
