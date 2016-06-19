@@ -5,19 +5,8 @@ body {
   user-select: none;          /* Likely future */ 	
 }
 
-#d1 { top: 34px; left: 34px; }
-#d2 { top: 34px; left:340px; }
-#d3 { top:187px; left: 34px; }
-#d4 { top:187px; left:340px; }
-#d5 { top:340px; left: 34px; }
-#d6 { top:340px; left:340px; }
-#d7 { top:187px; left:187px; }
-
 .dot {
   position:absolute;
-	border-radius: 136px;
-  width: 136px;
-  height:136px;
   background: black;
 	box-sizing: border-box;
   padding: 0;
@@ -27,9 +16,6 @@ body {
 
 #dice {
   position:absolute;
-  width: 510px;
-  height: 510px;
-	border-radius: 50px;
   background: #707070;
   padding: 0;
   margin: 0;
@@ -40,8 +26,6 @@ body {
 
 #container {
   position:absolute;
-  width: 510px;
-  height: 510px;
   padding: 0;
   margin: 0;
   top: 0;
