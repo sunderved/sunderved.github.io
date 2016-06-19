@@ -1,0 +1,23 @@
+<html manifest="appcache.manifest" lang="en-US"> 
+  <head>                                                                                          
+    <title>Dice</title>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <script type="text/javascript" src="main.js"></script> 
+    <link rel="stylesheet" href="styles.css" media="screen"/>                             
+    <link rel="apple-touch-icon" href="./icon.png" />
+  </head>                                                                                         
+  <body onLoad="init();">    
+    <div id="container" onclick="roll()"> 
+    	<div id="dice" onclick="roll()">
+	    	<div id="d1" class="dot"></div>
+	    	<div id="d2" class="dot"></div>
+	    	<div id="d3" class="dot"></div>
+	    	<div id="d4" class="dot"></div>
+	    	<div id="d5" class="dot"></div>
+	    	<div id="d6" class="dot"></div>
+	    	<div id="d7" class="dot"></div>
+    	</div>
+    </div>                                                                                         
+  </body>                                                                                         
+</html>                                                                                         
