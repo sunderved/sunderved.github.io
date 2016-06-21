@@ -87,7 +87,7 @@ function initPlayers()
 {
 	for (pl of players) {
 		pl.init();
-		showCities(pl);
+//		showCities(pl);
 	}
 }
 
