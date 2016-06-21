@@ -1,21 +1,71 @@
-var blue   = [ 'V25', 'V66', 'V103', 'V21', 'V46', 'V28', 'V51' ];
-var orange = [ 'V105', 'V158', 'V195', 'V230', 'V88', 'V53', 'V141' ];
-var red    = [ 'V189', 'V203', 'V173', 'V227', 'V165', 'V225', 'V193' ];
-var yellow = [ 'V152', 'V80', 'V75', 'V149', 'V119', 'V95', 'V117' ];
-var green  = [ 'V108', 'V90', 'V18', 'V54', 'V163', 'V1', 'V182' ];
 
+function initRound()
+{
+	document.getElementById('startb').style.visibility='hidden';
+	
+	initGraph();
+	initMap();
+	initCards();
+	initPlayers();
+
+	// Randomly choose the first player
+	cplayer = Math.floor(Math.random() * players.length);
+	
+	// Start Round
+	nextPlayer();	
+}
+
+function initGame(n)
+{
+	console.log('initGame '+n);
+	document.getElementById('startb').style.visibility='hidden';
+	document.getElementById('numpl2').style.visibility='hidden';
+	document.getElementById('numpl3').style.visibility='hidden';
+	document.getElementById('numpl4').style.visibility='hidden';
+	document.getElementById('numpl5').style.visibility='hidden';
+	
+	players.push( new Player('PL0', 0) );
+	for (var i=1; i<n; i++) {
+		players.push( new AI('AI'+i, i) );
+	}
+	
+	initRound();
+}
 
 var players = [];
+var cplayer = 0;
+
+function current()
+{
+	return players[cplayer];
+}
 
 function init()
 {
+	// Boot
+	initGraph();
 	createMap();
-		
-	players.push( new Player('P1 Blue  ', 1) );
-	players.push( new AI('P2 Red   ', 2) );
-	players.push( new AI('P3 Green ', 3) );
-	players.push( new AI('P4 Yellow', 4) );
+
+	// Hide the Start Round button
+	document.getElementById('startb').style.visibility='hidden';
 	
+	// Wait for user to select 2,3,4 or 5 player game	
+}
+
+var blue   = [];
+var orange = [];
+var red    = [];
+var yellow = [];
+var green  = [];
+
+function initCards()
+{
+	blue   = [ 'V25', 'V66', 'V103', 'V21', 'V46', 'V28', 'V51' ];
+	orange = [ 'V105', 'V158', 'V195', 'V230', 'V88', 'V53', 'V141' ];
+	red    = [ 'V189', 'V203', 'V173', 'V227', 'V165', 'V225', 'V193' ];
+	yellow = [ 'V152', 'V80', 'V75', 'V149', 'V119', 'V95', 'V117' ];
+	green  = [ 'V108', 'V90', 'V18', 'V54', 'V163', 'V1', 'V182' ];
+
 	if (players.length==2) {
 		// 2 Player game only: Remove the first 2 tickets from each set
 		blue.pop();      blue.pop();  
@@ -30,25 +80,69 @@ function init()
 	shuffle(orange);
 	shuffle(red);
 	shuffle(yellow);
-	shuffle(green);
-	
+	shuffle(green);	
+}
+
+function initPlayers()
+{
 	for (pl of players) {
 		pl.init();
+		showCities(pl);
 	}
-
-	shuffle(players);
-		
-	players[0].turn();
 }
 
 function nextPlayer()
 {
-	// remove player[0] from the list of players and put it at the back of the queue
-	players.push(players.shift());
+	// check victory condition first
+	if ( checkVictory() ) return;
+
+	// if victory condition not met...
+	// increment the current player id
+	cplayer = (cplayer+1)%players.length;
 	
-	// player[0] is now the new current player
-	// start his turn...
-	players[0].turn();
+	// display the current player's info
+	info('Player\'s Turn: '+current().name);	
+	info('');	
+	for (player of players) {
+		str  = player.name;
+		str += ' | ';
+		if (player.id==current().id)
+		str += ' < ';
+		info(str, true);	
+	}
+	
+	// start next players turn...
+	current().turn();
+}
+
+function endRound()
+{
+	document.getElementById('startb').style.visibility='visible';
+	
+	info('');
+
+	var str, dist;
+	for (player of players) 
+	{
+		showCities(player);
+		
+		dist = remaining_distance(player);
+
+		str  = player.name;
+		str += ' | ';
+		str += player.score;
+		str += ' - ';
+		str += dist;
+		str += ' = ';		
+		player.score -= dist;
+		str += player.score;
+		
+		if (dist==0) {
+			str += ' | All cities connected';
+		}
+		
+		info(str, true);	
+	}
 }
 
 
@@ -59,25 +153,51 @@ function Player(name, id)
 	this.destinations = [];
 	this.startpoint = undefined;
 	this.moves = 0;
+	this.score = 12;
 }
 	
 Player.prototype.init = function() 
 {
+	this.destinations = [];
 	this.destinations.push(blue.pop());
 	this.destinations.push(orange.pop());
 	this.destinations.push(red.pop());
 	this.destinations.push(yellow.pop());
 	this.destinations.push(green.pop());		
 	
-	showcities(this);	
+	showCities(this);	
 }
 
 Player.prototype.turn = function()
 {
-	if ( checkvictory() ) return;	
-	info(this.name+' -> start of turn');
 	this.moves = 2;
 }	
+
+Player.prototype.move = function(va, vb)
+{
+	var w = g.vertices[va][vb];
+	
+	if (w==0) {
+		debug('This segment is already connected, cannot place a track there');
+		return;
+	}
+
+	if (this.startpoint==undefined) {
+		this.startpoint = va;  
+	} 
+	
+	if (w <= this.moves) {	
+		putTrack(va, vb);  
+		this.moves -= w;
+		debug(this.name+' -> moves remaining: '+current().moves);
+	} else {
+ 	  debug('Not enough moves remaining, cannot place track');
+	}
+
+	if (this.moves==0) { 
+		nextPlayer();
+ 	}	
+}
 
 function AI(name, id)
 {
@@ -88,10 +208,14 @@ function AI(name, id)
 	this.open = [];
 	this.closed = [];
 	this.moves = 0;
+	this.score = 12;
 }
 
 AI.prototype.init = function() 
 {
+	this.destinations = [];
+	this.open = [];
+	this.closed = [];
 	this.destinations.push(blue.pop());
 	this.destinations.push(orange.pop());
 	this.destinations.push(red.pop());
@@ -113,12 +237,12 @@ AI.prototype.init = function()
  	debug('ai_closed : '+this.closed);	
  	debug('ai_open   : '+this.open);		
  	
-	this.select_target(); 		
+	this.selectTarget(); 		
 }
 
-AI.prototype.select_target = function()
+AI.prototype.selectTarget = function()
 {	
-	debug('-- ai_select_target');
+	debug('-- ai_selectTarget');
 	
  	if (this.open.length==0) {
 		info('!!! AI has connected all cities !!!');	
@@ -147,41 +271,26 @@ AI.prototype.select_target = function()
  	debug('-- ai_target : '+this.open[0]+' '+cities[this.open[0]]);	 	
 }
 
-AI.prototype.turn = function()
+AI.prototype.updateTarget = function()
 {
-	if ( checkvictory() ) return;
-	
-	info(this.name+' -> start of turn');
-	
-	this.moves = 2;
-	
-	
   // if the placed track connects with the target city, 
   // - remove target city from the list of unconnected and add to the list of connected ones
   // - find the next target city
   if ( cost(shortest(this.closed[0], this.open[0]))==0 ) {
 	  debug('-- connected ' + cities[this.open[0]]); 
 	  this.closed.push ( this.open.shift() );
-	  this.select_target();
-  } 		
-	
-	this.move();
-	
-  if ( cost(shortest(this.closed[0], this.open[0]))==0 ) {
-	  debug('-- connected ' + cities[this.open[0]]); 
-	  this.closed.push ( this.open.shift() );
-	  this.select_target();
-  } 		
-  	
-	this.move();
-	
-  if ( cost(shortest(this.closed[0], this.open[0]))==0 ) {
-	  debug('-- connected ' + cities[this.open[0]]); 
-	  this.closed.push ( this.open.shift() );
-	  this.select_target();
-  } 		
-	
-  nextPlayer();
+	  this.selectTarget();
+  } 			
+}
+
+AI.prototype.turn = function()
+{		
+	this.moves = 2;	
+	this.updateTarget();
+		
+	setTimeout(function(ai){ ai.move() }, 1000, this);
+	setTimeout(function(ai){ ai.move() }, 2000, this);
+	setTimeout(nextPlayer, 								2010);
 }
 
 AI.prototype.move = function()
@@ -205,10 +314,14 @@ AI.prototype.move = function()
 		 	  this.moves -= w;
 	 	  } else {
 		 	  debug('Not enough moves remaining, cannot place track');
+		 	  this.moves = 0;
 	 	  }
 	 	  break;
  	  }
   }
+	debug(this.name+' -> moves remaining: '+this.moves);
+	
+	this.updateTarget();  	  
 }	
 	
 
@@ -255,7 +368,7 @@ function remaining_distance(player)
 	return dist;
 }	
 	
-function showcities(player)
+function showCities(player)
 {
 	for (city of player.destinations) {
 		document.getElementById(city).classList.add('p'+player.id+'color');
@@ -263,7 +376,7 @@ function showcities(player)
 }
 
 
-function checkvictory()
+function checkVictory()
 {
 	var costs = [];
 	var done = false;
@@ -275,17 +388,7 @@ function checkvictory()
 			
 	if (done==true) 
 	{
- 		info('');
-		for (player of players) {
-			showcities(player);
-			var dist = remaining_distance(player)
-			if ( dist == 0 ) {
-				info(player.name+' has connected all his cities', true)	
-			} else {
-				info(player.name+' remaining distance: '+dist, true)
-			}
-		}
-// 		info('----------------------------------', true);		
+		endRound();
 	} 
 	
 	return done;
@@ -306,7 +409,7 @@ function cost(p)
 	return cost;
 }
 
-function vertexid(v)
+function vertexId(v)
 {
 	// Vertex ID is a string formatted as : V<id>
 	// First remove the character (V)
@@ -314,7 +417,7 @@ function vertexid(v)
 	return parseInt( v.slice(-(v.length-1)) );	 
 }
 
-function arcname(a,b)
+function arcName(a,b)
 {
 	// return string corresponding to the div ID of the arc between vertex a and b
 
@@ -322,7 +425,7 @@ function arcname(a,b)
 	str+='arc'
 	str+='-';
 	
-	if (vertexid(a)<vertexid(b)) {
+	if (vertexId(a)<vertexId(b)) {
 		str+=a;
 		str+='-';
 		str+=b;
@@ -344,7 +447,7 @@ function putTrack(a,b)
 	g.vertices[b][a]=0;
 	
 	// get name of DIV corresponding to arc between a and b
-	var arc = arcname(a,b);
+	var arc = arcName(a,b);
 	
 	// format the DIV as necessary
   document.getElementById(arc).classList.add('trackClicked');			
@@ -359,29 +462,9 @@ function clickedTrack(event)
 {
 	debug('clicked '+event.target.id + ' ' + event.target.VA + ' ' + event.target.VB);
 	
-	var w = g.vertices[event.target.VA][event.target.VB];
+	if (current().id!=0) return;
 	
-	if (w==0) {
-		info('This segment is already connected, cannot place a track there');
-		return;
-	}
-
-	if (players[0].startpoint==undefined) {
-		players[0].startpoint = event.target.VA;  
-	} 
-	
-	if (w <= players[0].moves) {	
-		putTrack(event.target.VA, event.target.VB);  
-		players[0].moves -= w;
-		info(players[0].name+' -> moves remaining: '+players[0].moves);
-	} else {
- 	  info('Not enough moves remaining, cannot place track');
-	}
-
-	if (players[0].moves==0) { 
-		nextPlayer();
- 	}
- 	
+	current().move(event.target.VA, event.target.VB);
 }
 
 function isEven(n) {

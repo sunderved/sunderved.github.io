@@ -10,29 +10,37 @@ body {
 	border-radius: 15px;
   width: 15px;
   height:15px;
-  background: #707070;
+  background-color: #707070;
 	box-sizing: border-box;
   padding: 0;
   margin: 0;
   z-index: 5;   
 }
 
+.p0color {
+	background: linear-gradient( #cce6ff, #005cb3);
+  border: 1px solid #005cb3;
+}
+
 .p1color {
-  background: blue;
+	background: linear-gradient( #ffe6e6, #cc0000);
+  border: 1px solid #cc0000;
 }
 
 .p2color {
-  background: red;
+	background: linear-gradient( #ccffcc, #009900);
+  border: 1px solid #009900;
 }
 
 .p3color {
-  background: #00ff00;
+	background: linear-gradient( #ffffcc, #cccc00);
+  border: 1px solid #cccc00;
 }
 
 .p4color {
-  background: yellow;
+	background: linear-gradient( #ffccff, #cc00cc);
+  border: 1px solid #cc00cc;
 }
-
 
 .track {
   position:absolute;
@@ -63,30 +71,12 @@ body {
   cursor:not-allowed;
 }
 
-
+/*
 .track:hover { 
   background: yellow;
 }
-
-
-/*
-.track1 {
-  background: #D4D4D4;
-}
-
-.track2 {
-  background: black;
-}
-
-.trackClicked {
-  background: red;
-}
-
-
-.track:hover { 
-	box-shadow: 0px 0px 4px 2px #888888;
-}
 */
+
 
 .rot000 {
 //    transform: rotate(0deg);
@@ -136,6 +126,13 @@ iPad atual screen size 1024x768
   z-index: 0;   
 }
 
+#map {
+  top: 40px;
+  left:60px;
+	position: absolute;
+  z-index: 0;   
+}
+
 #info {
   font-family: "Lucida Console", Monaco, monospace;	  
   font-size:18px;      		  
@@ -147,7 +144,22 @@ iPad atual screen size 1024x768
   padding: 0;
   margin: 0;
   top: 590px;
-  left:140px;
+  left:100px;
 	position: absolute;
   z-index: 0;   
 }
+
+#buttons {
+	position: absolute;
+  top: 630px;
+  left:200px;
+}
+
+.gbutton {
+  width: 100px;
+  height: 50px;
+	margin: 20px;
+  z-index: 0;   
+}
+
+

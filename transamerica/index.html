@@ -7,11 +7,19 @@
     <script type="text/javascript" src="map.js"></script> 
     <script type="text/javascript" src="main.js"></script> 
     <link rel="stylesheet" href="styles.css" media="screen"/>                             
-    <link rel="apple-touch-icon" href="./images/icon.jpg" />
+    <link rel="apple-touch-icon" href="./icon.jpg" />
   </head>                                                                                         
   <body onLoad="init();">    
     <div id="container"> 
+    	<div id="map"></div>
     	<div id="info"></div>
+    	<div id="buttons">
+	    	<button id="numpl2" class="gbutton" onclick="initGame(2)">2 Players</button>
+	    	<button id="numpl3" class="gbutton" onclick="initGame(3)">3 Players</button>
+	    	<button id="numpl4" class="gbutton" onclick="initGame(4)">4 Players</button>
+	    	<button id="numpl5" class="gbutton" onclick="initGame(5)">5 Players</button>
+	    	<button id="startb" class="gbutton" onclick="initRound()">Next Round</button>
+    	</div>
     </div>                                                                                         
   </body>                                                                                         
 </html>                                                                                         
