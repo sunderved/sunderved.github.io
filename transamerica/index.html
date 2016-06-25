@@ -3,6 +3,8 @@
     <title>TransAmerica</title>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <script type="text/javascript" src="../interact-1.2.6.min.js"></script> 
+    <script type="text/javascript" src="dnd.js"></script> 
     <script type="text/javascript" src="dijkstra.js"></script> 
     <script type="text/javascript" src="map.js"></script> 
     <script type="text/javascript" src="main.js"></script> 
@@ -11,7 +13,9 @@
   </head>                                                                                         
   <body onLoad="init();">    
     <div id="container"> 
-    	<div id="map"></div>
+    	<div id="map">
+    		<div id="visor" class="draggable"></div>
+    	</div>
     	<div id="info"></div>
     	<div id="buttons">
 	    	<button id="numpl2" class="gbutton" onclick="initGame(2)">2 Players</button>
@@ -22,4 +26,5 @@
     	</div>
     </div>                                                                                         
   </body>                                                                                         
-</html>                                                                                         
+</html>          
+                                                                               

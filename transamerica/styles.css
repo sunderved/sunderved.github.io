@@ -46,73 +46,69 @@ body {
   position:absolute;
   width: 50px;
   height: 2px;
-  background: gray;
-	box-sizing: border-box;
+//	box-sizing: border-box;
   padding: 0;
   margin: 0;
+  border: 0;
+//	border-width: 2px 0px 2px 0px;
   z-index: 1;   
   cursor: crosshair;
 //  cursor: url(cross.png) 12 12, crosshair;
 }
 
+.track:hover { 
+  background: yellow;
+}
+
+
+
 .track1 {
   background: #D4D4D4;
+	border-style: solid;
+	border-color: white;
 }
 
 .track2 {
+//  background: #888888;
+//	border-style: dotted;
+//	border-color: white;	
+//	border-width: 2px 0px 2px 0px;	
   background: #D4D4D4;
 	box-shadow: 0px 0px 4px 2px #888888;
+
 }
 
 .trackClicked {
   background: black;
+//  height: 3px;
   height: 5px;
+
+//	border-width: 3px 0px 3px 0px;
+//  border: 0px;
   z-index: 3;
   cursor:not-allowed;
 }
 
-/*
-.track:hover { 
+.drop-target { 
   background: yellow;
 }
-*/
 
 
 .rot000 {
-//    transform: rotate(0deg);
-//    transform-origin: left;
+//  transform: rotate(0deg);
+//  transform-origin: left;
+//  z-index:4;
 }
 
 .rot060 {
-    transform: rotate(60deg);
-    transform-origin: left;
+  transform: rotate(60deg);
+  transform-origin: left;
 }
 
 .rot120 {
-    transform: rotate(120deg);
-    transform-origin: left;
+  transform: rotate(120deg);
+  transform-origin: left;
 }
-
-.rot180 {
-    transform: rotate(180deg);
-    transform-origin: left;    
-}
-
-.rot240 {
-    transform: rotate(240deg);
-    transform-origin: left;    
-}
-
-.rot300 {
-    transform: rotate(300deg);
-    transform-origin: left;    
-}
-
-
-/*
-iPad Safari window size 980x623
-iPad atual screen size 1024x768
-*/
 
 #container {
   width: 980px;
@@ -131,6 +127,19 @@ iPad atual screen size 1024x768
   left:60px;
 	position: absolute;
   z-index: 0;   
+}
+
+#visor {
+  position:absolute;
+	border-radius: 25px;
+  width: 25px;
+  height:25px;
+  border: 2px solid red;
+	box-sizing: border-box;
+	//background: #E6E6E6;
+  padding: 0;
+  margin: 0;
+  z-index: 10;   
 }
 
 #info {

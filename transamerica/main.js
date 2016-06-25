@@ -455,17 +455,23 @@ function putTrack(a,b)
 
 function clickedCity(event)
 {
-	debug('clicked '+event.target.id + ' '+cities[event.target.id]);	
+//	debug('clicked '+event.target.id + ' '+cities[event.target.id]);	
 }
 
 function clickedTrack(event)
 {
-	debug('clicked '+event.target.id + ' ' + event.target.VA + ' ' + event.target.VB);
+//	selectTrack(event.target);
+}
+
+function selectTrack(target)
+{
+	debug('clicked '+target.id + ' ' + target.VA + ' ' + target.VB);
 	
 	if (current().id!=0) return;
 	
-	current().move(event.target.VA, event.target.VB);
+	current().move(target.VA, target.VB);
 }
+
 
 function isEven(n) {
   return n == parseFloat(n)? !(n%2) : void 0;

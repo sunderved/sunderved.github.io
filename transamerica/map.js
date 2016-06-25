@@ -259,9 +259,9 @@ function createArc(va, vb, vw)
 			rot = '120';
 		}	
 		
-		var e = createDiv('map', arcName(va, vb), left, top, 'track track'+vw+' rot'+rot, clickedTrack);
+		var e = createDiv('map', arcName(va, vb), left, top, 'dropzone track track'+vw+' rot'+rot, clickedTrack);
 		e.VA = va;
-		e.VB = vb;		
+		e.VB = vb;
 	}
 }
 
@@ -293,7 +293,11 @@ function initCity(city)
 function createMap()
 {
 	for (va in g.vertices) {
+		var tmp = [];
 		for (vb in g.vertices[va]) {
+			tmp.unshift(vb);
+		}
+		for (vb of tmp) {
 			createArc(va, vb, g.vertices[va][vb]);
 		}
 	}
@@ -301,6 +305,9 @@ function createMap()
 	for (c in cities) {
 		createCity(c);
 	}	
+	
+//	createDiv('map', 'visor', 600, 100, 'draggable');
+
 }
 
 function initMap()
