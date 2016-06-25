@@ -111,12 +111,19 @@ function nextPlayer()
 		info(str, true);	
 	}
 	
+	if (cplayer==0) {
+		document.getElementById('visor').style.visibility='visible';		
+	} else {
+		document.getElementById('visor').style.visibility='hidden';		
+	}
+	
 	// start next players turn...
 	current().turn();
 }
 
 function endRound()
 {
+	document.getElementById('visor').style.visibility='hidden';		
 	document.getElementById('startb').style.visibility='visible';
 	
 	info('');
@@ -245,7 +252,7 @@ AI.prototype.selectTarget = function()
 	debug('-- ai_selectTarget');
 	
  	if (this.open.length==0) {
-		info('!!! AI has connected all cities !!!');	
+// 		info('!!! AI has connected all cities !!!');	
 		return;
  	}
 	
