@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # This is a comment.
-# Cache manifest version 0.0.3
+# Cache manifest version 0.0.4
 # If you change the version number in this comment,
 # the cache manifest is no longer byte-for-byte identical
 dijkstra.js
@@ -9,4 +9,5 @@ index.html
 main.js
 map.js
 dnd.js
+../interact-1.2.6.min.js
 styles.css
