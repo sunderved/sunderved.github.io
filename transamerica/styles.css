@@ -116,7 +116,10 @@ body {
 #map {
   top: 40px;
   left:60px;
+  height: 533px;
+  width: 850px;
 	position: absolute;
+	//background-color: red;
   z-index: 0;   
 }
 

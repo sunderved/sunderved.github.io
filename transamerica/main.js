@@ -47,8 +47,10 @@ function init()
 	createMap();
 	
 	  if ("ontouchstart" in document.documentElement) {
+		  info('addEventListener touchstart');
 	    document.getElementById('map').addEventListener('touchstart', clickedMap);
 	  } else {
+		  info('addEventListener click');
 	    document.getElementById('map').addEventListener('click', clickedMap);
 	  }   
 	
@@ -479,6 +481,7 @@ function clickedTrack(event)
 
 function clickedMap(event)
 {
+		  info('clickedMap');
 	var x = event.x-60;
   var y = event.y-40; 
 	//console.log(event);

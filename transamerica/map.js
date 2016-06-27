@@ -341,6 +341,9 @@ function createDiv(container, id, x, y, style, f)
 
 function selectTrackFromXY(x, y)
 {
+	
+info('selectTrackFromXY: '+x+' '+y, true);	  
+	
 	var A, B;
   	    
   if (isEven( Math.round((2*y)/43.3013)) ) {
@@ -386,11 +389,13 @@ function selectTrackFromXY(x, y)
   }
   if ((x>=0) && (x<=17)&& (y>=0) && (y<=12)) 
   {		    
+info(arcName('V'+A,'V'+B), true);	  
 		var el = document.getElementById( arcName('V'+A,'V'+B) );
 		if (el != undefined) {					    
 //		    	putTrack('V'+A, 'V'+B);
   		selectTrack(el);
   	} else {
+info('No arc there', true);	  
 	    console.log('No arc there');
     }
   } else {
