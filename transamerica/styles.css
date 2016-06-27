@@ -93,8 +93,8 @@ body {
 }
 
 #container {
-  width: 980px;
   height: 735px;
+  width: 980px;
 	box-sizing: border-box;
   border:5px solid #E6E6E6;
   padding: 0;
@@ -102,6 +102,15 @@ body {
   top: 0;
   left: 0;
   z-index: 0;   
+}
+
+#version {
+	position: absolute;
+  top: 720px;
+  left:850px;
+  font-family: "Lucida Console", Monaco, monospace;	  
+  font-size:12px; 
+  font-style: italic;
 }
 
 #map {

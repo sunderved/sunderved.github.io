@@ -293,11 +293,11 @@ function initCity(city)
 function createMap()
 {
 	for (va in g.vertices) {
-		var tmp = [];
+// 		var tmp = [];
+// 		for (vb in g.vertices[va]) {
+// 			tmp.unshift(vb);
+// 		}
 		for (vb in g.vertices[va]) {
-			tmp.unshift(vb);
-		}
-		for (vb of tmp) {
 			createArc(va, vb, g.vertices[va][vb]);
 		}
 	}
