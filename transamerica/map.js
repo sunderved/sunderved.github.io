@@ -337,10 +337,9 @@ function createDiv(container, id, x, y, style, f)
   return el;
 }   
 
-function selectTrackFromXY(x, y)
+function getTrackFromXY(x, y)
 {
-	
-info('selectTrackFromXY: '+x+' '+y, true);	  
+	info('getTrackFromXY: '+x+' '+y, true);	  
 	
 	var A, B;
   	    
@@ -387,13 +386,12 @@ info('selectTrackFromXY: '+x+' '+y, true);
   }
   if ((x>=0) && (x<=17)&& (y>=0) && (y<=12)) 
   {		    
-info(arcName('V'+A,'V'+B), true);	  
+		info(arcName('V'+A,'V'+B), true);	  
 		var el = document.getElementById( arcName('V'+A,'V'+B) );
 		if (el != undefined) {					    
-//		    	putTrack('V'+A, 'V'+B);
-  		selectTrack(el);
+  		return el;
   	} else {
-info('No arc there', true);	  
+			info('No arc there', true);	  
 	    console.log('No arc there');
     }
   } else {

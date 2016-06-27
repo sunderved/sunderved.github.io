@@ -128,15 +128,13 @@ function init()
 	initGraph();
 	createMap();
 	
+	// Add Event Handlers
   if ("ontouchstart" in document.documentElement) {
-	  info('addEventListener touchstart');
-    document.getElementById('map').addEventListener('touchstart', touchedMap);
+    document.getElementById('map').addEventListener('touchmove', touchedMapMove);
+    document.getElementById('map').addEventListener('touchend', touchedMapEnd);
   } else {
-	  info('addEventListener click');
     document.getElementById('map').addEventListener('click', clickedMap);
   }   
-//   info('addEventListener click');
-//   document.getElementById('map').addEventListener('click', clickedMap);
 	
 	// Hide the Start Round button
 	document.getElementById('startb').style.visibility='hidden';
@@ -224,13 +222,21 @@ function placeTrack(player, va, vb)
 		return;
 	}
 	
-	if (w <= player.moves) {	
-		putTrack(va, vb);  
-		player.moves -= w;
-		debug(player.name+' -> moves remaining: '+player.moves);
-	} else {
+	if ( w > player.moves) {
  	  debug('Not enough moves remaining, cannot place track');
+ 	  return;
 	}
+	
+	// substract moves
+	player.moves -= w;
+	debug(player.name+' -> moves remaining: '+player.moves);
+		
+	// set the weight of the arc between a and b to 0
+	game.graph[a][b]=0;
+	game.graph[b][a]=0;
+	
+	// get name of DIV corresponding to arc between a and b, format the DIV
+  document.getElementById(arcName(a,b)).classList.add('trackClicked');			
 }
 
 function AI_selectTarget(ai)
@@ -417,20 +423,20 @@ function arcName(a,b)
 	return str;		
 }
 
-function putTrack(a,b)
-{
-	debug('-- putTrack '+a+' '+b);
-		
-	// set the weight of the arc between a and b to 0
-	game.graph[a][b]=0;
-	game.graph[b][a]=0;
-	
-	// get name of DIV corresponding to arc between a and b
-	var arc = arcName(a,b);
-	
-	// format the DIV as necessary
-  document.getElementById(arc).classList.add('trackClicked');			
-}
+// function putTrack(a,b)
+// {
+// 	debug('-- putTrack '+a+' '+b);
+// 		
+// 	// set the weight of the arc between a and b to 0
+// 	game.graph[a][b]=0;
+// 	game.graph[b][a]=0;
+// 	
+// 	// get name of DIV corresponding to arc between a and b
+// 	var arc = arcName(a,b);
+// 	
+// 	// format the DIV as necessary
+//   document.getElementById(arc).classList.add('trackClicked');			
+// }
 
 function clickedCity(event)
 {
@@ -442,38 +448,69 @@ function clickedTrack(event)
 //	selectTrack(event.target);
 }
 
-function clickedMap(event)
+
+function getTrackFromEvent(event)
 {
 	var x = event.clientX-60;
   var y = event.clientY-40; 
+  
 	//console.log(event);
 	console.log('click: '+x + ' '+y);   
-	selectTrackFromXY(x, y);
+	return getTrackFromXY(x, y);
 }
 
-function touchedMap(event)
+var hover = undefined;
+
+function touchedMapEnd(event)
 {
+	if (hover != undefined) {
+		hover.classList.remove('highlight');
+	}
+	
 	clickedMap( event.changedTouches[0] );
 }
 
-
-function selectTrack(target)
+function touchedMapMove(event)
 {
-	debug('clicked '+target.id + ' ' + target.VA + ' ' + target.VB);
+	if (hover != undefined) {
+		hover.classList.remove('highlight');
+	}
 	
-	var player = current();
+	hover = getTrackFromEvent(event.changedTouches[0]);
 	
-	if (player.id!=0) return;
-	
-//	current().move(target.VA, target.VB);
-	
-	placeTrack(player, target.VA, target.VB);
-	
-	if (player.moves==0) { 
-		nextPlayer();
- 	}	
+	hover.classList.add('highlight');	
 }
 
+function clickedMap(event)
+{
+	var player = current();	
+	if (player.id!=0) return;
+		
+	var el = getTrackFromEvent(event);
+	
+	if (el != undefined) 
+	{
+		placeTrack(player, el.VA, el.VB);
+		
+		if (player.moves==0) { 
+			nextPlayer();
+	 	}		
+	}
+}
+
+// function selectTrack(target)
+// {
+// 	var player = current();	
+// 	if (player.id!=0) return;
+// 	
+// 	debug('clicked '+target.id + ' ' + target.VA + ' ' + target.VB);
+// 			
+// 	placeTrack(player, target.VA, target.VB);
+// 	
+// 	if (player.moves==0) { 
+// 		nextPlayer();
+//  	}	
+// }
 
 function isEven(n) {
   return n == parseFloat(n)? !(n%2) : void 0;
