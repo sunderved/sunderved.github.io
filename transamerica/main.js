@@ -232,11 +232,11 @@ function placeTrack(player, va, vb)
 	debug(player.name+' -> moves remaining: '+player.moves);
 		
 	// set the weight of the arc between a and b to 0
-	game.graph[a][b]=0;
-	game.graph[b][a]=0;
+	game.graph[va][vb]=0;
+	game.graph[vb][va]=0;
 	
 	// get name of DIV corresponding to arc between a and b, format the DIV
-  document.getElementById(arcName(a,b)).classList.add('trackClicked');			
+  document.getElementById(arcName(va,vb)).classList.add('trackClicked');			
 }
 
 function AI_selectTarget(ai)
