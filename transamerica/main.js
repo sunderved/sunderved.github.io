@@ -45,6 +45,13 @@ function init()
 	// Boot
 	initGraph();
 	createMap();
+	
+	  if ("ontouchstart" in document.documentElement) {
+	    document.getElementById('map').addEventListener('touchstart', clickedMap);
+	  } else {
+	    document.getElementById('map').addEventListener('click', clickedMap);
+	  }   
+	
 
 	// Hide the Start Round button
 	document.getElementById('startb').style.visibility='hidden';
@@ -469,6 +476,16 @@ function clickedTrack(event)
 {
 //	selectTrack(event.target);
 }
+
+function clickedMap(event)
+{
+	var x = event.x-60;
+  var y = event.y-40; 
+	//console.log(event);
+	console.log('click: '+x + ' '+y);   
+	selectTrackFromXY(x, y);
+}
+
 
 function selectTrack(target)
 {
