@@ -13,8 +13,8 @@
     <link rel="apple-touch-icon" href="./icon.png" />
   </head>   
 	<script language="javascript"> 
-		document.body.addEventListener('touchmove', function(e){ e.preventDefault(); }); 
-		document.body.addEventListener('touchstart', function(e){ e.preventDefault(); }); 
+		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
+		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 
 	</script>                                                                                        
   <body onLoad="init();">    
     <div id="container"> 
@@ -29,7 +29,7 @@
 	    	<button id="numpl5" class="gbutton" onclick="initGame(5)">5 Players</button>
 	    	<button id="startb" class="gbutton" onclick="initRound()">Next Round</button>
     	</div>
-    	<div id="version">TransAmerica v0.6f</div>
+    	<div id="version">TransAmerica v0.6g</div>
     </div>                                                                                         
   </body>                                                                                         
 </html>          
