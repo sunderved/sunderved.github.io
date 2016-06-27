@@ -7,6 +7,17 @@ function Game () {
 	this.nround  = 0;
 }
 
+function Player(name, id)
+{
+	this.name = name;
+	this.id = id;
+	this.destinations = [];
+	this.open = [];
+	this.closed = [];
+	this.moves = 0;
+	this.score = 12;
+}
+
 var game   = new Game();
 var blue   = [];
 var orange = [];
@@ -25,7 +36,7 @@ function initGame(n)
 	
 	game.players.push( new Player('PL0', 0) );
 	for (var i=1; i<n; i++) {
-		game.players.push( new AI('AI'+i, i) );
+		game.players.push( new Player('AI'+i, i) );
 	}
 	
 	initRound();
@@ -100,7 +111,7 @@ function initPlayer(player)
 		// remove first city from list, and add it to the list of connected cities
 		player.closed.push( player.open.pop() );
 		 	
-		player.selectTarget(); 	
+		AI_selectTarget(player); 	
 	}		
 }
 
@@ -117,15 +128,15 @@ function init()
 	initGraph();
 	createMap();
 	
-//   if ("ontouchstart" in document.documentElement) {
-// 	  info('addEventListener touchstart');
-//     document.getElementById('map').addEventListener('touchstart', clickedMap);
-//   } else {
-// 	  info('addEventListener click');
-//     document.getElementById('map').addEventListener('click', clickedMap);
-//   }   
+  if ("ontouchstart" in document.documentElement) {
+	  info('addEventListener touchstart');
+    document.getElementById('map').addEventListener('touchstart', touchedMap);
+  } else {
 	  info('addEventListener click');
     document.getElementById('map').addEventListener('click', clickedMap);
+  }   
+//   info('addEventListener click');
+//   document.getElementById('map').addEventListener('click', clickedMap);
 	
 	// Hide the Start Round button
 	document.getElementById('startb').style.visibility='hidden';
@@ -154,14 +165,14 @@ function nextPlayer()
 		info(str, true);	
 	}
 	
-	if (game.cplayer==0) {
-		document.getElementById('visor').style.visibility='visible';		
-	} else {
-		document.getElementById('visor').style.visibility='hidden';		
-	}
+// 	if (game.cplayer==0) {
+// 		document.getElementById('visor').style.visibility='visible';		
+// 	} else {
+// 		document.getElementById('visor').style.visibility='hidden';		
+// 	}
 	
 	// start next players turn...
-	current().turn();
+	startTurn( current() );
 }
 
 function endRound()
@@ -195,54 +206,13 @@ function endRound()
 	}
 }
 
-
-function Player(name, id)
+function startTurn(player)
 {
-	this.name = name;
-	this.id = id;
-	this.destinations = [];
-	this.open = [];
-	this.closed = [];
-	this.moves = 0;
-	this.score = 12;
-}
-
-function AI(name, id)
-{
-	this.name = name;
-	this.id = id;
-	this.destinations = [];
-	this.open = [];
-	this.closed = [];
-	this.moves = 0;
-	this.score = 12;
-}
-
-Player.prototype.turn = function()
-{
-	this.moves = 2;
-}	
-
-Player.prototype.move = function(va, vb)
-{
-	var w = game.graph[va][vb];
+	player.moves = 2;
 	
-	if (w==0) {
-		debug('This segment is already connected, cannot place a track there');
-		return;
+	if (player.id>0) {
+		AI_playTurn(player);
 	}
-	
-	if (w <= this.moves) {	
-		putTrack(va, vb);  
-		this.moves -= w;
-		debug(this.name+' -> moves remaining: '+this.moves);
-	} else {
- 	  debug('Not enough moves remaining, cannot place track');
-	}
-
-	if (this.moves==0) { 
-		nextPlayer();
- 	}	
 }
 
 function placeTrack(player, va, vb)
@@ -263,49 +233,19 @@ function placeTrack(player, va, vb)
 	}
 }
 
-
-
-AI.prototype.init = function() 
-{
-	this.destinations = [];
-	this.open = [];
-	this.closed = [];
-	this.destinations.push(blue.pop());
-	this.destinations.push(orange.pop());
-	this.destinations.push(red.pop());
-	this.destinations.push(yellow.pop());
-	this.destinations.push(green.pop());
-	
-	// copy destinations to list of unconnected cities	
-	for (var i=0; i<this.destinations.length; i++) {
-		this.open.push( this.destinations[i] );
-	}
-	
-	// shuffle the list of unconnected cities
-	shuffle(this.open);
-	
-	// remove first city from list, and add it to the list of connected cities
-	this.closed.push( this.open.pop() );
-	
- 	debug('ai_closed : '+this.closed);	
- 	debug('ai_open   : '+this.open);		
- 	
-	this.selectTarget(); 		
-}
-
-AI.prototype.selectTarget = function()
+function AI_selectTarget(ai)
 {	
 	debug('-- ai_selectTarget');
 	
- 	if (this.open.length==0) {
+ 	if (ai.open.length==0) {
 // 		info('!!! AI has connected all cities !!!');	
 		return;
  	}
 	
 	// compute the cost from the starting city to all unconnected cities
  	var costs = [];
- 	for (var i=0; i<this.open.length; i++) {
-	 	costs[i] = cost( shortest(this.closed[0], this.open[i]) );
+ 	for (var i=0; i<ai.open.length; i++) {
+	 	costs[i] = cost( shortest(ai.closed[0], ai.open[i]) );
  	}
 
  	// find the city with the lowest cost
@@ -316,42 +256,34 @@ AI.prototype.selectTarget = function()
  	 	 	 	
   // remove this city from the list of unconnected cities, and put it back at the top of the list
   // this city becomes the new target
-  var t = this.open.splice(idx, 1);
-  this.open.unshift( t[0] );
+  var t = ai.open.splice(idx, 1);
+  ai.open.unshift( t[0] );
   
- 	debug('-- ai_closed : '+this.closed);	
- 	debug('-- ai_open   : '+this.open);	
- 	debug('-- ai_target : '+this.open[0]+' '+cities[this.open[0]]);	 	
+ 	debug('-- ai_closed : '+ai.closed);	
+ 	debug('-- ai_open   : '+ai.open);	
+ 	debug('-- ai_target : '+ai.open[0]+' '+cities[ai.open[0]]);	 	
 }
 
-AI.prototype.updateTarget = function()
+function AI_updateTarget(ai)
 {
   // if the placed track connects with the target city, 
   // - remove target city from the list of unconnected and add to the list of connected ones
   // - find the next target city
-  if ( cost(shortest(this.closed[0], this.open[0]))==0 ) {
-	  debug('-- connected ' + cities[this.open[0]]); 
-	  this.closed.push ( this.open.shift() );
-	  this.selectTarget();
+  if ( cost(shortest(ai.closed[0], ai.open[0]))==0 ) {
+	  debug('-- connected ' + cities[ai.open[0]]); 
+	  ai.closed.push ( ai.open.shift() );
+	  AI_selectTarget(ai);
   } 			
 }
 
-AI.prototype.turn = function()
-{		
-	this.moves = 2;	
-	this.updateTarget();
-		
-	setTimeout(function(ai){ ai.move() }, 1000, this);
-	setTimeout(function(ai){ ai.move() }, 2000, this);
-	setTimeout(nextPlayer, 								2010);
-}
-
-AI.prototype.move = function()
+function AI_stepTurn(ai)
 {
 	debug('-- ai_move');
-	
+
+	AI_updateTarget(ai);
+		
 	// update path from starting city to target city
-	var p = shortest(this.closed[0], this.open[0]);
+	var p = shortest(ai.closed[0], ai.open[0]);
 		
 	// traverse path until a non-zero weigth is found
 	// weigth = 0 means a track is already in place
@@ -361,20 +293,27 @@ AI.prototype.move = function()
   for(i=0; i<(p.length-1); i++) {
 	  w = game.graph[ p[i] ][ p[i+1] ];
 	  if ( w > 0 ) {
-		  if (w <= this.moves) {
+		  if (w <= ai.moves) {
 			  // place track
-		 	  placeTrack(this, p[i], p[i+1]);
+		 	  placeTrack(ai, p[i], p[i+1]);
 	 	  } else {
 		 	  debug('Not enough moves remaining, cannot place track');
-		 	  this.moves = 0;
+		 	  ai.moves = 0;
 	 	  }
 	 	  break;
  	  }
   }
-	debug(this.name+' -> moves remaining: '+this.moves);
+	debug(ai.name+' -> moves remaining: '+ai.moves);
 	
-	this.updateTarget();  	  
+	AI_updateTarget(ai);  	  
 }	
+
+function AI_playTurn(ai)
+{		
+	setTimeout(AI_stepTurn, 1000, ai);
+	setTimeout(AI_stepTurn, 2000, ai);
+	setTimeout(nextPlayer, 	2010);
+}
 	
 // --- Game routines ---
 
@@ -505,12 +444,16 @@ function clickedTrack(event)
 
 function clickedMap(event)
 {
-	info('clickedMap');
-	var x = event.x-60;
-  var y = event.y-40; 
+	var x = event.clientX-60;
+  var y = event.clientY-40; 
 	//console.log(event);
 	console.log('click: '+x + ' '+y);   
 	selectTrackFromXY(x, y);
+}
+
+function touchedMap(event)
+{
+	clickedMap( event.changedTouches[0] );
 }
 
 
