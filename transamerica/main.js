@@ -130,10 +130,22 @@ function init()
 	
 	// Add Event Handlers
   if ("ontouchstart" in document.documentElement) {
+		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
+		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 	  
     document.getElementById('map').addEventListener('touchmove', touchedMapMove);
     document.getElementById('map').addEventListener('touchend', touchedMapEnd);
+    document.getElementById('numpl2').addEventListener('touchend', function(){ initGame(2); });
+    document.getElementById('numpl3').addEventListener('touchend', function(){ initGame(3); });
+    document.getElementById('numpl4').addEventListener('touchend', function(){ initGame(4); });
+    document.getElementById('numpl5').addEventListener('touchend', function(){ initGame(5); });
+    document.getElementById('startb').addEventListener('touchend', function(){ initRound(); });
   } else {
     document.getElementById('map').addEventListener('click', clickedMap);
+    document.getElementById('numpl2').addEventListener('click', function(){ initGame(2); });
+    document.getElementById('numpl3').addEventListener('click', function(){ initGame(3); });
+    document.getElementById('numpl4').addEventListener('click', function(){ initGame(4); });
+    document.getElementById('numpl5').addEventListener('click', function(){ initGame(5); });
+    document.getElementById('startb').addEventListener('click', function(){ initRound(); });
   }   
 	
 	// Hide the Start Round button
