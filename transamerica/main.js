@@ -562,8 +562,3 @@ window.applicationCache.addEventListener('updateready', function(e) {
 	  window.location.reload();
 	}
 }, false);
-
-
-
-document.ontouchmove = function(e){ e.preventDefault(); }
-document.ontouchstart = function(e){ e.preventDefault(); }
