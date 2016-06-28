@@ -4,28 +4,25 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-    <script type="text/javascript" src="../interact-1.2.6.min.js"></script> 
-    <script type="text/javascript" src="dnd.js"></script> 
     <script type="text/javascript" src="dijkstra.js"></script> 
     <script type="text/javascript" src="map.js"></script> 
-    <script type="text/javascript" src="main.js"></script> 
+    <script type="text/javascript" src="ui.js"></script> 
+    <script type="text/javascript" src="game.js"></script> 
     <link rel="stylesheet" href="styles.css" media="screen"/>                             
     <link rel="apple-touch-icon" href="./icon.png" />
   </head>   
   <body onLoad="init();">    
     <div id="container"> 
-    	<div id="map">
-    		<div id="visor" class="draggable"></div>
-    	</div>
+    	<div id="map"></div>
     	<div id="info"></div>
     	<div id="buttons">
 	    	<button id="numpl2" class="gbutton">2 Players</button>
 	    	<button id="numpl3" class="gbutton">3 Players</button>
 	    	<button id="numpl4" class="gbutton">4 Players</button>
 	    	<button id="numpl5" class="gbutton">5 Players</button>
-	    	<button id="startb" class="gbutton">Next Round</button>
+	    	<button id="nextrb" class="gbutton">Next Round</button>
     	</div>
-    	<div id="version">TransAmerica v0.6h</div>
+    	<div id="version">TransAmerica v0.9</div>
     </div>                                                                                         
   </body>                                                                                         
 </html>          
