@@ -145,24 +145,10 @@ html, body {
   color: white;    		  
   padding: 0;
   margin: 0;
+  border: 1px solid black;
+	box-shadow: 0px 0px 40px 10px #888888;	  
 	cursor:pointer;    
   z-index: 5;   
-}
-
-#info {
-  font-family: "Lucida Console", Monaco, monospace;	  
-  font-size:18px;      		  
-  width: 710px;
-  height: 140px;
-	box-sizing: border-box;
-	//background: #E6E6E6;
-  //border:5px solid #E6E6E6;
-  padding: 0;
-  margin: 0;
-  top: 620px;
-  left:100px;
-	position: absolute;
-  z-index: 0;   
 }
 
 #buttons {
@@ -179,4 +165,39 @@ html, body {
 	cursor:pointer;  
 }
 
+#points {
+	position: absolute;
+  top: 610px;
+  left:300px;
+}
 
+.gpoints {
+  width:50px;
+  height:50px;
+	border-radius:50px;
+	line-height:50px; 
+	box-sizing: border-box;
+  font-family: "Lucida Console", Monaco, monospace;	  
+  font-size:18px;
+	text-align: center; 
+  color: black;    		  
+	margin: 20px;
+  z-index: 1;   
+	cursor:pointer;  
+}
+
+.active {
+	box-shadow: 0px 0px 40px 10px #888888;	
+}
+
+#info {
+  font-family: "Lucida Console", Monaco, monospace;	  
+  font-size:16px;      		  
+	box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  top: 40px;
+  left:650px;
+	position: absolute;
+  z-index: 0;   
+}

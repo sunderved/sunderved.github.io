@@ -157,7 +157,7 @@ function nextPlayer()
 	// increment the current player id
 	game.cplayer = (game.cplayer+1)%game.players.length;
 	
-	UI_showInfo();
+	UI_updateInfo();
 		
 	// start next players turn...
 	startTurn( current() );
@@ -182,7 +182,7 @@ function endRound()
 }
 
 function startTurn(player)
-{
+{	
 	player.moves = 2;
 	
 	if (player.id>0) {
@@ -207,7 +207,7 @@ function placeTrack(player, va, vb)
 	if (player.startpoint == undefined) {
 		player.startpoint = va;
 	} else {
-		if ( (cost(shortest(player.startpoint, va)) * cost(shortest(player.startpoint, vb))) != 0 ) {
+		if ( isConnected(player, va, vb) == false ) {
 	 	  info('Track must connected to your network');
 	 	  return;
 		}
@@ -293,6 +293,11 @@ function cost(p)
 		cost += game.graph[ p[i] ][ p[i+1] ];	 	
  	}
 	return cost;
+}
+
+function isConnected(player, va, vb)
+{
+	return ( (cost(shortest(player.startpoint, va)) * cost(shortest(player.startpoint, vb))) == 0 );
 }
 
 function current()

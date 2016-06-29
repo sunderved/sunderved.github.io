@@ -3,19 +3,34 @@
 // - UI Display Routines 
 // ------------------------------------------------------------------
 
-function UI_showInfo()
+function UI_updateInfo()
 {
-	document.getElementById('info').innerHTML='';	
+	document.getElementById('info').style.visibility='hidden';		
+	document.getElementById('points').style.visibility='visible';	
 	
-	for (player of game.players) {
-		var str  = player.name;
-		str += ' | ';
-		str += player.points;
-		if (player.id==current().id)
-		str += ' < ACTIVE ';
-		document.getElementById('info').innerHTML+=str;
-		document.getElementById('info').innerHTML+='<BR>';
+	for (var i=0; i<5; i++) {
+		document.getElementById('p'+i+'points').style.visibility='hidden'; 
 	}
+		
+	for (player of game.players) {
+		var el = document.getElementById('p'+player.id+'points'); 
+		console.log(player.id);
+		console.log(el);
+		el.style.visibility='visible';
+		el.innerHTML=player.points;
+		if (player.id==current().id) {
+			el.classList.add('active');
+		} else {
+			el.classList.remove('active');
+		}
+	}
+		
+}
+
+function UI_showMessage(msg)
+{
+	document.getElementById('info').style.visibility='visible';		
+	document.getElementById('info').innerHTML=msg;		
 }
 
 function UI_showResults(game)
@@ -23,27 +38,14 @@ function UI_showResults(game)
 	
 	document.getElementById('info').innerHTML='';	
 	
-	for (player of game.players) 
-	{
-		UI_showCities(player);
+	UI_updateInfo();
 	
-		var str = player.name;
-		str += ' | ';
-		str += player.points + player.score;
-		str += ' - ';
-		str += player.score;
-		str += ' = ';		
-		str += player.points;
-		
-		if (player.score==0) {
-			str += ' | All cities connected';
-		}
-		
-		document.getElementById('info').innerHTML+=str;
-		document.getElementById('info').innerHTML+='<BR>';
+	for (player of game.players) 	{
+		UI_showCities(player);
 	}
+	
 	if (game.over) {
-		document.getElementById('info').innerHTML+='GAME OVER';
+		UI_showMessage('GAME OVER');
 	}
 }	
 
@@ -53,6 +55,14 @@ function UI_showCities(player)
 		document.getElementById(city).classList.add('p'+player.id+'color');
 	}
 }
+
+function UI_hideCities(player)
+{
+	for (city of player.destinations) {
+		document.getElementById(city).classList.remove('p'+player.id+'color');
+	}
+}
+
 
 function UI_placeTrack(va, vb)
 {
@@ -69,17 +79,21 @@ function UI_placeTrack(va, vb)
 var selectedTrack = undefined;
 
 function touchedMapEnd(event)
-{	
+{		
+	document.getElementById('info').style.visibility='hidden';		
+	
 	clickedMap( event.changedTouches[0] );
 }
 
 function touchedMapMove(event)
-{
+{	
+	document.getElementById('info').style.visibility='hidden';		
+	
 	if (selectedTrack != undefined) {
 		selectedTrack.classList.remove('highlight');
 	}
 	
-	selectedTrack = getTrackFromEvent(event.changedTouches[0]);
+	selectedTrack = getTrackFromEvent(event.changedTouches[0]);	
 	selectedTrack.classList.add('highlight');	
 }
 
@@ -87,6 +101,8 @@ function touchedMapMove(event)
 
 function clickedMap(event)
 {
+	document.getElementById('info').style.visibility='hidden';		
+	
 	if (game.round==0) return;
 	var player = current();	
 	if (player.id!=0) return;
@@ -94,8 +110,17 @@ function clickedMap(event)
 	if (selectedTrack != undefined) {
 		selectedTrack.classList.remove('highlight');
 	}
-				
+
 	selectedTrack = getTrackFromEvent(event);
+		
+	if (player.startpoint != undefined) {
+		console.log(isConnected(player, selectedTrack.VA, selectedTrack.VB));
+		if ( isConnected(player, selectedTrack.VA, selectedTrack.VB) == false ) {
+	 	  UI_showMessage('Track must connect to your network');
+	 	  return;
+		}
+	}
+			
 	selectedTrack.classList.add('highlight');	
 	
 	if (selectedTrack != undefined) {
@@ -155,7 +180,14 @@ function initView()
 	
 	// Hide the Confirm button
 	document.getElementById('confirm').style.visibility='hidden';
-	
+
+	// Hide the Point counters	
+	document.getElementById('points').style.visibility='hidden';	
+	document.getElementById('p0points').visibility='hidden'; 
+	document.getElementById('p1points').visibility='hidden'; 
+	document.getElementById('p2points').visibility='hidden'; 
+	document.getElementById('p3points').visibility='hidden'; 
+	document.getElementById('p4points').visibility='hidden'; 
 }
 
 
@@ -245,7 +277,11 @@ function initArc(va, vb, vw)
 
 function initCity(city)
 {
-	document.getElementById(city).classList = 'city';	
+	document.getElementById(city).classList.remove('p0color');	
+	document.getElementById(city).classList.remove('p1color');	
+	document.getElementById(city).classList.remove('p2color');	
+	document.getElementById(city).classList.remove('p3color');	
+	document.getElementById(city).classList.remove('p4color');	
 }
 
 function initMap()
