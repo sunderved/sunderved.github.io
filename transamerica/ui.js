@@ -66,45 +66,62 @@ function UI_placeTrack(va, vb)
 // - UI Touch/Click Handlers 
 // ------------------------------------------------------------------
 
-var hover = undefined;
+var selectedTrack = undefined;
 
 function touchedMapEnd(event)
-{
-	if (hover != undefined) {
-		hover.classList.remove('highlight');
-	}
-	
+{	
 	clickedMap( event.changedTouches[0] );
 }
 
 function touchedMapMove(event)
 {
-	if (hover != undefined) {
-		hover.classList.remove('highlight');
+	if (selectedTrack != undefined) {
+		selectedTrack.classList.remove('highlight');
 	}
 	
-	hover = getTrackFromEvent(event.changedTouches[0]);
-	
-	hover.classList.add('highlight');	
+	selectedTrack = getTrackFromEvent(event.changedTouches[0]);
+	selectedTrack.classList.add('highlight');	
 }
+
+
 
 function clickedMap(event)
 {
 	if (game.round==0) return;
 	var player = current();	
 	if (player.id!=0) return;
-		
-	var el = getTrackFromEvent(event);
+
+	if (selectedTrack != undefined) {
+		selectedTrack.classList.remove('highlight');
+	}
+				
+	selectedTrack = getTrackFromEvent(event);
+	selectedTrack.classList.add('highlight');	
 	
-	if (el != undefined) 
+	if (selectedTrack != undefined) {
+		document.getElementById('confirm').style.visibility='visible';
+	}		
+}
+
+function confirmSelection()
+{	
+	var player = current();	
+	
+	if (selectedTrack != undefined) 
 	{
-		placeTrack(player, el.VA, el.VB);
+		document.getElementById('confirm').style.visibility='hidden';
+		if (selectedTrack != undefined) {
+			selectedTrack.classList.remove('highlight');
+		}
+		
+		placeTrack(player, selectedTrack.VA, selectedTrack.VB);
 		
 		if (player.moves==0) { 
 			nextPlayer();
 	 	}		
-	}
+	}	
 }
+
 
 function initView()
 {
@@ -122,6 +139,7 @@ function initView()
     document.getElementById('numpl4').addEventListener('touchend', function(){ initGame(4); });
     document.getElementById('numpl5').addEventListener('touchend', function(){ initGame(5); });
     document.getElementById('nextrb').addEventListener('touchend', function(){ initRound(); });
+    document.getElementById('confirm').addEventListener('touchend', function(){ confirmSelection(); });
   } else {
     document.getElementById('map').addEventListener('click', clickedMap);
     document.getElementById('numpl2').addEventListener('click', function(){ initGame(2); });
@@ -129,10 +147,15 @@ function initView()
     document.getElementById('numpl4').addEventListener('click', function(){ initGame(4); });
     document.getElementById('numpl5').addEventListener('click', function(){ initGame(5); });
     document.getElementById('nextrb').addEventListener('click', function(){ initRound(); });
+    document.getElementById('confirm').addEventListener('click', function(){ confirmSelection(); });
   }   
 	
 	// Hide the Start Round button
 	document.getElementById('nextrb').style.visibility='hidden';	
+	
+	// Hide the Confirm button
+	document.getElementById('confirm').style.visibility='hidden';
+	
 }
 
 
@@ -264,7 +287,7 @@ function createDiv(container, id, x, y, style, f)
 
 function getTrackFromEvent(event)
 {	
-	console.log(event);
+	//debugGetTrack(event);
 	
 	var x = event.clientX-mapOffsetX-parseFloat(document.getElementById('container').style.left || 0 );
   var y = event.clientY-mapOffsetY-parseFloat(document.getElementById('container').style.top  || 0 ); 
@@ -324,12 +347,10 @@ function getTrackFromXY(x, y)
   }
   if ((x>=0) && (x<HMAX)&& (y>=0) && (y<VMAX)) 
   {		    
-		info(arcName('V'+A,'V'+B), true);	  
 		var el = document.getElementById( arcName('V'+A,'V'+B) );
 		if (el != undefined) {					    
   		return el;
   	} else {
-			info('No arc there', true);	  
 	    debugGetTrack('No arc there');
     }
   } else {
@@ -339,5 +360,5 @@ function getTrackFromXY(x, y)
 
 function debugGetTrack(str)
 {
-	console.log(str);
+//	console.log(str);
 }

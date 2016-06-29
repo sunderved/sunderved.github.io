@@ -10,7 +10,7 @@ function Game () {
 }
 
 function Player(name, id)
-{c
+{
 	this.name = name;
 	this.id = id;
 	this.destinations = [];
@@ -195,12 +195,12 @@ function placeTrack(player, va, vb)
 	var w = game.graph[va][vb];
 		
 	if (w==0) {
-		debug('This segment is already connected, cannot place a track there');
+		console.log('This segment is already connected, cannot place a track there');
 		return;
 	}
 	
 	if ( w > player.moves) {
- 	  debug('Not enough moves remaining, cannot place track');
+ 	  console.log('Not enough moves remaining, cannot place track');
  	  return;
 	}
 	
@@ -216,7 +216,7 @@ function placeTrack(player, va, vb)
 	
 	// substract moves
 	player.moves -= w;
-	debug(player.name+' -> moves remaining: '+player.moves);
+	console.log(player.name+' -> moves remaining: '+player.moves);
 		
 	// set the weight of the arc between a and b to 0
 	game.graph[va][vb]=0;
