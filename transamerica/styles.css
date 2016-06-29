@@ -13,9 +13,9 @@ html, body {
 
 .city {
   position:absolute;
-	border-radius: 15px;
-  width: 15px;
-  height:15px;
+//	border-radius: 15px;
+//  width: 15px;
+//  height:15px;
   background-color: #707070;
 	box-sizing: border-box;
   padding: 0;
@@ -50,7 +50,7 @@ html, body {
 
 .track {
   position:absolute;
-  width: 50px;
+//  width: 50px;
   height: 2px;
   padding: 0;
   margin: 0;
@@ -72,6 +72,8 @@ html, body {
 
 .highlight { 
   background: yellow;
+  height: 5px;
+	box-shadow: 0px 0px 20px 5px yellow;
 }
 
 .trackClicked {
@@ -80,11 +82,6 @@ html, body {
   z-index: 3;
   cursor:not-allowed;
 }
-
-.drop-target { 
-  background: yellow;
-}
-
 
 .rot000 {
 //  transform: rotate(0deg);
@@ -105,7 +102,7 @@ html, body {
   height: 720px;
   width: 980px;
 	box-sizing: border-box;
-  border:5px solid #E6E6E6;
+  border: 0;
   padding: 0;
   position:absolute;
   margin: 0;
@@ -122,27 +119,13 @@ html, body {
 }
 
 #map {
-  top: 40px;
-  left:60px;
+  top: 30px;
+  left:20px;
   height: 533px;
   width: 850px;
 	position: absolute;
 	//background-color: red;
   z-index: 0;   
-}
-
-#visor {
-  position:absolute;
-	border-radius: 25px;
-  width: 25px;
-  height:25px;
-  border: 2px solid red;
-	box-sizing: border-box;
-	//background: #E6E6E6;
-  padding: 0;
-  margin: 0;
-  z-index: 10; 
-  visibility: hidden;  
 }
 
 #info {
@@ -155,7 +138,7 @@ html, body {
   //border:5px solid #E6E6E6;
   padding: 0;
   margin: 0;
-  top: 590px;
+  top: 620px;
   left:100px;
 	position: absolute;
   z-index: 0;   

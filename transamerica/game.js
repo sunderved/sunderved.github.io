@@ -10,7 +10,7 @@ function Game () {
 }
 
 function Player(name, id)
-{
+{c
 	this.name = name;
 	this.id = id;
 	this.destinations = [];
@@ -462,7 +462,7 @@ function centerContainer()
   var dh = document.getElementById('container').clientHeight;
     
   document.getElementById('container').style.top  = Math.round((ch-dh)/2);
-  document.getElementById('container').style.left = Math.round((cw-dw)/2);
+  document.getElementById('container').style.left = Math.round((cw-dw)/2);  
 } 
 
 // When the manifest file has changed and the browser has updated the files, 

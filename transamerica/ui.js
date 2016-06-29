@@ -140,25 +140,36 @@ function initView()
 // - UI Creation and Reinitialization of DIVs 
 // ------------------------------------------------------------------
 
+var HMAX = 18;
+var VMAX = 13;
+
+var hstep = 55;
+var vstep = hstep * Math.sqrt(3) / 2;
+
+var radius = 18;
+
+// These should be automatically derived based on HMAX and hstep
+var mapOffsetX = 30;
+var mapOffsetY = 20;
+
 function createArc(va, vb, vw)
 {
 	var a = vertexId(va);
 	var b = vertexId(vb);
 	
 	if (a<b) {
-		var x = a % 18;
-		var y = (a-x)/18;
+		var x = a % HMAX;
+		var y = (a-x)/HMAX;
 		
-		var length = 50;
-		var left = x*length+(isEven(y)?0:length/2); // left
-		var top  = y*length*(Math.sqrt(3)/2);       // top
-		var rot  = '000';                           // rotation 
+		var left = x*hstep+(isEven(y)?0:hstep/2); 
+		var top  = y*vstep;                       
+		var rot  = '000';                         
 		
 		if (a+1==b) {
 			rot = '000';
-		} else if (a+17==b) {
+		} else if (a+HMAX-1==b) {
 			rot = '120';
-		} else if (a+19==b) {
+		} else if (a+HMAX+1==b) {
 			rot = '060';
 		} else if (isEven(y)) {
 			rot = '060';			
@@ -169,6 +180,7 @@ function createArc(va, vb, vw)
 		var e = createDiv('map', arcName(va, vb), left, top, 'dropzone track track'+vw+' rot'+rot);
 		e.VA = va;
 		e.VB = vb;
+		e.style.width = hstep;
 	}
 }
 
@@ -176,14 +188,17 @@ function createCity(city)
 {
 	var a = vertexId(city);
 	
-	var x = a % 18;
-	var y = (a-x)/18;
+	var x = a % HMAX;
+	var y = (a-x)/HMAX;
 	
-	var length = 50;
-	var left = x*length+(isEven(y)?0:length/2); // left
-	var top  = y*length*(Math.sqrt(3)/2);       // top
+	var left = x*hstep + (isEven(y)?0:hstep/2) - radius/2;
+	var top  = y*vstep - radius/2;                      
 	
-	createDiv('map', city, left-7, top-7, 'city');
+	var e = createDiv('map', city, left, top, 'city');
+	
+	e.style.width        = radius+'px';
+	e.style.height       = radius+'px';
+	e.style.borderRadius = radius+'px';	
 }
 
 function createMap()
@@ -248,71 +263,81 @@ function createDiv(container, id, x, y, style, f)
 // ------------------------------------------------------------------
 
 function getTrackFromEvent(event)
-{
-	var x = event.clientX-60-parseFloat(document.getElementById('container').style.left || 0 );
-  var y = event.clientY-40-parseFloat(document.getElementById('container').style.top  || 0 ); 
+{	
+	console.log(event);
+	
+	var x = event.clientX-mapOffsetX-parseFloat(document.getElementById('container').style.left || 0 );
+  var y = event.clientY-mapOffsetY-parseFloat(document.getElementById('container').style.top  || 0 ); 
   
-	//console.log(event);
-	//console.log('click: '+x + ' '+y);   
+	//debugGetTrack(event);
+	//debugGetTrack('click: '+x + ' '+y);   
 	return getTrackFromXY(x, y);
 }
 
 function getTrackFromXY(x, y)
 {	
 	var A, B;
+	
+  debugGetTrack(x+' '+y);	    
   	    
-  if (isEven( Math.round((2*y)/43.3013)) ) {
-    y = Math.round( y/43.3013 );
-	  x = (x-25)/50;		    
+  if ( isEven( Math.round((2*y)/vstep)) ) {
+    y = Math.round( y/vstep );
+	  x = (x/hstep) - 0.5;		    
 	  if (isEven(y) == false) x = x-0.5;
 	  x = Math.round(x);
-		A = (y*18+x);
-		B = (y*18+x+1);
-//     console.log('H Move: '+'V'+A+' -> '+'V'+B);	
+		A = (y*HMAX+x);
+		B = (y*HMAX+x+1);
+    debugGetTrack('H Move: '+'V'+A+' -> '+'V'+B);	
   } else {
-    y = Math.round( (y-21.65)/43.3013 );
-	  x = Math.round((x-12.5)/25);		    
+    y = Math.round(  (y/vstep) - 0.5 );
+	  x = Math.round((2*x/hstep) - 0.5 );	
+	  debugGetTrack(x+' '+y);	    
 	  if (isEven(y)) {
     	if (isEven(x)) {	
 	    	x = Math.round(x/2);
-				A = (y*18+x);
-				B = ((y+1)*18+x);
-// 	    	console.log('D EE \\ Move: '+x+','+y+' -> '+x+','+(y+1));	
-//     		console.log('D EE \\ Move: '+'V'+A+' -> '+'V'+B);	
+				A = (y*HMAX+x);
+				B = ((y+1)*HMAX+x);
+	    	debugGetTrack('D EE \\ Move: '+x+','+y+' -> '+x+','+(y+1));	
+    		debugGetTrack('D EE \\ Move: '+'V'+A+' -> '+'V'+B);	
     	} else {
 	    	x = Math.round(x/2);
-				A = (y*18+x);
-				B = ((y+1)*18+x-1);
-// 	    	console.log('D EO / Move: '+x+','+y+' -> '+(x-1)+','+(y+1));	
-//     		console.log('D EO / Move: '+'V'+A+' -> '+'V'+B);	
+				A = (y*HMAX+x);
+				B = ((y+1)*HMAX+x-1);
+	    	debugGetTrack('D EO / Move: '+x+','+y+' -> '+(x-1)+','+(y+1));	
+    		debugGetTrack('D EO / Move: '+'V'+A+' -> '+'V'+B);	
     	}
 	  } else {
     	if (isEven(x)) {	
 	    	x = Math.round(x/2);
-				A = (y*18+x);
-				B = ((y+1)*18+x);
-// 	    	console.log('D OE / Move: '+x+','+y+' -> '+x+','+(y+1));	
-//     		console.log('D OE / Move: '+'V'+A+' -> '+'V'+B);	
+				A = (y*HMAX+x);
+				B = ((y+1)*HMAX+x);
+	    	debugGetTrack('D OE / Move: '+x+','+y+' -> '+x+','+(y+1));	
+    		debugGetTrack('D OE / Move: '+'V'+A+' -> '+'V'+B);	
     	} else {
 	    	x = Math.round(x/2);
-				A = (y*18+x-1);
-				B = ((y+1)*18+x);
-// 	    	console.log('D OO \\ Move: '+(x-1)+','+y+' -> '+x+','+(y+1));	
-//     		console.log('D OO \\ Move: '+'V'+A+' -> '+'V'+B);	
+				A = (y*HMAX+x-1);
+				B = ((y+1)*HMAX+x);
+	    	debugGetTrack('D OO \\ Move: '+(x-1)+','+y+' -> '+x+','+(y+1));	
+    		debugGetTrack('D OO \\ Move: '+'V'+A+' -> '+'V'+B);	
     	}
 	  }
   }
-  if ((x>=0) && (x<=17)&& (y>=0) && (y<=12)) 
+  if ((x>=0) && (x<HMAX)&& (y>=0) && (y<VMAX)) 
   {		    
-// 		info(arcName('V'+A,'V'+B), true);	  
+		info(arcName('V'+A,'V'+B), true);	  
 		var el = document.getElementById( arcName('V'+A,'V'+B) );
 		if (el != undefined) {					    
   		return el;
   	} else {
-// 			info('No arc there', true);	  
-// 	    console.log('No arc there');
+			info('No arc there', true);	  
+	    debugGetTrack('No arc there');
     }
   } else {
-//     console.log('OOB '+x+', '+y);
+    debugGetTrack('OOB '+x+', '+y);
   }	
+}
+
+function debugGetTrack(str)
+{
+	console.log(str);
 }
