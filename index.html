@@ -26,12 +26,24 @@
       
       str+="<br>";                                                                              
       str+=" window.navigator.standalone             = " +  window.navigator.standalone         ;
-      str+="<br>";                                                                              
+      str+="<br>"; 
       
+      str+="<br>";                                                                              
+      str+=" window.orientation                      = " +  window.orientation                  ;
+      str+="<br>";   
+
       console.log(str);                                                                             
       
       document.getElementById("txt").innerHTML=str;                                                                             
     }
+    
+  // Listen for orientation changes
+  window.addEventListener("orientationchange", function() {
+    // Reload page
+    init());
+  }, false);
+  
+    
     </script>  
   </head>                                                                                         
   <body onLoad="init()">    
