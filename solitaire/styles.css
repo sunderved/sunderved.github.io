@@ -37,7 +37,7 @@ html, body {
 
 #container {
   width: 720px;
-  height: 980px;
+  height: 880px;
   border: 1px black solid;
   padding: 0;
   position:absolute;
@@ -59,10 +59,11 @@ html, body {
 #version {
 	position: absolute;
   left: 600px;
-  top:960px;
+  top:860px;
   font-family: "Lucida Console", Monaco, monospace;	  
   font-size:12px; 
   font-style: italic;
+  text-align: left;
 }
 
 #info {
@@ -72,7 +73,7 @@ html, body {
 	box-sizing: border-box;
   padding: 0;
   margin: 0;
-  top: 800px;
+  top: 740px;
   left:60px;
   width: 600px;
   text-align: center;

@@ -47,6 +47,11 @@ function UI_createBoard()
 	var radius = hstep/2;
 	
 	
+  if ("ontouchstart" in document.documentElement) {
+		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
+		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 	  
+	}	
+	
 	var r = hstep*6;
 	document.getElementById('circle').style.width  = r;
 	document.getElementById('circle').style.height = r;
