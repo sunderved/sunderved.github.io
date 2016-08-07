@@ -42,44 +42,68 @@ function createDiv(container, str, id, x, y, r, style)
 
 function UI_createBoard()
 {
-	var hstep = 100;
-	var vstep = hstep * Math.sqrt(3) / 2;
-	var radius = hstep/2;
-	
-	
   if ("ontouchstart" in document.documentElement) {
 		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
 		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 	  
 	}	
+
+  var dw = document.documentElement.clientWidth;  
+  var dh = document.documentElement.clientHeight;  
 	
-	var r = hstep*6;
-	document.getElementById('circle').style.width  = r;
-	document.getElementById('circle').style.height = r;
-	document.getElementById('circle').style.borderRadius = r+'px';		
+	var cw = Math.round(Math.min(dw*0.96, 720));   // container width
+	var ch = Math.round(cw*1.22);                  // container height
+	var hstep  = cw/7;
+	var vstep  = hstep * Math.sqrt(3) / 2;
+	var pegr   = hstep/2;                          // peg/hole radius
+	var cr     = hstep*6;                          // circle radius
+	var bw     = hstep*4+pegr+5;                   // board width 	
+	var bh     = vstep*4+pegr+5;                   // board height
 	
-	document.getElementById('board').style.width  = hstep*4+radius+5;
-	document.getElementById('board').style.height = vstep*4+radius+5;
-	document.getElementById('board').style.top  = (r - (vstep*5+radius+5))/2;
-	document.getElementById('board').style.left = (r - (hstep*4+radius+5))/2;;
+	document.getElementById('container').style.width  = cw;
+	document.getElementById('container').style.height = ch;
+  document.getElementById('container').style.top  = Math.round((dh-ch)/2);
+  document.getElementById('container').style.left = Math.round((dw-cw)/2);  
+	
+	document.getElementById('circle').style.width  = cr;
+	document.getElementById('circle').style.height = cr;
+	document.getElementById('circle').style.borderRadius = cr+'px';		
+	document.getElementById('circle').style.top  = Math.round((cw - cr)/2);
+	document.getElementById('circle').style.left = Math.round((cw - cr)/2);
+
+	document.getElementById('board').style.width  = bw;
+	document.getElementById('board').style.height = bh;
+	document.getElementById('board').style.top    = Math.round((cr - bh - vstep)/2);
+	document.getElementById('board').style.left   = Math.round((cr - bw)/2);
 		
+	document.getElementById('info').style.width  = '96%';
+	document.getElementById('info').style.top    = '85%';
+	document.getElementById('info').style.left   = '2%';	
+	document.getElementById('info').style.fontSize = cw*0.1+'px';
+
+	document.getElementById('version').style.width    = '96%';
+	document.getElementById('version').style.top      = '98%';
+	document.getElementById('version').style.left     = '2%';	
+	document.getElementById('version').style.fontSize = cw*0.016+'px'; 
 	
+		
   if ("ontouchstart" in document.documentElement) {
     document.getElementById('info').addEventListener('touchstart', newGame);
   } else {
     document.getElementById('info').addEventListener('click', newGame);
-  }   	
-	
-	
+  }   
+  
+  // create divs for holes
 	for (h in map) {
 		var x = map[h]['x'];
 		var y = map[h]['y'];
 		var left = (4-y)*hstep/2 + x*hstep;
 		var top  = y*vstep;		
-		var e = createDiv('board', 'h', h, left, top, radius, 'hole');	
+		var e = createDiv('board', 'h', h, left, top, pegr, 'hole');	
 	}
 	
+	// create divs for pegs
 	for (p in pegs) {
-		var e = createDiv('board', 'p', p, 0, 0, radius, 'peg draggable');	
+		var e = createDiv('board', 'p', p, 0, 0, pegr, 'peg draggable');	
 	}	
 	
 	UI_updateBoard();	
