@@ -38,7 +38,7 @@ html, body {
 #container {
   width: 720px;
   height: 880px;
-  border: 1px black solid;
+ // border: 1px black solid;
   padding: 0;
   position:absolute;
   margin: 0;

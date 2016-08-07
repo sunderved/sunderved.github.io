@@ -51,11 +51,14 @@ function UI_createBoard()
   var dh = document.documentElement.clientHeight;  
 	
 	var cw = Math.round(Math.min(dw*0.96, 720));   // container width
-	var ch = Math.round(cw*1.22);                  // container height
+	var ch = Math.round(cw*4/3);                  // container height
 	var hstep  = cw/7;
+	var cr     = hstep*6;                          // circle radius
+	
+	var cr     = cw*1.0;
+	var hstep  = cr/5.7;
 	var vstep  = hstep * Math.sqrt(3) / 2;
 	var pegr   = hstep/2;                          // peg/hole radius
-	var cr     = hstep*6;                          // circle radius
 	var bw     = hstep*4+pegr+5;                   // board width 	
 	var bh     = vstep*4+pegr+5;                   // board height
 	
