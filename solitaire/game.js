@@ -43,6 +43,12 @@ function initGame()
 	validPegs     = getMovablePegIds();
 }
 
+function newGame()
+{
+	initGame();
+	UI_updateBoard();
+}
+
 function selectPeg(pegId)
 {	
 	info('Selecting peg id '+pegId+' at position '+pegs[pegId]);

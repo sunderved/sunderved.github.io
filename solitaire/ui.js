@@ -63,6 +63,12 @@ function UI_createBoard()
 	document.getElementById('board').style.left = (r - (hstep*4+radius+5))/2;;
 		
 	
+  if ("ontouchstart" in document.documentElement) {
+    document.getElementById('info').addEventListener('touchstart', newGame);
+  } else {
+    document.getElementById('info').addEventListener('click', newGame);
+  }   	
+	
 	
 	for (h in map) {
 		var x = map[h]['x'];
@@ -90,6 +96,12 @@ function UI_updateBoard()
 			document.getElementById('h'+pegs[p]).appendChild(pegdiv);    
 		}
 	}	
+		
+	if (validPegs.length==0) {
+		document.getElementById('info').innerHTML='Try Again?';
+	} else {
+		document.getElementById('info').innerHTML='Solitaire';		
+	}
 }
 
 function UI_updateTargets()
