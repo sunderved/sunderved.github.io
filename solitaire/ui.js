@@ -24,6 +24,8 @@ var map = {
  14: {x:4, y:4}
 }
 
+var au_sound;
+
 function createDiv(parent, str, id, x, y, r, style) 
 {
   var el;
@@ -125,6 +127,13 @@ function UI_createBoard()
 	for (p in pegs) {
 		var e = createDiv('board', 'p', p, 0, 0, pegr, 'peg draggable');	
 	}	
+
+	// load sound	
+  au_sound   = new Audio('./pop.wav');
+  au_sound.volume = 1;
+  au_sound.preload = 'auto';  
+  au_sound.load();  
+	
 	
 	UI_updateBoard();	
 }
@@ -266,6 +275,8 @@ interact('.dropzone').dropzone({
     //dragElement.classList.remove('draggable');
     dragElement.classList.remove('can-drop');   
     dropElement.appendChild(dragElement);    
+    // play a little sound
+    au_sound.play();       
   },
   ondropactivate: function (event) {
     // triggered when an element starts to be dragged

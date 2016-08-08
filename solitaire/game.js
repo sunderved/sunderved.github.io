@@ -101,8 +101,6 @@ function getValidMovePositions(pegId)
 
 function getMovablePegIds()
 {
-	console.log('getMovablePegIds');
-
 	// Returns valid peg id
 	var movable =[];
 	for (p in pegs) {
@@ -111,7 +109,6 @@ function getMovablePegIds()
 			movable.push(p);
 		}
 	}
-	console.log(movable);
 	return movable;
 }
 
