@@ -198,7 +198,7 @@ function timerExpired() {
 function init() 
 {  
   // Center the container div
-  centerContainer();
+  //centerContainer();
   
   // Load audio files
   au_timeout = new Audio("sounds/timeout.mp3");

@@ -14,7 +14,7 @@ body {
   overflow:hidden;
   box-sizing: border-box;
   border-width:0px;
-  border-radius:65px; /* half of width/heigth to make a circle */  
+  border-radius:100%; /* half of width/heigth to make a circle */  
 }
 
 .circle.inactive {
@@ -38,6 +38,15 @@ body {
   background: white;
 }
 
+.circle.info {
+  background:gray;
+  color: white;  
+  font-size:40px;  
+  text-align: center;
+  line-height:130px; /* same as heigth */
+  font-family: myImpact;
+}
+
 .circle.lost {
   animation-name: blink;
   animation-duration: 0.3s;
@@ -51,45 +60,80 @@ body {
   100% { visibility: visible; }
 }
 
-#p0    { top:   0px; left:   0px; }
-#p1    { top:   0px; left: 150px; }
-#p2    { top:   0px; left: 300px; }
-#p3    { top:   0px; left: 450px; }
-#p4    { top: 150px; left:   0px; }
-#p5    { top: 150px; left: 150px; }
-#p6    { top: 150px; left: 300px; }
-#p7    { top: 150px; left: 450px; }
-#p8    { top: 300px; left:   0px; }
-#p9    { top: 300px; left: 150px; }
-#p10   { top: 300px; left: 300px; }
-#p11   { top: 300px; left: 450px; }
-#p12   { top: 450px; left:   0px; }
-#p13   { top: 450px; left: 150px; }
-#p14   { top: 450px; left: 300px; }
-#p15   { top: 450px; left: 450px; }
+/*@media screen and (orientation:landscape) and (max-width: 1024px) { */
 
-#score { top:   0px; left: 600px; 
-  background:gray;
-  color: white;  
-  font-size:40px;  
-  text-align: center;
-  line-height:130px; /* same as heigth */
-  font-family: myImpact;
+@media screen and (orientation:landscape) {
+	#container { 
+	  border-width:0px;
+	  width:750px;
+	  height:600px;
+	  position:absolute;
+	  visibility:hidden;
+	}	
+	#p0    { top:  0%; left:  0%; }
+	#p1    { top:  0%; left: 20%; }
+	#p2    { top:  0%; left: 40%; }
+	#p3    { top:  0%; left: 60%; }
+	#p4    { top: 25%; left:  0%; }
+	#p5    { top: 25%; left: 20%; }
+	#p6    { top: 25%; left: 40%; }
+	#p7    { top: 25%; left: 60%; }
+	#p8    { top: 50%; left:  0%; }
+	#p9    { top: 50%; left: 20%; }
+	#p10   { top: 50%; left: 40%; }
+	#p11   { top: 50%; left: 60%; }
+	#p12   { top: 75%; left:  0%; }
+	#p13   { top: 75%; left: 20%; }
+	#p14   { top: 75%; left: 40%; }
+	#p15   { top: 75%; left: 60%; }
+	#score { top:  0%; left: 80%; }
+	#start { top: 75%; left: 80%; }
 }
 
-#start { top: 450px; left: 600px; 
-  background:gray;
-  color: white;  
-  font-size:40px;  
-  text-align: center;
-  line-height:130px; /* same as heigth */
-  font-family: myImpact;
+@media screen and (orientation:portrait) {
+	#container { 
+	  border-width:0px;
+	  width:600px;
+	  height:750px;
+	  position:absolute;
+	  visibility:hidden;
+	}	
+	#p0    { top:  0%; left:  0%; }
+	#p1    { top:  0%; left: 25%; }
+	#p2    { top:  0%; left: 50%; }
+	#p3    { top:  0%; left: 75%; }
+	#p4    { top: 20%; left:  0%; }
+	#p5    { top: 20%; left: 25%; }
+	#p6    { top: 20%; left: 50%; }
+	#p7    { top: 20%; left: 75%; }
+	#p8    { top: 40%; left:  0%; }
+	#p9    { top: 40%; left: 25%; }
+	#p10   { top: 40%; left: 50%; }
+	#p11   { top: 40%; left: 75%; }
+	#p12   { top: 60%; left:  0%; }
+	#p13   { top: 60%; left: 25%; }
+	#p14   { top: 60%; left: 50%; }
+	#p15   { top: 60%; left: 75%; }
+	#score { top: 80%; left:  0%; }
+	#start { top: 80%; left: 75%; }
 }
 
-#container { 
-  border-width:0px;
-  width:750px;
-  height:600px;
-  position:absolute;
-  visibility:hidden;
+
+/* The 3 lines below horizontally and vertically center divs */
+.centered {
+	top: 50%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%); 	
+}
+
+#version {
+  font-family: "Lucida Console", Monaco, monospace;	 
+  font-size: 12px; 
+  font-style: italic;
+  text-align: right;
+	position: fixed;
+	right:5;
+	bottom:5;
+	box-sizing: border-box;
+  margin-right: 7;	  
 }
