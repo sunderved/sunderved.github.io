@@ -118,57 +118,30 @@ body {
 	#start { top: 80%; left: 75%; }
 }
 
-@media screen and (orientation:portrait) and (max-width: 600px) {
-	#container { 
-	  border-width:0px;
-	  width:360px;
-	  height:450px;
-	  position:absolute;
-	  visibility:hidden;
-	}		
-	.circle {
-	  width:78px;
-	  height:78px;
-	  margin: 6px;
-	  padding: 0px;	  
-	  line-height:78px; /* same as heigth */ 
-	  font-size:28px;     
-	  position:absolute;
-	  overflow:hidden;
-	  box-sizing: border-box;
-	  border-width:0px;
-	  border-radius:100%; /* half of width/heigth to make a circle */  
-	}	
-	.circle.activated {
-	  border-style: solid;
-	  border-width: 18px;
-	  border-color: #FF6666;  
-	  background: white;
-	}
-	
-	.circle.decoy {
-	  border-style: solid;
-	  border-width: 18px;
-	  border-color: #66FF99;  
-	  background: white;
-	}	
-}
 
+/* 
+ Length units representing 1% of the viewport size for viewport width (vw), height (vh), 
+ the smaller of the two (vmin), or the larger of the two (vmax).
+*/
+
+/* 640 x 360
+   450 x 360
+*/
 @media screen and (orientation:landscape) and (max-height: 600px) {
 	#container { 
 	  border-width:0px;
-	  width:450px;
-	  height:360px;  
+	  width:125vmin;
+	  height:100vmin;  
 	  position:absolute;
 	  visibility:hidden;
 	}		
 	.circle {
-	  width:78px;
-	  height:78px;
-	  margin: 6px;
-	  padding: 0px;	  	  
-	  line-height:78px; /* same as heigth */ 
-	  font-size:28px;     
+	  width:23vmin;
+	  height:23vmin;
+	  margin: 1vmin;
+	  padding: 0;	  	  
+	  line-height:23vmin; /* same as heigth */ 
+	  font-size:8vmin;     
 	  position:absolute;
 	  overflow:hidden;
 	  box-sizing: border-box;
@@ -177,18 +150,57 @@ body {
 	}	
 	.circle.activated {
 	  border-style: solid;
-	  border-width: 18px;
+	  border-width: 5vmin;
 	  border-color: #FF6666;  
 	  background: white;
 	}
 	
 	.circle.decoy {
 	  border-style: solid;
-	  border-width: 18px;
+	  border-width: 5vmin;
 	  border-color: #66FF99;  
 	  background: white;
 	}		
 }
+
+
+@media screen and (orientation:portrait) and (max-width: 600px) {
+	#container { 
+	  border-width:0px;
+	  width:100vmin;
+	  height:125vmin;  
+	  position:absolute;
+	  visibility:hidden;
+	}		
+	.circle {
+	  width:23vmin;
+	  height:23vmin;
+	  margin: 1vmin;
+	  padding: 0;	  	  
+	  line-height:23vmin; /* same as heigth */ 
+	  font-size:8vmin;     
+	  position:absolute;
+	  overflow:hidden;
+	  box-sizing: border-box;
+	  border-width:0px;
+	  border-radius:100%; /* half of width/heigth to make a circle */  
+	}	
+	.circle.activated {
+	  border-style: solid;
+	  border-width: 5vmin;
+	  border-color: #FF6666;  
+	  background: white;
+	}
+	
+	.circle.decoy {
+	  border-style: solid;
+	  border-width: 5vmin;
+	  border-color: #66FF99;  
+	  background: white;
+	}		
+}
+
+
 
 
 /* The 3 lines below horizontally and vertically center divs */
