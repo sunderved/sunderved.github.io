@@ -197,8 +197,11 @@ function timerExpired() {
 
 function init() 
 {  
-  // Center the container div
-  //centerContainer();
+  // Disable default touch handler behavior to prevent scrolling
+  if ("ontouchstart" in document.documentElement) {
+		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
+		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 	  
+	}	
   
   // Load audio files
   au_timeout = new Audio("sounds/timeout.mp3");
