@@ -20,6 +20,7 @@ var connections = {
 
 var board         = [];
 var pegs          = [];
+var npegs         = undefined;
 var selectedPegId = undefined;
 var validHoles    = undefined;
 var validPegs     = undefined;
@@ -37,6 +38,7 @@ function initGame()
 {
 	board         = [HOLE,0,1,2,3,4,5,6,7,8,9,10,11,12,13];
 	pegs          = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+	npegs         = pegs.length;
 	selectedPegId = undefined;
 	validHoles    = undefined;
 	validPegs     = getMovablePegIds();
@@ -69,7 +71,9 @@ function selectHole(holePos)
 	board[srcPos]         = HOLE; 	          // previous board position of peg now has a hole
 	
 	pegs[board[jumPos]]   = HOLE;             // peg that is being jumped over is removed
-	board[jumPos]         = HOLE;             // add a hole in the board 
+	board[jumPos]         = HOLE;             // add a hole in the board
+	
+	npegs--;                                  // decrease peg counter 
 		
 	validPegs = getMovablePegIds();
 }

@@ -24,7 +24,7 @@ var map = {
  14: {x:4, y:4}
 }
 
-function createDiv(container, str, id, x, y, r, style) 
+function createDiv(parent, str, id, x, y, r, style) 
 {
   var el;
   el = document.createElement('div');
@@ -36,7 +36,7 @@ function createDiv(container, str, id, x, y, r, style)
 	el.style.width        = r+'px';
 	el.style.height       = r+'px';
 	el.style.borderRadius = r+'px';		
-  document.getElementById(container).appendChild(el);
+  document.getElementById(parent).appendChild(el);
   return el;
 }   
 
@@ -46,12 +46,31 @@ function UI_createBoard()
 		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
 		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 	  
 	}	
-
-  var dw = document.documentElement.clientWidth;  
-  var dh = document.documentElement.clientHeight;  
 	
-	var cw = Math.round(Math.min(dw*0.96, 720));   // container width
-	var ch = Math.round(cw*4/3);                  // container height
+// 	var dw, dh;
+// 	
+//   if (window.orientation) {
+// 	  if (Math.abs(window.orientation)==90) {
+// 		  dh = document.documentElement.clientWidth;  
+//   		dw = document.documentElement.clientHeight;  
+// 	  } else {
+// 		  dw = document.documentElement.clientWidth;  
+//   		dh = document.documentElement.clientHeight;  
+// 	  }
+//   } else {
+// 	  dw = document.documentElement.clientWidth;  
+//   	dh = document.documentElement.clientHeight;  
+// 	}
+// 	
+//   dw = Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight);  
+//   dh = Math.max(document.documentElement.clientWidth, document.documentElement.clientHeight);  
+	
+ 	var dw = document.documentElement.clientWidth;  
+ 	var dh = document.documentElement.clientHeight;  
+		
+	var cw = Math.min(dw, dh, 750)*0.96;           // gamespace width 
+	var ch = Math.round(cw*4/3);                   // gamespace height
+	
 	var hstep  = cw/7;
 	var cr     = hstep*6;                          // circle radius
 	
@@ -62,11 +81,9 @@ function UI_createBoard()
 	var bw     = hstep*4+pegr+5;                   // board width 	
 	var bh     = vstep*4+pegr+5;                   // board height
 	
-	document.getElementById('container').style.width  = cw;
-	document.getElementById('container').style.height = ch;
-  document.getElementById('container').style.top  = Math.round((dh-ch)/2);
-  document.getElementById('container').style.left = Math.round((dw-cw)/2);  
-	
+	document.getElementById('gamespace').style.width  = cw;
+	document.getElementById('gamespace').style.height = ch;
+  	
 	document.getElementById('circle').style.width  = cr;
 	document.getElementById('circle').style.height = cr;
 	document.getElementById('circle').style.borderRadius = cr+'px';		
@@ -123,11 +140,15 @@ function UI_updateBoard()
 			document.getElementById('h'+pegs[p]).appendChild(pegdiv);    
 		}
 	}	
-		
-	if (validPegs.length==0) {
-		document.getElementById('info').innerHTML='Try Again?';
-	} else {
-		document.getElementById('info').innerHTML='Solitaire';		
+
+	if (npegs==1) {
+		document.getElementById('info').innerHTML='Nice Job!';
+	} else {		
+		if (validPegs.length==0) {
+			document.getElementById('info').innerHTML='Try Again?';
+		} else {
+			document.getElementById('info').innerHTML='Solitaire';		
+		}
 	}
 }
 
@@ -135,7 +156,6 @@ function UI_updateTargets()
 {
 	if (validHoles != undefined) {
 		for (h of validHoles) {
-			document.getElementById('h'+h).classList.add('drop-target');
 			document.getElementById('h'+h).classList.add('dropzone');
 		}
 	}		
@@ -156,6 +176,18 @@ function UI_onDrop(dragElement, dropElement)
 	selectHole(dropElement.customId);
 	UI_updateBoard();		
 }
+
+// Listen for orientation changes
+window.addEventListener("orientationchange", function() {
+  // Announce the new orientation number
+  if (window.orientation) {
+	  if (Math.abs(window.orientation)==90) {
+		  console.log('Landscape');
+	  } else {
+		  console.log('Portrait');
+	  }
+  }
+}, false);
 
  
 // target elements with the "draggable" class
@@ -217,14 +249,12 @@ interact('.dropzone').dropzone({
     var dragElement = event.relatedTarget;
     var dropElement = event.target;
     // feedback the possibility of a drop
-    dropElement.classList.add('drop-target');
     dragElement.classList.add('can-drop');
   },
   ondragleave: function (event) {
     var dragElement = event.relatedTarget;
     var dropElement = event.target;
     // remove the drop feedback style
-    dropElement.classList.remove('drop-target');
     dragElement.classList.remove('can-drop');
   },
   ondrop: function (event) {
@@ -234,7 +264,6 @@ interact('.dropzone').dropzone({
     UI_onDrop(dragElement, dropElement);      
     
     //dragElement.classList.remove('draggable');
-    dropElement.classList.remove('drop-target');
     dragElement.classList.remove('can-drop');   
     dropElement.appendChild(dragElement);    
   },
@@ -246,7 +275,6 @@ interact('.dropzone').dropzone({
     // triggered when an element stops to be dragged
     // can be used to de-highlight drop zones
     var dropElement = event.target;
-    dropElement.classList.remove('drop-target');
     dropElement.classList.remove('dropzone');
   }
 });
