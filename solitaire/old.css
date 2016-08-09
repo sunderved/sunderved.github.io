@@ -1,0 +1,89 @@
+body {
+  user-select: none;          /* Likely future */ 	
+}
+
+html, body {
+	margin: 0; 
+	height: 100%; 
+	overflow: hidden
+}
+
+/* If the screen is landscape and not too big (indicating a mobile device)
+   then rotate the container to force the user to put the device in landscape mode
+   Note: the translateX and Y are needed to keep the div centered
+ */ 
+
+@media screen and (orientation:landscape) and (max-width: 1024px) {
+  #container { 
+    top: 50%;
+	  left: 50%;
+	  transform: rotate(-90deg) translateY(-50%) translateX(-50%);
+    transform-origin: left top;
+  }	
+}
+
+.hole {
+  position:absolute;
+  background-color: white;
+	box-sizing: content-box;
+  padding: 0;
+  margin: 0;
+  border: 2px #707070 solid;
+}
+
+.peg {
+  position:absolute;
+  background-color: #707070;
+	box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  z-index: 5;   
+}
+
+.dropzone { 
+  height: 5px;
+	box-shadow: 0px 0px 20px 5px #A0A0A0;
+}
+
+#container {
+  position:absolute;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;  
+}
+
+#gamespace {
+  position:absolute;
+  padding: 0;
+  margin: 0;
+  z-index: 0;   
+  /* The 3 lines below horizontally and vertically center divs */ 
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+#circle {
+	box-sizing: border-box;
+  position:absolute;
+  border: 1px black solid; 
+}
+
+#board {
+  position:absolute;
+}
+
+#version {
+	position: absolute;
+  font-family: "Lucida Console", Monaco, monospace;	  
+  font-style: italic;
+  text-align: right;
+}
+
+#info {
+	position: absolute;
+  font-family: "Lucida Console", Monaco, monospace;	  
+  color: #707070;     		  
+  text-align: center;
+}

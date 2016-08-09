@@ -8,20 +8,6 @@ html, body {
 	overflow: hidden
 }
 
-/* If the screen is landscape and not too big (indicating a mobile device)
-   then rotate the container to force the user to put the device in landscape mode
-   Note: the translateX and Y are needed to keep the div centered
- */ 
-
-@media screen and (orientation:landscape) and (max-width: 1024px) {
-  #container { 
-    top: 50%;
-	  left: 50%;
-	  transform: rotate(-90deg) translateY(-50%) translateX(-50%);
-    transform-origin: left top;
-  }	
-}
-
 .hole {
   position:absolute;
   background-color: white;
@@ -49,41 +35,67 @@ html, body {
   position:absolute;
   padding: 0;
   margin: 0;
-  width: 100%;
-  height: 100%;  
+  width: 100vw;
+  height: 100vh;
 }
 
 #gamespace {
   position:absolute;
   padding: 0;
   margin: 0;
-  z-index: 0;   
-  /* The 3 lines below horizontally and vertically center divs */ 
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-}
-
-#circle {
-	box-sizing: border-box;
-  position:absolute;
-  border: 1px black solid; 
+  z-index: 0;  
 }
 
 #board {
   position:absolute;
 }
 
-#version {
-	position: absolute;
-  font-family: "Lucida Console", Monaco, monospace;	  
-  font-style: italic;
-  text-align: right;
-}
-
 #info {
+	top: 85%;
+	width: 96%;
 	position: absolute;
   font-family: "Lucida Console", Monaco, monospace;	  
   color: #707070;     		  
   text-align: center;
+}
+
+#version {
+  font-family: "Lucida Console", Monaco, monospace;	 
+  font-size: 12px; 
+  font-style: italic;
+  text-align: right;
+	position: fixed;
+	right:5;
+	bottom:5;
+	box-sizing: border-box;
+  margin-right: 7;	  
+}
+
+/* The 3 lines below center divs both horizontally and vertically */
+.centered {
+	top: 50%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%); 	
+}
+
+/* The 3 lines below center divs horizontally*/
+.hcentered {
+	left: 50%;
+	transform: translateX(-50%); 	
+}
+
+/* If the screen is landscape and not too big (indicating a mobile device)
+   then rotate the container to force the user to put the device in landscape mode
+   Note: the translateX and Y are needed to keep the div centered
+ */ 
+
+@media screen and (orientation:landscape) and (max-width: 1024px) {
+  #container { 
+	  width: 100vh;
+	  height: 100vw;
+    top: 50%;
+	  left: 50%;
+	  transform: rotate(-90deg) translateY(-50%) translateX(-50%);
+    transform-origin: left top;
+  }	
 }
