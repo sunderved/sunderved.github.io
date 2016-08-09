@@ -106,7 +106,7 @@ function UI_createBoard()
 	}	
 
 	// load sound	
-  au_sound   = new Audio('./pop.wav');
+  au_sound   = new Audio('../pop.wav');
   au_sound.volume = 1;
   au_sound.preload = 'auto';  
   au_sound.load();  
