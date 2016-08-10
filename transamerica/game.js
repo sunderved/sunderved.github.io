@@ -459,17 +459,6 @@ function info(str, append)
 	console.log(str);
 }
 
-function centerContainer()
-{
-  var cw = document.documentElement.clientWidth;  
-  var ch = document.documentElement.clientHeight;  
-  var dw = document.getElementById('container').clientWidth;
-  var dh = document.getElementById('container').clientHeight;
-    
-  document.getElementById('container').style.top  = Math.round((ch-dh)/2);
-  document.getElementById('container').style.left = Math.round((cw-dw)/2);  
-} 
-
 // When the manifest file has changed and the browser has updated the files, 
 // it won’t use them for the current session. The application must be reloaded 
 window.applicationCache.addEventListener('updateready', function(e) {

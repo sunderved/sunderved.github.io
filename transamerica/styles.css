@@ -98,34 +98,16 @@ html, body {
   transform-origin: left;
 }
 
-#container {
-  height: 720px;
-  width: 980px;
-	box-sizing: border-box;
-  border: 0;
-  padding: 0;
-  position:absolute;
-  margin: 0;
-  z-index: 0;   
-}
-
 #version {
-	position: absolute;
-  top: 698px;
-  left:835px;
-  font-family: "Lucida Console", Monaco, monospace;	  
-  font-size:12px; 
+  font-family: "Lucida Console", Monaco, monospace;	 
+  font-size: 12px; 
   font-style: italic;
-}
-
-#map {
-  top: 30px;
-  left:20px;
-  height: 533px;
-  width: 850px;
-	position: absolute;
-	//background-color: red;
-  z-index: 0;   
+  text-align: right;
+	position: fixed;
+	right:5;
+	bottom:5;
+	box-sizing: border-box;
+  margin-right: 7;	  
 }
 
 #confirm {
@@ -151,12 +133,6 @@ html, body {
   z-index: 5;   
 }
 
-#buttons {
-	position: absolute;
-  top: 610px;
-  left:200px;
-}
-
 .gbutton {
   width: 100px;
   height: 50px;
@@ -165,11 +141,37 @@ html, body {
 	cursor:pointer;  
 }
 
+#buttons {
+	position: absolute;
+  top: 650px;
+  left:200px;
+}
+
 #points {
 	position: absolute;
-  top: 610px;
+  top: 650px;
   left:300px;
 }
+
+#map {
+  top: 50px;
+  left:50px;
+  height: 533px;
+	position: absolute;
+  z-index: 0;   
+}
+
+#container { 
+  height: 768px;
+  width: 1024px;
+	box-sizing: border-box;
+  border: 0;
+  padding: 0;
+  position:absolute;
+  margin: 0;
+  z-index: 0;   
+}
+
 
 .gpoints {
   width:50px;
@@ -200,4 +202,33 @@ html, body {
   left:650px;
 	position: absolute;
   z-index: 0;   
+}
+
+/* The 3 lines below center divs both horizontally and vertically */
+.centered {
+	top: 50%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%); 	
+}
+
+/* The 3 lines below center divs horizontally*/
+.hcentered {
+	left: 50%;
+	transform: translateX(-50%); 	
+}
+
+/* If the screen is landscape and not too big (indicating a mobile device)
+   then rotate the container to force the user to put the device in landscape mode
+   Note: the translateX and Y are needed to keep the div centered
+ */ 
+
+@media screen and (orientation:portrait) {
+  #container { 	  
+	  height: 768px;
+	  width: 1024px;
+    top: 50%;
+	  left: 50%;
+	  transform: rotate(-90deg) translateY(-50%) translateX(-50%);
+    transform-origin: left top;
+  }	
 }

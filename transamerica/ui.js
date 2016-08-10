@@ -149,10 +149,7 @@ function confirmSelection()
 
 
 function initView()
-{
-	// center the Container
-	centerContainer();	
-	
+{	
 	// Add Event Handlers
   if ("ontouchstart" in document.documentElement) {
 		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
@@ -202,10 +199,6 @@ var hstep = 55;
 var vstep = hstep * Math.sqrt(3) / 2;
 
 var radius = 18;
-
-// These should be automatically derived based on HMAX and hstep
-var mapOffsetX = 30;
-var mapOffsetY = 20;
 
 function createArc(va, vb, vw)
 {
@@ -324,6 +317,9 @@ function createDiv(container, id, x, y, style, f)
 function getTrackFromEvent(event)
 {	
 	//debugGetTrack(event);
+	
+	var mapOffsetX = document.getElementById('map').offsetLeft;
+	var mapOffsetY = document.getElementById('map').offsetTop;
 	
 	var x = event.clientX-mapOffsetX-parseFloat(document.getElementById('container').style.left || 0 );
   var y = event.clientY-mapOffsetY-parseFloat(document.getElementById('container').style.top  || 0 ); 
