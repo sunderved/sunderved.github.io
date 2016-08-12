@@ -1,0 +1,226 @@
+body {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */ 	
+}
+
+html, body {
+	margin: 0; 
+	height: 100%; 
+	overflow: hidden
+}
+
+@font-face {
+  font-family: Narkisim;
+  src: url('./fonts/nrkis.ttf');
+}
+
+.army {
+	position: absolute;
+  height:43px;	
+  width:43px;
+  font-family: Narkisim;	  
+  font-size:16px;      		  
+	box-sizing: content-box;
+	line-height:43px;
+	text-align: center;
+	transition: top 1s, left 1s; z-index:2;
+}
+
+.inactive        { visibility: hidden; }
+
+.Sinai6          { left:495px; top:594px; }
+.Sinai5          { left:583px; top:576px; }
+.Sinai4          { left:640px; top:508px; }
+.Sinai3          { left:684px; top:440px; }
+.Sinai2          { left:706px; top:350px; }
+.Sinai1          { left:658px; top:264px; }
+                 
+.Mesopotamia5    { left:971px; top:417px; }
+.Mesopotamia4    { left:947px; top:341px; }
+.Mesopotamia3    { left:907px; top:275px; }
+.Mesopotamia2    { left:828px; top:264px; }
+.Mesopotamia1    { left:756px; top:248px; }
+
+.Caucasus5       { left:938px; top: 17px; }
+.Caucasus4       { left:897px; top: 93px; }
+.Caucasus3       { left:815px; top:143px; }
+.Caucasus2       { left:726px; top:136px; }
+.Caucasus1       { left:628px; top:140px; }
+
+.Arab6           { left:962px; top:569px; }
+.Arab5           { left:894px; top:507px; }
+.Arab4           { left:816px; top:529px; }
+.Arab3           { left:795px; top:451px; }
+.Arab2           { left:706px; top:350px; }
+.Arab1           { left:658px; top:264px; }
+
+.Salonika4       { left:167px; top:140px; }
+.Salonika3       { left:180px; top: 50px; }
+.Salonika2       { left:261px; top: 26px; }
+.Salonika1       { left:336px; top: 42px; }
+
+.Gallipoli4      { left:287px; top:459px; }
+.Gallipoli3      { left:331px; top:387px; }
+.Gallipoli2      { left:379px; top:316px; }
+.Gallipoli1      { left:394px; top:232px; }
+
+                 
+.Constantinople  { left:420px; top:112px; } 
+        
+.dummy {background-color: black;}         
+
+#SinaiArmy       { background-color: saddlebrown; }
+#MesopotamiaArmy { background-color: blue; }
+#CaucasusArmy    { background-color: darkorange; }
+#ArabArmy        { background-color: green; }
+#GallipoliArmy   { background-color: yellow; }
+#SalonikaArmy    { background-color: red; }
+
+#board {}
+
+#map {
+  content:url("board.png");
+  width:1024px;  
+  height:768px;
+}
+
+#card {
+  width:135px;  
+  height:194px;
+  top:554px;
+	position: absolute;
+	border-radius: 8px;
+  background-color: #EEEEEE; 
+  padding: 5px;
+	box-sizing: border-box;  	 
+  font-family: Narkisim;	  
+  font-size:16px;    
+	transition: top 1s, left 1s; z-index:2;    		    
+}
+
+.hidden {
+  left:-170px;
+}
+.visible {
+  left:20px;
+}
+
+#info {
+  font-family: Narkisim;	  
+  font-size:16px;      		  
+	box-sizing: border-box;
+  padding-top: 5;
+  padding-left: 200;
+  margin: 0;
+	position: absolute;
+  height:108px;
+  width:1024px;  
+  left:0px;
+  top:660px;
+  background-color: lightslategray ; 
+}
+
+#version {
+  font-family: Narkisim;	 
+  font-size: 12px; 
+  font-style: italic;
+  text-align: right;
+	position: fixed;
+	right:5;
+	bottom:5;
+	box-sizing: border-box;
+  margin-right: 7;	  
+}
+
+.label {
+  width:90px;  
+  height:40px;
+  padding-left: 5px;
+  margin-bottom:5px;
+	box-sizing: border-box;
+	border-radius: 6px;
+  background-color: #EEEEEE;
+    opacity: 0.7;   
+  font-family: Narkisim;	  
+  font-size:16px;  
+  display: flex;
+//  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */    	
+}
+
+.value {
+  width:40px;  
+  height:40px;
+  margin-bottom:5px;
+	border-radius:6px;
+  background-color: #EEEEEE;
+    opacity: 0.7;   
+  font-family: Narkisim;	  
+  font-size:16px;  
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */    	
+}
+
+#l_counters {
+	position: absolute;
+  top:20px;
+	left:20px;
+}
+
+#v_counters {
+	position: absolute;
+  top:20px;
+	left:115px;
+}
+
+#v_uboat    { left:220px; top:230px; position: absolute; border-radius: 2px; }
+#v_pipeline { left:560px; top:500px; position: absolute; border-radius: 2px; }
+
+.gbutton {
+	position: absolute;
+  top: 688px;
+  left:878px;
+  width: 100px;
+  height: 50px;
+}
+
+#yes {
+  left:738px;	
+}
+
+#container { 
+  position:absolute;
+  height: 768px;
+  width: 1024px;
+	box-sizing: border-box;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+@media screen and (orientation:portrait) {
+  #container { 	  
+	  height: 768px;
+	  width: 1024px;
+    top: 50%;
+	  left: 50%;
+	  transform: rotate(-90deg) translateY(-50%) translateX(-50%);
+    transform-origin: left top;
+  }	
+}
+
+.centered {
+	top: 50%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%); 	
+}
+
+.hcentered {
+	left: 50%;
+	transform: translateX(-50%); 	
+}
+
