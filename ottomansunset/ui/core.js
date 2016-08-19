@@ -343,11 +343,15 @@ function UI_infoClear() {
 
 // Add Event Handlers
 function onTouch(divid, callback) {
-  if ("ontouchstart" in document.documentElement) {
+// if ("ontouchstart" in document.documentElement) {
+//   document.getElementById(divid).addEventListener('touchstart', callback);
+// } else {
+//   document.getElementById(divid).addEventListener('click', callback);
+// }   
+  
     document.getElementById(divid).addEventListener('touchstart', callback);
-  } else {
-    document.getElementById(divid).addEventListener('click', callback);
-  }   
+//     document.getElementById(divid).addEventListener('click', callback);
+  
 }
 
 function initView() 
