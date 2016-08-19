@@ -328,6 +328,9 @@ function UI_info(str) {
 	console.log(str);
 	info.innerHTML+=str;
 	info.innerHTML+='<BR>';
+	
+document.getElementById('myconsole').innerHTML+=str;
+document.getElementById('myconsole').innerHTML+='<BR>';
 }
 
 function UI_infoClear() {
@@ -347,18 +350,21 @@ function onTouch(divid, callback) {
   }   
 }
 
-function initView() {
+function initView() 
+{
+	info = document.getElementById('info');	
+	document.getElementById('ok').style.visibility='hidden';	
 
+	debug('1.1');
+	
 	// disable default event handler	
   if ("ontouchstart" in document.documentElement) {
 		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
 		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 	  
 	}	
 	
-	
-	info = document.getElementById('info');	
-	document.getElementById('ok').style.visibility='hidden';	
-	
+	debug('1.2');
+		
 	onTouch('Sinai',       function() { TurkishOffensive('Sinai');       } );
 	onTouch('Mesopotamia', function() { TurkishOffensive('Mesopotamia'); } );
 	onTouch('Caucasus',    function() { TurkishOffensive('Caucasus');    } );
@@ -388,6 +394,8 @@ function initView() {
 	onTouch('Minefield_2', function() { FortifyNarrows('Minefield_2'); } );
 	onTouch('Nagara',      function() { FortifyNarrows('Nagara');      } );
 		
+	debug('1.3');
+	
 	UI_initDie();
 	UI_hideActions();
 	UI_updateFront('Sinai');
@@ -400,6 +408,9 @@ function initView() {
 	UI_updateCounters();
 	UI_updateFortitude(4);		
 	UI_infoClear();	
+	
+	debug('1.4');
+	
 }
 
 

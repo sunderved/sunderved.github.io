@@ -867,7 +867,7 @@ function shuffle(array) {
 
 function debug(str)
 {
- 	console.log(str);
+ 	UI_info(str);
 }
 
 // ------------------------------------------------------------------
