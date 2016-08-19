@@ -380,8 +380,12 @@ function initView()
 	onTouch('Eastern',     function() { GermanStaffOperationFrom('Eastern');   } );	
 	onTouch('Naval',       function() { GermanStaffOperationFrom('Naval');     } );	
 	
+	debug('1.2a');
 	
 	onTouch('Yildirim_L',  function() { UseYildirim(front); }	);	
+	
+	debug('1.2b');
+	
 	onTouch('AsiaKorps',   function() { UseAsiaKorps(); }	);
 	
 	onTouch('Bureau_L',    function() {                     UI_OpenOverlay('bureaumap');  } );	
