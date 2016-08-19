@@ -1,13 +1,21 @@
-CACHE MANIFEST
-# This is a comment.
-# Cache manifest version 0.0.1
-# If you change the version number in this comment,
-# the cache manifest is no longer byte-for-byte identical
+CACHE MANIFEST 
+# Cache manifest version 0.1a 
+# If you change the version number in this comment, 
+# the cache manifest is no longer byte-for-byte identical 
 index.html
-main.js
-ui.js
-cards.js
 styles.css
-icon.png
-board.png
+cards.js
+events.js
+main - Copy.js
+main.js
+ui/animations.js
+ui/core.js
+ui/d6.js
 fonts/nrkis.ttf
+img/board.png
+img/flag.png
+img/icon.png
+img/narrows.png
+img/slidingcounter.png
+img/uboat.png
+img/water.png

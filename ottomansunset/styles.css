@@ -16,19 +16,71 @@ html, body {
   src: url('./fonts/nrkis.ttf');
 }
 
+/* ----------------------------------------------------------------------- 
+    Board
+   ----------------------------------------------------------------------- */
+
+#map {
+  background-image:url("img/board.png");
+  width:1024px;  
+  height:768px;
+}
+
+#overlay {
+  position:absolute;
+  top: 0px;
+  left:0px;
+  height:100%;
+  width:100%;
+  background-color: black;
+  opacity: 0.6;
+  visibility: hidden;
+	z-index:2;
+}      
+
+#special {
+  position:absolute;
+  top: 0px;
+  height:100%;
+  width:100%;
+  z-index: 20;
+	visibility:hidden;
+}    
+
+#closespecial {
+	position: absolute;
+  width: 100px;
+  height: 50px;
+  top: 688px;
+  left:878px;
+}
+
+/* ----------------------------------------------------------------------- 
+    Army Tokens
+   ----------------------------------------------------------------------- */
+
 .army {
 	position: absolute;
   height:43px;	
   width:43px;
+	box-sizing: border-box;
   font-family: Narkisim;	  
-  font-size:16px;      		  
-	box-sizing: content-box;
-	line-height:43px;
+  font-size:32px;
 	text-align: center;
+  color: white;      		  
+	line-height:43px;
+	border-width:1px;
+	border-style:outset;
+	border-color:gray;
+	border-radius: 4px;
 	transition: top 1s, left 1s; z-index:2;
 }
 
 .inactive        { visibility: hidden; }
+
+.Sinai5W         { left:539px; top:585px; }
+.Sinai4W         { left:600px; top:552px; }
+.Sinai4F         { left:620px; top:535px; }
 
 .Sinai6          { left:495px; top:594px; }
 .Sinai5          { left:583px; top:576px; }
@@ -71,68 +123,102 @@ html, body {
         
 .dummy {background-color: black;}         
 
-#SinaiArmy       { background-color: saddlebrown; }
-#MesopotamiaArmy { background-color: blue; }
-#CaucasusArmy    { background-color: darkorange; }
-#ArabArmy        { background-color: green; }
-#GallipoliArmy   { background-color: yellow; }
-#SalonikaArmy    { background-color: red; }
+#Sinai           { background-color: saddlebrown; z-index: 4;}
+#Mesopotamia     { background-color: blue; }
+#Caucasus        { background-color: darkorange; }
+#Arab            { background-color: green; }
+#Gallipoli       { background-color: yellow; }
+#Salonika        { background-color: red; }
 
-#board {}
-
-#map {
-  content:url("board.png");
-  width:1024px;  
-  height:768px;
+.flag { 
+	background-image:url('./img/flag.png');
+	position:absolute;
+	width:50px;
+	height:50px;
+	background-size:100%; 
+	z-index:2;	
+	transform: translateX(20px) translateY(-35px);
 }
 
-#card {
-  width:135px;  
-  height:194px;
-  top:554px;
-	position: absolute;
-	border-radius: 8px;
-  background-color: #EEEEEE; 
-  padding: 5px;
-	box-sizing: border-box;  	 
-  font-family: Narkisim;	  
-  font-size:16px;    
-	transition: top 1s, left 1s; z-index:2;    		    
+.water { 
+	background-image:url('./img/water.png');
+	position:absolute;
+	width:30px;
+	height:23px;
+	background-size:100%; 
+	z-index:2;	
+	transform: translateX(-20px) translateY(10px);
 }
 
-.hidden {
-  left:-170px;
-}
-.visible {
-  left:20px;
-}
 
-#info {
-  font-family: Narkisim;	  
-  font-size:16px;      		  
+/* ----------------------------------------------------------------------- 
+    Score: National Will, Victories & Defeats
+   ----------------------------------------------------------------------- */
+
+#score { 
+	width:100px; height:100px;
 	box-sizing: border-box;
-  padding-top: 5;
-  padding-left: 200;
-  margin: 0;
-	position: absolute;
-  height:108px;
-  width:1024px;  
-  left:0px;
-  top:660px;
-  background-color: lightslategray ; 
+	text-align: center;
+	left:20px; top:20px; position: absolute; 
 }
 
-#version {
+#nationalwill {
+	width:100px; height:100px; border-radius:100px; background-color: #EEEEEE; border: 2px solid gray;			
+	left:15px; top:0px; position: absolute;
   font-family: Narkisim;	 
-  font-size: 12px; 
-  font-style: italic;
-  text-align: right;
-	position: fixed;
-	right:5;
-	bottom:5;
-	box-sizing: border-box;
-  margin-right: 7;	  
+  font-size: 42px;
+  line-height: 100px;
+	overflow: hidden;
+//  box-shadow: 0px 0px 88px 10px black;
 }
+
+#nationalwill_mask {
+	position:absolute;
+//	border: 1px solid black;
+	width:55px; height:55px;
+	overflow: hidden;
+}
+
+#nationalwill_slider {
+	overflow: hidden;
+	position:absolute;
+	width:550px; height:55px;
+	background-image:url('./img/slidingcounter.png');
+	transition: left 1s;
+}
+
+
+#Defeats {
+  width:30px; height:30px; border-radius:30px; background: linear-gradient(#fe9aa4,#fd3e51); border: 2px solid gray;
+	left:10px; top:65px; position: absolute;
+  font-family: Narkisim;	 
+  font-size: 18px;
+  line-height: 30px;
+  box-shadow: 0px 0px 65px 0px black;
+}
+
+#Victories {
+  width:30px; height:30px; border-radius:30px; background: linear-gradient(#99ff99, #009933); border: 2px solid gray;
+	left:50px; top:85px; position: absolute;
+  font-family: Narkisim;	 
+  font-size: 18px;
+  line-height: 30px;
+  box-shadow: 0px 0px 65px 0px black;
+}
+
+#Stalemates {
+  width:30px; height:30px; border-radius:30px; background: linear-gradient(#a6a6a6,#737373); border: 2px solid gray;
+	left:90px; top:65px; position: absolute;
+  font-family: Narkisim;	 
+  font-size: 18px;
+  line-height: 30px;
+  box-shadow: 0px 0px 65px 0px black;
+}
+
+/* ----------------------------------------------------------------------- 
+    Markers and Counters
+   ----------------------------------------------------------------------- */
+
 
 .label {
   width:90px;  
@@ -156,41 +242,293 @@ html, body {
   margin-bottom:5px;
 	border-radius:6px;
   background-color: #EEEEEE;
-    opacity: 0.7;   
+  opacity: 0.7;   
   font-family: Narkisim;	  
-  font-size:16px;  
+  font-size:28px;  
   display: flex;
   justify-content: center; /* align horizontal */
   align-items: center; /* align vertical */    	
 }
 
-#l_counters {
-	position: absolute;
-  top:20px;
-	left:20px;
+/*
+.highlighted { box-shadow: 0px 0px 10px 5px #b3d1ff; }
+*/
+
+.highlighted { 
+	animation-name: softbluePulse;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
 }
 
-#v_counters {
-	position: absolute;
-  top:20px;
-	left:115px;
+@keyframes softbluePulse {
+  from { box-shadow: 0 0  8px 5px rgba(179, 209, 255, 0.5);}
+  50%  { box-shadow: 0 0 10px 5px rgba(179, 209, 255, 0.9);}
+  to   { box-shadow: 0 0  8px 5px rgba(179, 209, 255, 0.5);}
 }
 
-#v_uboat    { left:220px; top:230px; position: absolute; border-radius: 2px; }
-#v_pipeline { left:560px; top:500px; position: absolute; border-radius: 2px; }
 
-.gbutton {
+#markers 				 { left:  0px; top:180px; position: absolute; }
+#labels          { left: 20px; top: 20px; position: absolute; }
+#values          { left:115px; top: 20px; position: absolute; }
+
+#Pipeline        { left:560px; top:500px; position: absolute; border-radius: 2px; }
+#Fortification   { background-color: dimgray; z-index: 3;}
+#AsiaKorps       { width:135px; justify-content: center;   padding-left: 0px;}
+#Narrows         { left:217px; top:281px; position: absolute; width:52px; height:52px; border-radius:2px; }
+#Narrows.closed  { background-image:url("img/uboat.png"); }
+
+/* ----------------------------------------------------------------------- 
+    Card
+   ----------------------------------------------------------------------- */
+
+#card {
+  width:135px;  
+  height:194px;
+  top:554px;
+	position: absolute;
+	border-radius: 8px;
+  background-color: #EEEEEE; 
+  padding: 5px;
+	box-sizing: border-box;  	 
+  font-family: Narkisim;	  
+  font-size:16px;    
+	transition: top 1s, left 1s; z-index:2;    		    
+}
+
+.hidden {
+  left:-170px;
+}
+.visible {
+  left:20px;
+} 
+
+/* ----------------------------------------------------------------------- 
+    Info
+   ----------------------------------------------------------------------- */
+   
+#info {
+  font-family: Narkisim;	  
+  font-size:24px;      		  
+  color: white;
+  z-index:15;
+}
+
+#whitespace {
+  background-color: lightslategray ;
+  opacity: 0.7;      
+}
+
+.bottombar {
+  height:108px;
+  width:1024px;  
+  left:0px;
+  top:660px;
+	position: absolute;
+	box-sizing: border-box;
+  padding-top: 5;
+  padding-left: 200;
+  margin: 0;
+}
+
+#ok {
 	position: absolute;
   top: 688px;
   left:878px;
   width: 100px;
   height: 50px;
+  z-index:16;
 }
 
-#yes {
-  left:738px;	
+/* ----------------------------------------------------------------------- 
+    The Narrows Display
+   ----------------------------------------------------------------------- */
+   
+/*   
+.success { box-shadow: 0px 0px 50px 2px green; }
+.failure { box-shadow: 0px 0px 50px 2px red; }
+*/
+.success { 
+  animation-name: greenPulse;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
 }
 
+.failure { 
+  animation-name: redPulse;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes redPulse {
+  from { box-shadow: 0 0 40px 2px rgba(255, 0, 0, 0.2);}
+  50%  { box-shadow: 0 0 60px 2px rgba(255, 0, 0, 0.6);}
+  to   { box-shadow: 0 0 40px 2px rgba(255, 0, 0, 0.2);}
+}
+
+@keyframes greenPulse {
+  from { box-shadow: 0 0 40px 2px rgba(0, 128, 0, 0.2);}
+  50%  { box-shadow: 0 0 60px 2px rgba(0, 128, 0, 0.6);}
+  to   { box-shadow: 0 0 40px 2px rgba(0, 128, 0, 0.2);}
+}
+
+/* ----------------------------------------------------------------------- 
+    The Narrows Display
+   ----------------------------------------------------------------------- */
+
+#narrowsmap {
+  position:absolute;
+  background-image:url("img/narrows.png");
+  height:500px;
+  width:600px;
+  opacity: 1;
+	border: 4px solid gray;  
+}  
+
+#Seddulbahir     { left: 61px; top:330px; position: absolute; }
+#Mumkale         { left:147px; top:432px; position: absolute; }
+#Minefield_1     { left:301px; top:319px; position: absolute; }
+#Yildiz          { left:427px; top:283px; position: absolute; }
+#Dardanos        { left:334px; top:171px; position: absolute; }
+#Minefield_2     { left:417px; top:193px; position: absolute; }
+#Canakkale       { left:519px; top:198px; position: absolute; }
+#Nagara          { left:491px; top: 89px; position: absolute; }
+#Constantinople  { left:520px; top: 12px; position: absolute; }
+
+.defense {
+	position: absolute;	
+	border: 5px dashed black;
+	width: 41px;
+	height: 41px;
+  font-family: Narkisim;	  
+  font-size:24px; 
+  text-align: center;
+  line-height: 41px;     		
+  background-color: rgba(255,255,255,0.3);  
+}
+
+.defense.mine {
+	border: 5px solid black;
+	background: blue;
+}
+
+.defense.gun {
+	border: 5px solid black;
+	background: orange;
+}
+
+#fortitude { visibility: hidden; }
+
+#fortitude_text {
+	left:10px; top: 15px; position: absolute;
+	font-family: Narkisim;	  
+  font-size:32px; 
+  color: rgb(255,242,204);	  
+}
+
+#fortitude_mask {
+//	left:220px; top: 5px; position:absolute;
+//	left:20px; top: 50px; position:absolute;
+	left:150px; top:17px; position:absolute;
+	width:55px; height:55px; 
+	border-radius:55px;
+	overflow: hidden;
+  background-color: rgba(255,255,255,0.5);  	
+}
+
+#fortitude_slider {
+	position:absolute;
+	transition: top 1s;
+}
+
+.fortitude_slider_number {
+	font-family: Narkisim;
+	width:55px; 
+  height:55px;		  
+	line-height:55px;
+  font-size:42px;
+  text-align: center;	
+  color: black 
+}
+
+/* ----------------------------------------------------------------------- 
+    Intelligence Bureau
+   ----------------------------------------------------------------------- */
+   
+#bureaumap {
+  position:absolute;
+  background: black;
+  width:600px;
+  height:500px;
+  opacity: 1;
+	border: 4px solid gray;  
+}   
+
+.bureaubutton {
+  width: 100px;
+  height: 70px;
+  margin-top: 190px;
+  margin-left: 22px;
+  margin-right: 22px;
+}
+
+/* ----------------------------------------------------------------------- 
+    Battle Info
+   ----------------------------------------------------------------------- */
+   
+#battlemap {
+  position:absolute;
+  background: black;
+  width:600px;
+  height:500px;
+  opacity: 1;
+	border: 4px solid gray;  
+	
+	padding-left: 20px;
+  font-family: Narkisim;	  
+  font-size:24px; 
+  color: rgb(255,242,204);	
+}   
+
+/* ----------------------------------------------------------------------- 
+    Event Options
+   ----------------------------------------------------------------------- */
+
+#choice {
+  font-family: Narkisim;	  
+  font-size:16px;      		  
+	box-sizing: border-box;
+  padding-top: 5;
+  padding-left: 200;
+  margin: 0;
+	position: absolute;
+  height:108px;
+  width:1024px;  
+  left:0px;
+  top:660px;
+  background-color: slategray ; 
+	visibility: hidden; 
+}
+
+#op1 {
+	position: absolute;
+  top: 28px;
+  left:200px;
+  width: 300px;
+  height: 60px;
+}
+
+#op2 {
+	position: absolute;
+  top: 28px;
+  left:600px;
+  width: 300px;
+  height: 60px;
+}
+
+/* ----------------------------------------------------------------------- 
+   Container
+   ----------------------------------------------------------------------- */
+   
 #container { 
   position:absolute;
   height: 768px;
@@ -213,6 +551,8 @@ html, body {
   }	
 }
 
+/* ----------------------------------------------------------------------- */
+
 .centered {
 	top: 50%;
 	left: 50%;
@@ -222,5 +562,17 @@ html, body {
 .hcentered {
 	left: 50%;
 	transform: translateX(-50%); 	
+}
+
+#version {
+  font-family: Narkisim;	 
+  font-size: 12px; 
+  font-style: italic;
+  text-align: right;
+	position: fixed;
+	right:5;
+	bottom:5;
+	box-sizing: border-box;
+  margin-right: 7;	  
 }
 

@@ -5,60 +5,123 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
     <script type="text/javascript" src="main.js"></script> 
-    <script type="text/javascript" src="ui.js"></script> 
+    <script type="text/javascript" src="events.js"></script> 
     <script type="text/javascript" src="cards.js"></script> 
+    <script type="text/javascript" src="ui/core.js"></script> 
+    <script type="text/javascript" src="ui/d6.js"></script> 
+    <script type="text/javascript" src="ui/animations.js"></script> 
     <link rel="stylesheet" href="styles.css" media="screen"/>                             
-    <link rel="apple-touch-icon" href="./icon.png" />
+    <link rel="apple-touch-icon" href="./img/icon.png" />
   </head>   
   <body onLoad="init();">    
+  
     <div id="container" class="centered"> 
+    
     	<div id="board">
 	    	<div id="map"></div>    		
-    		<div id="SinaiArmy"       class="army inactive Sinai6">3</div>
-    		<div id="MesopotamiaArmy" class="army inactive Mesopotamia5">3</div>
-    		<div id="CaucasusArmy"    class="army inactive Caucasus5">3</div>
-    		<div id="ArabArmy"        class="army inactive Arab6">3</div>
-    		<div id="SalonikaArmy"    class="army inactive Salonika4">3</div>
-    		<div id="GallipoliArmy"   class="army inactive Gallipoli4">3</div>
+	    	
+				<div id="waterS4"       class="Sinai4 water"></div>
+				<div id="waterS5"       class="Sinai5 water"></div>
+	    	
+    		<div id="Sinai"         class="army inactive Sinai6"></div>
+    		<div id="Mesopotamia"   class="army inactive Mesopotamia5"></div>
+    		<div id="Caucasus"      class="army inactive Caucasus5"></div>
+    		<div id="Arab"          class="army inactive Arab6"></div>
+    		<div id="Salonika"      class="army inactive Salonika4"></div>
+    		<div id="Gallipoli"     class="army inactive Gallipoli4"></div>
+    		
+				<div id="Fortification" class="army Sinai4"></div>	
+				<div id="Narrows"></div>
+								
+				<div id="flagS2"        class="Sinai2 flag"></div>
+				<div id="flagS3"        class="Sinai3 flag"></div>
+				<div id="flagM1"        class="Mesopotamia1 flag"></div>
+				<div id="flagM2"        class="Mesopotamia2 flag"></div>
+				<div id="flagC1"        class="Caucasus1 flag"></div>
+				<div id="flagC2"        class="Caucasus2 flag"></div>								
+				<div id="flagG2"        class="Gallipoli2 flag"></div>								
+				<div id="flagS2"        class="Salonika2 flag"></div>					
 	    </div>
-	    
-    	<div id="l_counters">
-				<div id="l_victories" 	 class="label">Victories          </div>
-				<div id="l_defeats" 		 class="label">Defeats            </div>
-				<div id="l_stalemates" 	 class="label">Stalemates         </div>
-				<div id="l_western" 		 class="label">Western Theatre    </div>
-				<div id="l_naval" 			 class="label">Naval Theatre      </div>
-				<div id="l_eastern" 		 class="label">Eastern Theatre    </div>
-				<div id="l_weariness"    class="label">War Weariness      </div>
-				<div id="l_intelligence" class="label">Intelligence Bureau</div>
-				<div id="l_yildirim" 		 class="label">Yildirim           </div>
-				<div id="l_asiakorps"		 class="label">Asia Korps         </div>	    
-			</div>
-    	<div id="v_counters">
-				<div id="v_victories" 	 class="value">0</div>
-				<div id="v_defeats" 		 class="value">0</div>
-				<div id="v_stalemates" 	 class="value">0</div>
-				<div id="v_western" 		 class="value">0</div>
-				<div id="v_naval" 			 class="value">0</div>
-				<div id="v_eastern" 		 class="value">0</div>
-				<div id="v_weariness"    class="value">0</div>
-				<div id="v_intelligence" class="value">0</div>
-				<div id="v_yildirim" 		 class="value">0</div>
-				<div id="v_asiakorps" 	 class="value">0</div>	    
-			</div>
-				
-			<div id="v_uboat" 			   class="value">Open</div>
-			<div id="v_pipeline" 		   class="value">Not<BR>Built</div>
 
-						
+	    <div id="score">
+				<div id="nationalwill" class="value">
+					<div id="nationalwill_mask">
+						<div id="nationalwill_slider"></div>
+					</div>    
+				</div>
+				<div id="Victories" 	 class="battlecounter">0</div>    
+				<div id="Defeats"   	 class="battlecounter">0</div>    
+				<div id="Stalemates" 	 class="battlecounter">0</div>    
+	    </div>
+	    	    
+	    <div id="markers">
+	    	<div id="labels">
+					<div id="Western_L" 	class="label">Western Theatre    </div>
+					<div id="Naval_L" 		class="label">Naval Theatre      </div>
+					<div id="Eastern_L" 	class="label">Eastern Theatre    </div>
+					<div id="Bureau_L"    class="label">Intelligence Bureau</div>
+					<div id="Yildirim_L" 	class="label">Yildirim           </div>
+					<div id="AsiaKorps"		class="label">Asia Korps         </div>	    
+				</div>
+	    	<div id="values">
+					<div id="Western" 	  class="value">0</div>
+					<div id="Naval" 		  class="value">0</div>
+					<div id="Eastern" 	  class="value">0</div>
+					<div id="Bureau"      class="value">0</div>
+					<div id="Yildirim" 	  class="value">0</div>
+				</div>
+			</div>
+										
     	<div id="card" class="hidden"></div>
-    	<div id="info"></div>
-    	<button id="yes" class="gbutton" onclick="UI_clickedYes()">Yes</button>
-    	<button id="no"  class="gbutton" onclick="UI_clickedNo()">No</button>
-    	<button id="ok"  class="gbutton" onclick="UI_clickedOk()">Ok</button>
-    	<button id="d6"  class="gbutton" onclick="UI_clickedDice()">-</button>
+    	
+    	<div id="whitespace" class="bottombar"></div>
+    	<div id="info"  class="bottombar"></div>
+    	<button id="ok" onclick="UI_clickedOk()">Ok</button>
+    	
+    	<div id="choice">
+ 	   		<div id="options">Take the Dunsterfor Defeat or Forfeit 2 Actions</div>
+ 	   		<button id="op1">Take the Dunsterfor Defeat</button>
+ 	   		<button id="op2">Forfeit 2 Actions</button>
+    	</div>
+    	
+   		<div id="overlay"></div>
+    	<div id="special">
+ 	   		<div id="narrowsmap" class="centered">
+	 	   		<div id="Seddulbahir"    class="defense"></div>
+	 	   		<div id="Mumkale"        class="defense"></div>
+	 	   		<div id="Minefield_1"    class="defense"></div>
+	 	   		<div id="Yildiz"         class="defense"></div>
+	 	   		<div id="Dardanos"       class="defense"></div>
+	 	   		<div id="Minefield_2"    class="defense"></div>
+	 	   		<div id="Canakkale"      class="defense"></div>
+	 	   		<div id="Nagara"         class="defense"></div>
+	 	   		<div id="Constantinople" class="defense"></div>
+	 	   		
+	 	   		<div id="fortitude">
+		 	   		<div id="fortitude_text">British<BR>Fortitude</div>
+		 	   		<div id="fortitude_mask">
+			 	   		<div id="fortitude_slider">
+			 	   			<div class="fortitude_slider_number">0</div>
+			 	   			<div class="fortitude_slider_number">1</div>
+			 	   			<div class="fortitude_slider_number">2</div>
+			 	   			<div class="fortitude_slider_number">3</div>
+			 	   			<div class="fortitude_slider_number">4</div>
+			 	   		</div>
+		 	   		</div>
+	 	   		</div>
+ 	   		</div>
+ 	   		<div id="bureaumap" class="centered">
+	    		<button id="bureau_tur" class="bureaubutton" onclick="DeployBureau('Turkey')">Turkey</button>
+	    		<button id="bureau_ind" class="bureaubutton" onclick="DeployBureau('India')">India</button>
+	    		<button id="bureau_per" class="bureaubutton" onclick="DeployBureau('Persia')">Persia</button>
+	    		<button id="bureau_afg" class="bureaubutton" onclick="DeployBureau('Afghanistan')">Afghanistan</button>
+   		  </div>
+ 	   		<div id="battlemap" class="centered">
+   		  </div>   		  
+    		<button id="closespecial"  onclick="UI_CloseOverlay()">X</button>
+    	</div>    	
     </div>                                                                                         
-   	<div id="version">v0.1</div>
+   	<div id="version">v0.1a</div>
   </body>                                                                                         
 </html>          
                                                                                
