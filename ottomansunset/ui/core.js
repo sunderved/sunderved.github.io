@@ -344,7 +344,7 @@ function UI_infoClear() {
 // Add Event Handlers
 function onTouch(divid, callback) {
   if ("ontouchstart" in document.documentElement) {
-    document.getElementById(divid).addEventListener('touchstart', clickedMap);
+    document.getElementById(divid).addEventListener('touchstart', callback);
   } else {
     document.getElementById(divid).addEventListener('click', callback);
   }   
@@ -366,6 +366,9 @@ function initView()
 	debug('1.2');
 		
 	onTouch('Sinai',       function() { TurkishOffensive('Sinai');       } );
+	
+	debug('1.2a');
+	
 	onTouch('Mesopotamia', function() { TurkishOffensive('Mesopotamia'); } );
 	onTouch('Caucasus',    function() { TurkishOffensive('Caucasus');    } );
 	onTouch('Gallipoli',   function() { TurkishOffensive('Gallipoli');   } );
