@@ -173,19 +173,32 @@ html, body {
 }
 
 #nationalwill_mask {
-	position:absolute;
-//	border: 1px solid black;
+	left:22px; top:22px; position:absolute;
 	width:55px; height:55px;
 	overflow: hidden;
+	border: 1px solid red;
 }
 
 #nationalwill_slider {
-	overflow: hidden;
-	position:absolute;
+	left:0px; top:0px; position:absolute;	
 	width:550px; height:55px;
-	background-image:url('./img/slidingcounter.png');
+	position:absolute;
 	transition: left 1s;
 }
+
+.slider_number {
+	font-family: Narkisim;
+	width:55px; 
+  height:55px;		  
+  margin: 0px;
+	line-height:55px;
+  font-size:42px;
+  text-align: center;	
+  color: black; 
+  display: inline-block;
+	box-sizing: border-box;	 
+}
+
 
 
 #Defeats {
@@ -426,8 +439,6 @@ html, body {
 }
 
 #fortitude_mask {
-//	left:220px; top: 5px; position:absolute;
-//	left:20px; top: 50px; position:absolute;
 	left:150px; top:17px; position:absolute;
 	width:55px; height:55px; 
 	border-radius:55px;
@@ -438,16 +449,6 @@ html, body {
 #fortitude_slider {
 	position:absolute;
 	transition: top 1s;
-}
-
-.fortitude_slider_number {
-	font-family: Narkisim;
-	width:55px; 
-  height:55px;		  
-	line-height:55px;
-  font-size:42px;
-  text-align: center;	
-  color: black 
 }
 
 /* ----------------------------------------------------------------------- 

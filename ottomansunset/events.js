@@ -108,7 +108,7 @@ function SecondBattleofYpres() {
 function GallipoliLanding() {
   // Place the Hamilton (2) marker on space 4. Destroy the Seddulbahir Gun in the Narrows
   PlaceArmy('Gallipoli', 4, 2);	
-  game.Narrows.Seddulbahir = 0;
+  game.Narrows.Seddulbahir = false;
   UI_GallipoliLanding();
 }
 function GorliceTarnow() {
