@@ -18,9 +18,9 @@ function GameState ()
   	Sinai: 3,
   	Mesopotamia: 3,
   	Caucasus: 2,
-  	Arab: undefined,
-  	Salonika: undefined,
-  	Gallipoli: undefined,
+  	Arab: 2,
+  	Salonika: 2,
+  	Gallipoli: 2,
   };  
 	this.Blocked = {
   	Sinai: false,
@@ -257,8 +257,11 @@ function Headline()
 	game.Played.push(id);
       
 	UI_showCard(card);
-	UI_infoClear(); 
-}
+	UI_infoClear();
+	UI_hideOK();
+	setTimeout(function () {
+		UI_clickedOk(); 
+	}, 2000);	}
 
 
 /* 
@@ -446,7 +449,7 @@ function TurkishOffensive(front) {
   	RetreatFront(front);
   }
   
-	UI_TurkishOffensive(front, d6, (success?'Succeeded':'Failed'));  
+	UI_TurkishOffensive(front, d6, success);  
 }
 
 function UseYildirim(front)
@@ -454,6 +457,7 @@ function UseYildirim(front)
 	console.log('UseYildirim '+ front);
 	game.Yildirim--;
 	RetreatFront(front);
+ 	game.ConstantinopleTaken = (game.Front[front]===0); 	
 	UI_UseYildirim(front);
 }
 

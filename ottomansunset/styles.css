@@ -76,7 +76,9 @@ html, body {
 	transition: top 1s, left 1s; z-index:2;
 }
 
-.inactive        { visibility: hidden; }
+.inactive        { 
+//	visibility: hidden; 
+}
 
 .Sinai5W         { left:539px; top:585px; }
 .Sinai4W         { left:600px; top:552px; }
@@ -95,12 +97,14 @@ html, body {
 .Mesopotamia2    { left:828px; top:264px; }
 .Mesopotamia1    { left:756px; top:248px; }
 
+.CaucasusX       { left:999px; top:-60px; }
 .Caucasus5       { left:938px; top: 17px; }
 .Caucasus4       { left:897px; top: 93px; }
 .Caucasus3       { left:815px; top:143px; }
 .Caucasus2       { left:726px; top:136px; }
 .Caucasus1       { left:628px; top:140px; }
 
+.ArabX           { left:1030px; top:600px; }
 .Arab6           { left:962px; top:569px; }
 .Arab5           { left:894px; top:507px; }
 .Arab4           { left:816px; top:529px; }
@@ -108,11 +112,13 @@ html, body {
 .Arab2           { left:706px; top:350px; }
 .Arab1           { left:658px; top:264px; }
 
+.SalonikaX       { left:-50px; top:300px; }
 .Salonika4       { left:167px; top:140px; }
 .Salonika3       { left:180px; top: 50px; }
 .Salonika2       { left:261px; top: 26px; }
 .Salonika1       { left:336px; top: 42px; }
 
+.GallipoliX      { left:-50px; top:500px; }
 .Gallipoli4      { left:287px; top:459px; }
 .Gallipoli3      { left:331px; top:387px; }
 .Gallipoli2      { left:379px; top:316px; }
@@ -300,7 +306,8 @@ html, body {
 	position: absolute;
 	border-radius: 8px;
   background-color: #EEEEEE; 
-  padding: 5px;
+  padding-top:  0px;
+  padding-left: 5px;
 	box-sizing: border-box;  	 
   font-family: Narkisim;	  
   font-size:16px;    

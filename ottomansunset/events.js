@@ -61,11 +61,11 @@ function TurkishMinelaying() {
 	game.DRM.Mesopotamia = 1;
   // Place 1 Minefield marker for free
   var mine = 0;
-  if (game.Narrows.Minefield_1===0) {
-	  game.Narrows.Minefield_1=4;
+  if (game.Narrows.Minefield_1===false) {
+	  game.Narrows.Minefield_1=true;
 	  mine=1;
-  } else if (game.Narrows.Minefield_2===0) {
-	  game.Narrows.Minefield_2=4;
+  } else if (game.Narrows.Minefield_2===false) {
+	  game.Narrows.Minefield_2=true;
 	  mine=2;
   }
   UI_TurkishMinelaying(mine);

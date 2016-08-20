@@ -1,12 +1,16 @@
-
+// ------------------------------------------------------------------
+// - Ok Button 
+// ------------------------------------------------------------------
 
 function UI_showOK(str)
 {
   document.getElementById('ok').innerHTML=((str===undefined)?'Ok':str);
   document.getElementById('ok').style.visibility='visible';  
+	document.getElementById('ok').style.pointerEvents = 'auto';     
+  document.getElementById('info').style.pointerEvents = 'auto';     
 }
 
-function UI_hideOK(str)
+function UI_hideOK()
 {
   document.getElementById('ok').style.visibility='hidden';  
 }
@@ -15,15 +19,63 @@ function UI_clickedOk()
 {
   document.getElementById('ok').innerHTML='Ok';  
   document.getElementById('ok').style.visibility='hidden';  
-  
-  die.hide();  
-  die.div.classList.remove('success');
-  die.div.classList.remove('failure');
+	document.getElementById('die').style.pointerEvents = 'none';     
+	document.getElementById('info').style.pointerEvents = 'none';     
 
+  UI_CloseOverlay();
+  UI_hideDie();
   UI_disable('Yildirim_L');
   
   OSnext();
 }
+
+// ------------------------------------------------------------------
+// - D6 
+// ------------------------------------------------------------------
+
+var die;
+
+function UI_showDieRoll(d6) {
+  die.div.className = '';
+  die.showRoll(d6);
+}
+
+function UI_showDieSuccess(success) {
+  if ((success===true) || (success=='victory')) {
+    die.div.className = 'success';
+  } else if ((success===false) || (success=='defeat')) {
+    die.div.className = 'failure';
+  } else {
+    die.div.className = '';
+  }    
+}
+
+function UI_hideDie() {
+  die.hide();
+  die.div.classList.remove('success');
+  die.div.classList.remove('failure');
+}
+
+function UI_initDie() {
+  die = new D6('container', 'die', 80, 'white', '#202020');
+  die.div.style.left=760+'px';
+  die.div.style.top =675+'px';
+  die.div.style.zIndex = 30;
+  die.div.style.background = 'linear-gradient(45deg,#737373,#BBBBBB)';
+  die.div.style.pointerEvents = 'none';     
+  onTouch('die', function() { UI_clickedOk(); } ); 
+  die.hide();
+}
+
+function UI_waitForDieClick() {
+  document.getElementById('die').style.pointerEvents = 'auto';     
+  document.getElementById('info').style.pointerEvents = 'auto';     
+}
+
+// ------------------------------------------------------------------
+// - Mist UI Stuff 
+// ------------------------------------------------------------------
+
 
 function UI_offerChoice(options, op1, op1func, op2, op2func)
 {
@@ -38,16 +90,16 @@ function UI_offerChoice(options, op1, op1func, op2, op2func)
 function UI_updateCardInfo() {
   var el =  document.getElementById('card');  
   el.innerHTML='<BR>';
-  el.innerHTML+=card.name+'<BR>';
+  el.innerHTML+='<B>'+card.name+'</B><BR>';
   el.innerHTML+='<BR>';
-  el.innerHTML+='Offensives:<BR>';
+  el.innerHTML+='<U>Offensives:</U><BR>';
   for (var i in card.advances) {
-    el.innerHTML+=card.advances[i]+'<BR>';
+    el.innerHTML+='&#8226; '+card.advances[i]+'<BR>';
   }  
   el.innerHTML+='<BR>';
-  el.innerHTML+='Actions: '+card.actions+'<BR>';
+  el.innerHTML+='<U>Actions:</U> '+card.actions+'<BR>';
   if (card.text) {
-    el.innerHTML+=card.text;      
+    el.innerHTML+='<font color="red">'+card.text+'</font>';      
   }  
 } 
 
@@ -62,7 +114,6 @@ function UI_askYildirim(front)
 {
   UI_info('Expand Yildirim token to block advance?');  
   UI_enable('Yildirim_L');
-  UI_showOK('No');    
 }
 
 function UI_updateFortifications()
@@ -153,6 +204,9 @@ function UI_updateBattles()
 {
   var str = '';
   str += '<BR>';
+  str += 'Card Played / Remaining : '+game.Played.length+' / '+RemainingCards()+'<BR>';
+  str += '<BR>';
+  str += '<BR>';
   str += 'Victories : '+game.Victories.length+'<BR>';
   str += game.Victories+'<BR>';
   str += '<BR>';
@@ -164,7 +218,6 @@ function UI_updateBattles()
   str += '<BR>';
   str += 'Captured Flags : '+(game.Victories.length + game.Defeats.length - game.TurkishNationalWill);
   
-  console.log(str);
   document.getElementById('battlemap').innerHTML = str;
 }
 
@@ -181,7 +234,7 @@ function UI_updateFront(front)
       el.className = 'army Constantinople';  
     }
   } else {
-    el.className = 'army inactive';
+    el.className = 'army inactive '+front+'X';
   }
   UI_updateNationalWill();  
 }
@@ -285,13 +338,12 @@ function UI_OpenOverlay(map)
 {
   document.getElementById('overlay').style.visibility = 'visible';
   document.getElementById('special').style.visibility = 'visible';  
+  document.getElementById('closespecial').style.visibility = 'visible';  
+	document.getElementById('closespecial').style.pointerEvents = 'auto';     
   for (var i in secondaries) {
 	  var m = secondaries[i];
     document.getElementById(m).style.visibility = ((m==map)?'visible':'hidden');  
-  }
-  
-  document.getElementById('narrowsmap').style.visibility='visible';  
-  document.getElementById('bureaumap').style.visibility='hidden';        
+  }  
 }
 
 function UI_CloseOverlay()
@@ -299,44 +351,12 @@ function UI_CloseOverlay()
   document.getElementById('overlay').style.visibility='hidden';
   document.getElementById('special').style.visibility='hidden';  
   document.getElementById('fortitude').style.visibility = 'hidden';
+  document.getElementById('closespecial').style.visibility = 'hidden';  
+	document.getElementById('closespecial').style.pointerEvents = 'none';     
   for (var i in secondaries) {
 	  var m = secondaries[i];
     document.getElementById(m).style.visibility = 'hidden';  
   }
-}
-
-// ------------------------------------------------------------------
-// - D6 
-// ------------------------------------------------------------------
-
-var die;
-
-function UI_showDieRoll(d6) {
-  die.div.className = '';
-  die.showRoll(d6);
-}
-
-function UI_showDieSuccess(success) {
-  if ((success===true) || (success=='victory')) {
-    die.div.className = 'success';
-  } else if ((success===false) || (success=='defeat')) {
-    die.div.className = 'failure';
-  } else {
-    die.div.className = '';
-  }    
-}
-
-function UI_hideDie() {
-  die.hide();
-}
-
-function UI_initDie() {
-  die = new D6('container', 'dice', 80, 'white', '#202020');
-  die.div.style.left=760+'px';
-  die.div.style.top =675+'px';
-  die.div.style.zIndex = 10;
-  die.div.style.background = 'linear-gradient(45deg,#737373,#BBBBBB)';
-  die.hide();
 }
 
 // ------------------------------------------------------------------
@@ -367,8 +387,10 @@ function onTouch(divid, callback) {
 	if ("ontouchstart" in document.documentElement) {
 	  document.getElementById(divid).addEventListener('touchstart', callback);
 	} else {
-	  document.getElementById(divid).addEventListener('click', callback);
+ 	  document.getElementById(divid).addEventListener('click', callback);
 	}   
+	document.getElementById(divid).style.pointerEvents = 'none';     
+	
 }
 
 function initView() 
@@ -410,13 +432,17 @@ function initView()
   onTouch('Bureau_L',     function() {                     UI_OpenOverlay('bureaumap');  } );  
   onTouch('Narrows',      function() { UI_updateNarrows(); UI_OpenOverlay('narrowsmap'); } );          
   onTouch('score',        function() { UI_updateBattles(); UI_OpenOverlay('battlemap');  } );          
+	document.getElementById('Narrows').style.pointerEvents = 'auto';     
+	document.getElementById('score').style.pointerEvents = 'auto';     
                           
   onTouch('Minefield_1',  function() { FortifyNarrows('Minefield_1'); } );
   onTouch('Yildiz',       function() { FortifyNarrows('Yildiz');      } );
   onTouch('Dardanos',     function() { FortifyNarrows('Dardanos');    } );
   onTouch('Minefield_2',  function() { FortifyNarrows('Minefield_2'); } );
   onTouch('Nagara',       function() { FortifyNarrows('Nagara');      } );
-      
+
+  onTouch('info',         function() { UI_clickedOk(); } ); 
+        
   UI_initDie();
   UI_hideActions();
   UI_updateFront('Sinai');

@@ -10,11 +10,9 @@ function UI_showCard()
 		UI_updateCardInfo();
 		document.getElementById('card').classList.add('visible'); 
 	}, 1000);		
-	setTimeout(function () {
-		UI_info('Cards played    : '+game.Played.length);
-		UI_info('Cards remaining : '+RemainingCards());
-		UI_showOK();		
-	}, 1900);		   
+// 	setTimeout(function () {
+// 		UI_showOK();		
+// 	}, 1900);		   
 }
 
 // ------------------------------------------------------------------
@@ -60,15 +58,20 @@ function UI_ForcingTheNarrows(events) {
   	return;		
 	}	
 
-	document.getElementById('fortitude').style.visibility = 'visible';
 	
+  UI_hideOK();
+	document.getElementById('fortitude').style.visibility = 'visible';
   UI_OpenOverlay('narrowsmap');
-		
-	if (events.length===0) {
+  document.getElementById('closespecial').style.visibility = 'hidden';  		
+
+	if (events.length===0)
+	{	
 		if (game.BritishFortitude===0) {
 			UI_info('Turks have won the campaign');
-		} 
-  	UI_showOK();
+		} else {
+			UI_info('English have won the campaign');
+		}
+		UI_waitForDieClick();
   	return;
 	}
 	
@@ -78,7 +81,7 @@ function UI_ForcingTheNarrows(events) {
 	  UI_infoClear();
 		die.div.className = '';
 		document.getElementById(defense.name).classList.add('highlighted');	
-		UI_info('English fleet passing by '+defense.name);
+		UI_info('English fleet facing '+defense.name);
 	}, 1000);		
   setTimeout(function () {
 		UI_showDieRoll(defense.d6);
@@ -86,12 +89,6 @@ function UI_ForcingTheNarrows(events) {
   setTimeout(function () {  
  	  UI_showDieSuccess( defense.success );
 		UI_updateFortitude( defense.fortitude );
-// 	  if (defense['success']) {
-// 			UI_info('Success');
-// 	  } else {
-// 			UI_info('Failed, British Fortitude drops to '+defense['fortitude']);
-// 			UI_updateFortitude( defense['fortitude'] );
-// 	  }
 	}, 2300);		
   setTimeout(function () {
 		document.getElementById(defense.name).classList.remove('highlighted');	
@@ -217,8 +214,12 @@ function UI_Sandstorms(front, d6) {
    }, 2300);		
   setTimeout(function () {
 	  UI_updateFront(front);  	
-		UI_showOK();
+		UI_waitForDieClick();
    }, 3500);		
+//   setTimeout(function () {  	
+// 		UI_clickedOk();
+//   }, 4500);	  		  
+   
 }
 function UI_AffenbyTakesTheHelm() {
 		UI_info('Sinai flipped marker to its Affenby side (4)');	
@@ -248,8 +249,8 @@ function UI_WarWeariness(d6) {
   }, 2500);		
   setTimeout(function () {
 		UI_updateCardInfo();
+		UI_waitForDieClick();
 		UI_info('Front advancing this turn: '+card.advances);
-  	UI_showOK();
    }, 3000);		
 }
 function UI_BolshevikRevolution() {
@@ -288,13 +289,14 @@ function UI_AllocateResourcesToTheatre(theatre)
 }
 
 function UI_FortifyNarrows() {
+  document.getElementById('closespecial').style.visibility = 'hidden';  
 	UI_hideActions(); 
 	UI_updateNarrows();
 	UI_updateCardInfo();
 	setTimeout(function () {
 		UI_CloseOverlay(); 
 		UI_clickedOk();		
-	}, 600);
+	}, 800);
 }
 
 function UI_DeployBureau(country) {
@@ -321,12 +323,13 @@ function UI_TurkishOffensive(front, d6, success)
   }, 1000);
   setTimeout(function () {  	
 	  UI_showDieSuccess(success);
+		UI_waitForDieClick();
 		UI_updateFront(front);
 		UI_updateCardInfo();
-  }, 1500);		
-  setTimeout(function () {  		
-		UI_clickedOk();
-  }, 2500);		
+  }, 1500);	
+//   setTimeout(function () {  	
+// 		UI_clickedOk();
+//   }, 2100);	  		
 }	
 
 function UI_UseYildirim()
@@ -367,6 +370,7 @@ function UI_GermanStaffOperationFrom(theatre)
 
 function UI_OffMapBattle(battle, theatre, value, d6, outcome)
 {	
+	UI_infoClear();
 	UI_info('<U>'+battle+' Battle ('+value+')'+'</U>');
   setTimeout(function () {
 			UI_info(theatre+' theatre DRM: +'+game.Theatre[theatre]);
@@ -374,20 +378,22 @@ function UI_OffMapBattle(battle, theatre, value, d6, outcome)
   }, 100);		
   setTimeout(function () {
 		UI_showDieRoll(d6);
-  }, 500);		
+  }, 1000);		
   setTimeout(function () {  	
 		UI_showDieSuccess(outcome);
+		UI_waitForDieClick();
 		UI_updateNationalWill();
 		UI_updateCounters();
-  }, 1100);		
-  setTimeout(function () {  		
-		UI_showOK();		
-  }, 1800);		
+  }, 2100);			
+//   setTimeout(function () {  	
+// 		UI_clickedOk();
+//   }, 3100);	  		  
 }	
 
 function UI_CoupAttempt(country, d6, drm, outcome)
 {
 	UI_info('<U>'+'Coup attempt in '+country+' (5)'+'</U>');
+	UI_hideOK();
   setTimeout(function () {
 	  if (game.IntelligenceBureau===undefined) {
 			UI_info('Intelligence Bureau of the East not deployed, DRM: 0');
@@ -400,38 +406,36 @@ function UI_CoupAttempt(country, d6, drm, outcome)
   }, 500);		
   setTimeout(function () {  
 	  UI_showDieSuccess(outcome);
+		UI_waitForDieClick();
 		UI_updateNationalWill();
 		UI_updateCounters();
-  }, 1100);		
-  setTimeout(function () {  		
-		UI_showOK();		
-  }, 1800);		
+  }, 1100);
+//   setTimeout(function () {  	
+// 		UI_clickedOk();
+//   }, 2100);	  		  
+  		
 }	
 
 function UI_AttritionRoll(type, d6, success)
 {
 	UI_info(type+' Attrition Roll');
 	
-	var pos = game.Front.Sinai; // - ((success)?0:1);
-//	if (type=='Fortification') pos = 4;
+	var pos = game.Front.Sinai; 
 	document.getElementById('Sinai').className = 'army Sinai'+pos+type.charAt(0);	
-//	console.log( document.getElementById('Sinai').classList );
 	
   setTimeout(function () {
 		UI_showDieRoll(d6);
   }, 1200);		
   setTimeout(function () {  	
 	  UI_showDieSuccess(success);
+		UI_waitForDieClick();
 		UI_updateCounters();								
-		UI_showOK();		
-// 		if ( (success == false) ||
-// 				((type == 'Fortification') && (game.GazaBeershebaFortifications>0)) ) {
-// 			UI_updateFront('Sinai');
-// 		}
-		//UI_updateFortifications();
-	}, 1900);		
+	}, 1900);	
+//   setTimeout(function () {  	
+// 		UI_clickedOk();
+//   }, 2900);	  		  
+		
 }
-
 
 function UI_showOffensive(front, ask_yildirim)
 {
@@ -439,7 +443,7 @@ function UI_showOffensive(front, ask_yildirim)
 	if (ask_yildirim===true) {					
 	  setTimeout(function () {  		
 			UI_askYildirim(front);
-			UI_showOK('Next');										
+			UI_showOK('No');										
 	  }, 1000);		
   } else {
 	  setTimeout(function () {  		
