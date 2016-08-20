@@ -11,6 +11,8 @@ function UI_showCard()
 		document.getElementById('card').classList.add('visible'); 
 	}, 1000);		
 	setTimeout(function () {
+		UI_info('Cards played    : '+game.Played.length);
+		UI_info('Cards remaining : '+RemainingCards());
 		UI_showOK();		
 	}, 1900);		   
 }
@@ -138,7 +140,7 @@ function UI_LandingAtSalonika() {
   UI_showOK();
 }
 function UI_FortificationofGazaBeershebaLine() {
-  UI_showOK();
+  UI_hideOK();
 }
 function UI_SinaiPipeline() {	
 	UI_info('Shuffling Dusk Cards in Deck'); 
@@ -264,7 +266,7 @@ function UI_Kaiserschlacht() {
   }, 2000);			
 }
 function UI_Dunsterforce() {
-  UI_showOK();
+  UI_hideOK();
 }
 function UI_NoEvent() {
 	UI_info('No event this turn');

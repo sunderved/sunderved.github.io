@@ -241,12 +241,11 @@ html, body {
 	box-sizing: border-box;
 	border-radius: 6px;
   background-color: #EEEEEE;
-    opacity: 0.7;   
+  opacity: 0.7;   
   font-family: Narkisim;	  
   font-size:16px;  
-  display: flex;
-//  justify-content: center; /* align horizontal */
-  align-items: center; /* align vertical */    	
+  line-height:40px;
+  text-align: left; 
 }
 
 .value {
@@ -257,10 +256,9 @@ html, body {
   background-color: #EEEEEE;
   opacity: 0.7;   
   font-family: Narkisim;	  
-  font-size:28px;  
-  display: flex;
-  justify-content: center; /* align horizontal */
-  align-items: center; /* align vertical */    	
+  font-size:28px; 
+  line-height:40px;
+  text-align: center; 
 }
 
 /*
@@ -285,7 +283,7 @@ html, body {
 #values          { left:115px; top: 20px; position: absolute; }
 
 #Pipeline        { left:560px; top:500px; position: absolute; border-radius: 2px; }
-#Fortification   { background-color: dimgray; z-index: 3;}
+#Fortification   { background-color: dimgray; color: black; z-index: 3;}
 #AsiaKorps       { width:135px; justify-content: center;   padding-left: 0px;}
 #Narrows         { left:217px; top:281px; position: absolute; width:52px; height:52px; border-radius:2px; }
 #Narrows.closed  { background-image:url("img/uboat.png"); }
@@ -298,6 +296,7 @@ html, body {
   width:135px;  
   height:194px;
   top:554px;
+  z-index: 25;
 	position: absolute;
 	border-radius: 8px;
   background-color: #EEEEEE; 
@@ -506,8 +505,8 @@ html, body {
   width:1024px;  
   left:0px;
   top:660px;
-  background-color: slategray ; 
-	visibility: hidden; 
+	visibility: hidden;
+	z-index:20;
 }
 
 #op1 {

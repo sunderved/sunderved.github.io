@@ -31,7 +31,7 @@ function JihadDeclared() {
   game.DRM.Gallipoli   = 1; 
   game.DRM.Salonika    = 1; 
   // Shuffle the Mid-Day cards
-  ShuffleDeck(midday);
+  ShuffleDeck(Midday);
   UI_JihadDeclared();
 }
 function EnverToTheFront() {
@@ -169,14 +169,14 @@ function FortificationofGazaBeershebaLine() {
   	'Fortify Gaza-Beersheba',
   	function() { card.actions=0; game.GazaBeershebaFortifications=2; UI_updateCardInfo(); UI_updateCounters(); },
   	'Keep 2 Actions',
-  	function() { }
+  	function() { console.log('Clicked'); }
 	);
   
   UI_FortificationofGazaBeershebaLine();
 }
 function SinaiPipeline() {
   // Shuffle the Dusk cards into the deck. 
-  ShuffleDeck(dusk);
+  ShuffleDeck(Dusk);
   // Place the Faisal Hussein (2) unit on the Arab 6 space, if not yet in play
   PlaceArmy('Arab', 6, 2);
   // Pipeline complete

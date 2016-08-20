@@ -6,6 +6,11 @@ function UI_showOK(str)
   document.getElementById('ok').style.visibility='visible';  
 }
 
+function UI_hideOK(str)
+{
+  document.getElementById('ok').style.visibility='hidden';  
+}
+
 function UI_clickedOk()
 {
   document.getElementById('ok').innerHTML='Ok';  
@@ -25,9 +30,9 @@ function UI_offerChoice(options, op1, op1func, op2, op2func)
   document.getElementById('choice').style.visibility='visible';  
   document.getElementById('options').innerHTML=options;  
   document.getElementById('op1').innerHTML=op1;  
-  document.getElementById('op1').onclick=function() { document.getElementById('choice').style.visibility='hidden';  op1func(); OSnext(); } ; 
   document.getElementById('op2').innerHTML=op2;  
-  document.getElementById('op2').onclick=function() { document.getElementById('choice').style.visibility='hidden';  op2func(); OSnext(); };    
+  onTouch('op1', function() { document.getElementById('choice').style.visibility='hidden';  op1func(); OSnext(); } ); 
+  onTouch('op2', function() { document.getElementById('choice').style.visibility='hidden';  op2func(); OSnext(); } );    
 }
 
 function UI_updateCardInfo() {
@@ -110,15 +115,17 @@ function UI_updateCounters()
   switch (game.GazaBeershebaFortifications) {
     case 0:
       document.getElementById('Fortification').style.visibility = 'hidden';
-      document.getElementById('Fortification').innerHTML = '';
+//      document.getElementById('Fortification').innerHTML = '';
       break;
     case 1:
       document.getElementById('Fortification').style.visibility = 'visible';
-      document.getElementById('Fortification').innerHTML = 'Weakened';
+      document.getElementById('Fortification').style.opacity = '0.6';
+//      document.getElementById('Fortification').innerHTML = 'F';
       break;
     case 2:
       document.getElementById('Fortification').style.visibility = 'visible';
-      document.getElementById('Fortification').innerHTML = 'Fortified';
+      document.getElementById('Fortification').style.opacity = '0.9';
+//      document.getElementById('Fortification').innerHTML = 'F';
       break;
   }  
 }
