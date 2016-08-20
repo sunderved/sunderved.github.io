@@ -100,7 +100,7 @@ var NarrowsDefenseValues = {
 };    
 
 
-var game = new GameState();
+var game;
 var card;
 
 function FortificationRollNeeded(front)
@@ -134,6 +134,22 @@ var offensives = [];
 
 function GameFSM()
 {
+	if (game.NarrowsForced===true) {
+  	UI_clear();
+  	UI_info('British navy forced the Narrows and captured Constantinople.');
+  	UI_info('Campaign ends in a crushing defeat.');
+  	UI_info('GAME OVER');
+  	game.State = 8;
+  }      
+
+	if (game.ConstantinopleTaken===true) {
+  	UI_clear();
+  	UI_info('Constantinople has fallen');
+  	UI_info('GAME OVER');
+  	CalculateLosingScore();
+  	game.State = 8;
+  }	
+	
 	switch(game.State) 
   {
   	case 0:
@@ -144,7 +160,7 @@ function GameFSM()
     	UI_showOK('Start');
     	break;
   	case 1:
-    	Headline();
+    	DrawCard();
     	game.State++;
     	break;
   	case 2:
@@ -183,47 +199,37 @@ function GameFSM()
     	break;
   	case 7:
     	UpdateNationalWill();
+     	UI_hideCard();
     	if ( game.TurkishNationalWill < -3 ) {
       	UI_clear();
       	UI_info('Turkish Morale has collapsed.');
       	UI_info('Campaign ends in a crushing defeat.');
       	UI_info('GAME OVER');
-      	game.State = 0;    
+      	game.State++;    
+      	GameFSM();  
       } else if ( game.Deck.length===0 ) {
       	UI_clear();
       	UI_info('VICTORY!');
       	UI_info('Young Turks have survived all the Allied forces');
       	CalculateWinningScore();
-      	game.State = 0;  
+      	game.State++;
+      	GameFSM();  
       }	else {  
       	UI_clear();
-//       	UI_info('End Turn');
       	game.State = 1;
       	GameFSM();      	
       }
     	break;        
+    case 8:
+     	UI_hideCard();
+    	console.log('End game');
+    	break;
   }
 	return game.SubState;
 }
 
 function OSnext() {
-  
-	if (game.NarrowsForced===true) {
-  	UI_clear();
-  	UI_info('British navy forced the Narrows and captured Constantinople.');
-  	UI_info('Campaign ends in a crushing defeat.');
-  	UI_info('GAME OVER');
-  	return;
-  }      
-
-	if (game.ConstantinopleTaken===true) {
-  	UI_clear();
-  	UI_info('Constantinople has fallen');
-  	UI_info('GAME OVER');
-  	CalculateLosingScore();
-  	return;
-  }
-        
+          
 	GameFSM();
 }
 
@@ -232,7 +238,7 @@ function OSnext() {
 // Game Phase
 // -------------------------------------------------------
 
-function Headline()
+function DrawCard()
 {
 	game.Blocked.Sinai              = false;
 	game.Blocked.Mesopotamia        = false;
@@ -255,7 +261,7 @@ function Headline()
   // draw card
 	var id = game.Deck.shift()
 	card = cards[ id ];
-	game.Played.push(id);
+	game.Played.unshift(id);
       
 	UI_showCard(card);
 	UI_clear();
@@ -817,10 +823,18 @@ function CanUseGermanStaffOperations()
 // - init Function (Entry Point) 
 // ------------------------------------------------------------------
 
+function startNewGame()
+{
+	game = new GameState();
+	UI_startNewGame();
+}
+
+
 function init()
 {
-	initView();          
-	OSnext();  
+	initView();     
+	
+	startNewGame();	     
 }
 
 // ------------------------------------------------------------------

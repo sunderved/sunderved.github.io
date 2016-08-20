@@ -2,17 +2,18 @@
 // - UI for Draw Card
 // ------------------------------------------------------------------
 
+function UI_hideCard() 
+{
+	document.getElementById('card').classList.remove('visible');
+}
+
 function UI_showCard() 
 {	
   UI_clear();
-	document.getElementById('card').classList.remove('visible');
 	setTimeout(function () {
 		UI_updateCardInfo();
 		document.getElementById('card').classList.add('visible'); 
 	}, 1000);		
-// 	setTimeout(function () {
-// 		UI_showOK();		
-// 	}, 1900);		   
 }
 
 // ------------------------------------------------------------------

@@ -98,7 +98,7 @@ function UI_waitForDieClick() {
 }
 
 // ------------------------------------------------------------------
-// - Mist UI Stuff 
+// - Misc UI Stuff 
 // ------------------------------------------------------------------
 
 
@@ -438,15 +438,15 @@ function onTouch(divid, callback) {
 }
 
 function initView() 
-{
-  document.getElementById('ok').style.visibility='hidden';  
-  
+{  
   // disable default event handler  
   if ("ontouchstart" in document.documentElement) {
     document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
     document.addEventListener('touchstart', function(e){ e.preventDefault(); });     
   }  
-      
+ 
+  UI_initDie();
+         
   onTouch('ok',           function() { UI_clickedOk();              } );
   onTouch('closespecial', function() { UI_closeOverlay();           } );
   onTouch('bureau_tur',   function() { DeployBureau('Turkey');      } );
@@ -486,9 +486,13 @@ function initView()
 
   onTouch('info',         function() { UI_clickedOk(); } ); 
   onTouch('skip',         function() { SkipActions(); } ); 
-        
-  UI_initDie();
+}
+
+function UI_startNewGame()
+{
+  UI_clear();    
   UI_hideActions();
+ 	UI_hideCard();
   UI_updateFront('Sinai');
   UI_updateFront('Mesopotamia');
   UI_updateFront('Caucasus');
@@ -497,9 +501,8 @@ function initView()
   UI_updateFront('Salonika');
   UI_updateNarrows();
   UI_updateCounters();
-  UI_updateFortitude(4);    
-  UI_clear();    
+  UI_updateFortitude(4);  
+  OSnext();  
 }
-
 
 

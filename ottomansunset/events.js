@@ -171,9 +171,7 @@ function FortificationofGazaBeershebaLine() {
   	function() { card.actions=0; game.GazaBeershebaFortifications=2; UI_updateCardInfo(); UI_updateCounters(); },
   	'Keep 2 Actions',
   	function() { console.log('Clicked'); }
-	);
-  
-  UI_FortificationofGazaBeershebaLine();
+	);  
 }
 function SinaiPipeline() {
   // Shuffle the Dusk cards into the deck. 
