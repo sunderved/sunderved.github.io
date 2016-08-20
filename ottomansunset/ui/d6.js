@@ -1,5 +1,5 @@
 
-D6 = function(container, name, size, background, dotcolor)
+function D6(container, name, size, background, dotcolor)
 {	
  	var ps = 26.6666666666666;
  	var x1 =  6.6666666666666;
@@ -11,8 +11,8 @@ D6 = function(container, name, size, background, dotcolor)
 //  	var x2 = 38;
 //  	var x3 = 69;	
 		
-	if (background==undefined) background = '#A0A0A0';
-	if (dotcolor  ==undefined) dotcolor   = 'black';
+	if (background===undefined) background = '#A0A0A0';
+	if (dotcolor  ===undefined) dotcolor   = 'black';
 				   
 	this.showRoll = function(roll) 
 	{
@@ -32,15 +32,15 @@ D6 = function(container, name, size, background, dotcolor)
 				}	
 			}, (75*i));					
 		}
-	}
+	};
 	
 	this.hide = function() {
 		this.div.style.display='none';
-	}
+	};
 
 	this.show = function() {
 		this.div.style.display='';
-	}
+	};
 		
 	// ----------------------------------------------------------------
 	// Private members
@@ -57,7 +57,7 @@ D6 = function(container, name, size, background, dotcolor)
 	    array[i] = t;
 	  }  
 	  return array;
-	} 	
+	}; 	
 	
   var el = document.createElement("div");
   el.id=name;
@@ -69,7 +69,7 @@ D6 = function(container, name, size, background, dotcolor)
 	el.style.boxSizing = 'border-box';
   el.style.padding = 0;
   el.style.margin = 0;
-  el.style.zIndex = 1
+  el.style.zIndex = 1;
 	document.getElementById(container).appendChild(el);     	
 		
 	this.createDot = function(id, x, y) {

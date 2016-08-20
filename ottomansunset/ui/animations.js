@@ -62,8 +62,8 @@ function UI_ForcingTheNarrows(events) {
 	
   UI_OpenOverlay('narrowsmap');
 		
-	if (events.length==0) {
-		if (game.BritishFortitude==0) {
+	if (events.length===0) {
+		if (game.BritishFortitude===0) {
 			UI_info('Turks have won the campaign');
 		} 
   	UI_showOK();
@@ -74,16 +74,16 @@ function UI_ForcingTheNarrows(events) {
 		
   setTimeout(function () {
 	  UI_infoClear();
-		die.div.classList = '';
-		document.getElementById(defense['name']).classList.add('highlighted');	
-		UI_info('English fleet passing by '+defense['name']);
+		die.div.className = '';
+		document.getElementById(defense.name).classList.add('highlighted');	
+		UI_info('English fleet passing by '+defense.name);
 	}, 1000);		
   setTimeout(function () {
-		UI_showDieRoll(defense['d6']);
+		UI_showDieRoll(defense.d6);
   }, 1500);		
   setTimeout(function () {  
- 	  UI_showDieSuccess( defense['success'] );
-		UI_updateFortitude( defense['fortitude'] );
+ 	  UI_showDieSuccess( defense.success );
+		UI_updateFortitude( defense.fortitude );
 // 	  if (defense['success']) {
 // 			UI_info('Success');
 // 	  } else {
@@ -92,7 +92,7 @@ function UI_ForcingTheNarrows(events) {
 // 	  }
 	}, 2300);		
   setTimeout(function () {
-		document.getElementById(defense['name']).classList.remove('highlighted');	
+		document.getElementById(defense.name).classList.remove('highlighted');	
 	  UI_ForcingTheNarrows(events);
 	}, 3000);
 }
@@ -110,7 +110,7 @@ function UI_GermanUboats() {
   UI_showOK();
 }
 function UI_SuvlaLanding() {
-	if (game.Front['Gallipoli'] != undefined) {
+	if (game.Front.Gallipoli !== undefined) {
 		UI_info('Gallipoli unit is increased to 3');
 		UI_updateFront('Gallipoli');
 	} else {
@@ -119,8 +119,8 @@ function UI_SuvlaLanding() {
   UI_showOK();
 }
 function UI_GrandDukeNicholasTakesControl() {
-	if (game.Front['Caucasus'] != undefined) {
-		UI_info('New Caucasus Front value: '+game.Army['Caucasus']);
+	if (game.Front.Caucasus !== undefined) {
+		UI_info('New Caucasus Front value: '+game.Army.Caucasus);
 		UI_updateFront('Caucasus');
 	} else {
 		UI_info('Caucasus front inactive. Nothing happens');
@@ -181,8 +181,8 @@ function UI_ArabRevolt() {
  	UI_showOK(); 	
 }
 function UI_YudenichNamedCommanderInChief() {
-	if (game.Front['Caucasus'] != undefined) {
-		UI_info('New Caucasus Front value: '+game.Army['Caucasus']);
+	if (game.Front.Caucasus !== undefined) {
+		UI_info('New Caucasus Front value: '+game.Army.Caucasus);
 		UI_updateFront('Caucasus');
 	} else {
 		UI_info('Caucasus front inactive. Nothing happens');
@@ -204,7 +204,7 @@ function UI_ProvisionalGovernmentTakesCharge() {
 	}, 2000);  	
 }
 function UI_Sandstorms(front, d6) {
-	UI_info('Roll a die')
+	UI_info('Roll a die');
 	UI_info('Retreat Mesopotamia unit on 1,2,3 or Sinai unit on 4,5,6');
   setTimeout(function () {
 		UI_showDieRoll(d6);
@@ -387,7 +387,7 @@ function UI_CoupAttempt(country, d6, drm, outcome)
 {
 	UI_info('<U>'+'Coup attempt in '+country+' (5)'+'</U>');
   setTimeout(function () {
-	  if (game.IntelligenceBureau==undefined) {
+	  if (game.IntelligenceBureau===undefined) {
 			UI_info('Intelligence Bureau of the East not deployed, DRM: 0');
 		} else {
 			UI_info('Intelligence Bureau of the East in '+ game.IntelligenceBureau+', DRM: '+drm);
@@ -410,9 +410,9 @@ function UI_AttritionRoll(type, d6, success)
 {
 	UI_info(type+' Attrition Roll');
 	
-	var pos = game.Front['Sinai']; // - ((success)?0:1);
+	var pos = game.Front.Sinai; // - ((success)?0:1);
 //	if (type=='Fortification') pos = 4;
-	document.getElementById('Sinai').classList = 'army Sinai'+pos+type.charAt(0);	
+	document.getElementById('Sinai').className = 'army Sinai'+pos+type.charAt(0);	
 //	console.log( document.getElementById('Sinai').classList );
 	
   setTimeout(function () {
@@ -434,7 +434,7 @@ function UI_AttritionRoll(type, d6, success)
 function UI_showOffensive(front, ask_yildirim)
 {
 	UI_updateFront(front);	
-	if (ask_yildirim==true) {					
+	if (ask_yildirim===true) {					
 	  setTimeout(function () {  		
 			UI_askYildirim(front);
 			UI_showOK('Next');										

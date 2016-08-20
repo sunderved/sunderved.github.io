@@ -24,27 +24,27 @@ function GoebenDominates() {
 }
 function JihadDeclared() {
 	// Override default DRMs
-  game.DRM['Sinai']       = 1; 
-  game.DRM['Mesopotamia'] = 1; 
-  game.DRM['Caucasus']    = 1; 
-  game.DRM['Arab']        = 1; 
-  game.DRM['Gallipoli']   = 1; 
-  game.DRM['Salonika']    = 1; 
+  game.DRM.Sinai       = 1; 
+  game.DRM.Mesopotamia = 1; 
+  game.DRM.Caucasus    = 1; 
+  game.DRM.Arab        = 1; 
+  game.DRM.Gallipoli   = 1; 
+  game.DRM.Salonika    = 1; 
   // Shuffle the Mid-Day cards
   ShuffleDeck(midday);
   UI_JihadDeclared();
 }
 function EnverToTheFront() {
 	// Override blocked actions
-	game.Blocked['Sinai']              = true;
-	game.Blocked['Mesopotamia']        = true;
-	game.Blocked['Caucasus']           = false;
-	game.Blocked['Arab']               = true;
-	game.Blocked['Salonika']           = true;
-	game.Blocked['Gallipoli']          = true;
-	game.Blocked['Theatres']           = true;
-	game.Blocked['IntelligenceBureau'] = true;
-	game.Blocked['Narrows']            = true;
+	game.Blocked.Sinai              = true;
+	game.Blocked.Mesopotamia        = true;
+	game.Blocked.Caucasus           = false;
+	game.Blocked.Arab               = true;
+	game.Blocked.Salonika           = true;
+	game.Blocked.Gallipoli          = true;
+	game.Blocked.Theatres           = true;
+	game.Blocked.IntelligenceBureau = true;
+	game.Blocked.Narrows            = true;
   // No event this turn
   NoEvent();
 }
@@ -58,14 +58,14 @@ function WassmussInPersia() {
 }
 function TurkishMinelaying() {
 	// Override default DRMs
-	game.DRM['Mesopotamia'] = 1;
+	game.DRM.Mesopotamia = 1;
   // Place 1 Minefield marker for free
   var mine = 0;
-  if (game.Narrows['Minefield_1']==0) {
-	  game.Narrows['Minefield_1']=4;
+  if (game.Narrows.Minefield_1===0) {
+	  game.Narrows.Minefield_1=4;
 	  mine=1;
-  } else if (game.Narrows['Minefield_2']==0) {
-	  game.Narrows['Minefield_2']=4;
+  } else if (game.Narrows.Minefield_2===0) {
+	  game.Narrows.Minefield_2=4;
 	  mine=2;
   }
   UI_TurkishMinelaying(mine);
@@ -73,20 +73,20 @@ function TurkishMinelaying() {
 function ForcingTheNarrows()
 {
 	var events = [];
-	if (game.StraitsClosed==false) {	
+	if (game.StraitsClosed===false) {	
 		game.BritishFortitude = 4;	
-		for (def in game.Narrows) {
-			if (game.Narrows[def]==true) {	
+		for (var def in game.Narrows) {
+			if (game.Narrows[def]===true) {	
 				var d6 = rollDice();
-				var success = (d6>NarrowsDefenseValues[def])
-				if (success==false) game.BritishFortitude--;
+				var success = (d6>NarrowsDefenseValues[def]);
+				if (success===false) game.BritishFortitude--;
 				var defense = {};
-				defense['name'] = def;
-				defense['d6'] = d6;
-				defense['success'] = success;
-				defense['fortitude'] = game.BritishFortitude;
+				defense.name = def;
+				defense.d6 = d6;
+				defense.success = success;
+				defense.fortitude = game.BritishFortitude;
 				events.push(defense);
-				if (game.BritishFortitude==0) {
+				if (game.BritishFortitude===0) {
 					break;
 				}
 			}
@@ -108,7 +108,7 @@ function SecondBattleofYpres() {
 function GallipoliLanding() {
   // Place the Hamilton (2) marker on space 4. Destroy the Seddulbahir Gun in the Narrows
   PlaceArmy('Gallipoli', 4, 2);	
-  game.Narrows['Seddulbahir'] = 0;
+  game.Narrows.Seddulbahir = 0;
   UI_GallipoliLanding();
 }
 function GorliceTarnow() {
@@ -121,15 +121,15 @@ function ItalyJoinsTheWar() {
 }
 function GermanUboats() {
 	// Override default DRMs
-	game.DRM['Gallipoli'] = 1; 
-  game.DRM['Salonika']  = 1; 
+	game.DRM.Gallipoli = 1; 
+  game.DRM.Salonika  = 1; 
   // Place the U-boat marker in the Narrows
 	game.StraitsClosed = true;  
   UI_GermanUboats();
 }
 function ArmenianMassacre() {
 	// Override blocked actions
-	game.Blocked['Caucasus'] = true;
+	game.Blocked.Caucasus = true;
   // No event this turn
   NoEvent();
 }
@@ -140,7 +140,7 @@ function SuvlaLanding() {
 }
 function GrandDukeNicholasTakesControl() {
   // If in play replace the Caucasus marker with its Nicholas unit (3 or 2)
- 	ReplaceArmy('Caucasus', (game.ImperialRussia==true)?3:2);
+ 	ReplaceArmy('Caucasus', (game.ImperialRussia===true)?3:2);
   UI_GrandDukeNicholasTakesControl();
 }
 function BulgariaJoinsTheCentralPowers() {
@@ -194,7 +194,7 @@ function GallipoliEvacuation() {
 }
 function ErzurumOffensive() {
 	// Override blocked actions
-	game.Blocked['Caucasus'] = true;
+	game.Blocked.Caucasus = true;
 	// No event this turn
   NoEvent();
 }
@@ -246,21 +246,21 @@ function Yildirim() {
   UI_Yildirim();
 }
 function ProvisionalGovernmentTakesCharge() {
-  if (game.Front['Caucasus']!=undefined) {
+  if (game.Front.Caucasus!==undefined) {
 	  // If the Caucasus unit is on the map, retreat it one space.
 		RetreatFront('Caucasus');
 	} else {
 	  // If it is not, return it to Kars (5). 
-	  game.Front['Caucasus'] = 5;
+	  game.Front.Caucasus = 5;
   }
   // Either way, place it to it's reduced side
   game.ImperialRussia = false;
-  game.Army['Caucasus'] = game.Army['Caucasus']-1;
+  game.Army.Caucasus = game.Army.Caucasus-1;
   UI_ProvisionalGovernmentTakesCharge();
 }
 function Sandstorms() {  
 	// Roll a die
-	var d6 = rollDice()
+	var d6 = rollDice();
 	// On 1,2 or 3 the Mesopotamia unit retreats on space	
 	// On 4,5 or 6 the Sinai unit retreats on space	
 	var front = (d6<=3)?'Mesopotamia':'Sinai';
@@ -273,7 +273,7 @@ function Sandstorms() {
 }
 function KingConstantineFleesGreece() {
 	// Override default DRMs
-	game.DRM['Salonika'] = -1; 
+	game.DRM.Salonika = -1; 
   // No event this turn
   NoEvent();
 }
@@ -310,7 +310,7 @@ function WarWeariness() {
 }
 function HoffmanOffensive() {
 	// Override default DRMs
-	game.DRM['Caucasus'] = 1;
+	game.DRM.Caucasus = 1;
   // Eastern 2
 	OffMapBattle('Hoffman Offensive', 'Eastern', 2);
 }
@@ -321,26 +321,26 @@ function BolshevikRevolution() {
 }
 function BalfourDeclaration() {
 	// Override default DRMs
-	game.DRM['Sinai'] = 1; 
+	game.DRM.Sinai = 1; 
   // No event this turn
   NoEvent();
 }
 function SykesPicotAgreementDivulged() {
 	// Override default DRMs
-	game.DRM['Sinai']    = 1; 
-	game.DRM['Caucasus'] = 1; 
+	game.DRM.Sinai    = 1; 
+	game.DRM.Caucasus = 1; 
   // No event this turn
   NoEvent();
 }
 function Kaiserschlacht() {
 	// Override default DRMs
-  game.DRM['Sinai']         = 1; 
-  game.DRM['Mesopotamia']   = 1; 
-  game.DRM['Caucasus']      = 1; 
-  game.DRM['Arab']          = 1; 
-  game.DRM['Gallipoli']     = 1; 
-  game.DRM['Salonika']      = 1; 
-  game.DRM['Kaiserchlacht'] = 1; 
+  game.DRM.Sinai         = 1; 
+  game.DRM.Mesopotamia   = 1; 
+  game.DRM.Caucasus      = 1; 
+  game.DRM.Arab          = 1; 
+  game.DRM.Gallipoli     = 1; 
+  game.DRM.Salonika      = 1; 
+  game.DRM.Kaiserchlacht = 1; 
   // Place the Kaiserschlacht token on the map
   // Conduct this Phase each turn from now on
   game.Kaiserschlacht = true;
@@ -348,12 +348,12 @@ function Kaiserschlacht() {
 }
 function ArmyOfIslam() {
 	// Override default DRMs
-  game.DRM['Sinai']         = 1; 
-  game.DRM['Mesopotamia']   = 1; 
-  game.DRM['Caucasus']      = 1; 
-  game.DRM['Arab']          = 1; 
-  game.DRM['Gallipoli']     = 1; 
-  game.DRM['Salonika']      = 1;
+  game.DRM.Sinai         = 1; 
+  game.DRM.Mesopotamia   = 1; 
+  game.DRM.Caucasus      = 1; 
+  game.DRM.Arab          = 1; 
+  game.DRM.Gallipoli     = 1; 
+  game.DRM.Salonika      = 1;
   // No event this turn
   NoEvent();
 }

@@ -73,7 +73,7 @@ function GameState ()
 		Constantinople: true
 	}; 	
 	this.Deck = [];
-};
+}
 
 var KaiserschlachtBattleValues = {
 	Kaiserschlacht1: 3,
@@ -94,23 +94,17 @@ var NarrowsDefenseValues = {
 	Canakkale: 			2,
 	Nagara: 				3,
 	Constantinople: 4
-}		
+};		
 
 
 var game = new GameState();
 var card;
 
-function expect(v)
-{
-	game.expected = v;
-	if (game.next!=game.expected) { alert('game.next='+game.next+' game.expected='+game.expected) };
-}
-
 function FortificationRollNeeded(front)
 {
 	return (
 		front=='Sinai' &&
-		(game.Front['Sinai']==4) && 
+		(game.Front.Sinai==4) && 
 		(game.GazaBeershebaFortifications>0)
 	);
 }
@@ -119,8 +113,8 @@ function WaterRollNeeded(front)
 {
 	return (
 		front=='Sinai' &&
-		(game.Front['Sinai']>=4) && 
-		(game.SinaiPipelineBuilt==false)
+		(game.Front.Sinai>=4) && 
+		(game.SinaiPipelineBuilt===false)
 	);
 }
 
@@ -134,7 +128,7 @@ function CanUseYildirim(front)
 
 function test() {
 	game.GazaBeershebaFortifications=2;
-	game.Front[ 'Sinai']=5;
+	game.Front.Sinai=5;
 	UI_updateFront('Sinai');
 	UI_updateCounters();
 	d6queue=[ 
@@ -160,6 +154,7 @@ function GameFSM()
 		case 0:
 			// Initialization stuff
 			ShuffleDeck(morning);
+			game.Deck =[23];
 			state = 0;
 			game.state++;
 			GameFSM();
@@ -173,19 +168,19 @@ function GameFSM()
 			game.state++;
 			break;
 		case 3:
-			if ( OffensivesFSM()==0 ) { 
+			if ( OffensivesFSM()===0 ) { 
 				game.state++;
 				GameFSM();
 			}
 			break;
 		case 4:
-			if ( PlayerActionFSM()==0 ) { 
+			if ( PlayerActionFSM()===0 ) { 
 				game.state++;
 				GameFSM();
 			}
 			break;
 		case 5:
-			if ( GermanStaffOperationsFSM()==0 ) { 
+			if ( GermanStaffOperationsFSM()===0 ) { 
 				game.state++;
 				GameFSM();
 			}
@@ -208,13 +203,13 @@ function GameFSM()
 				UI_info('Turkish Morale has collapsed.');
 				UI_info('Campaign ends in a crushing defeat.');
 				UI_info('GAME OVER');
-				game.state = 0;;		
-			} else if ( game.Deck.length==0 ) {
+				game.state = 0;		
+			} else if ( game.Deck.length===0 ) {
 				UI_infoClear();
 				UI_info('VICTORY!');
 				UI_info('Young Turks have survived all the Allied forces');
 				CalculateWinningScore();
-				game.state = 0;;		
+				game.state = 0;	
 			}	else {	
 				UI_infoClear();
 				UI_showOK('End Turn');
@@ -227,7 +222,7 @@ function GameFSM()
 
 function OSnext() {
 	
-	if (game.NarrowsForced==true) {
+	if (game.NarrowsForced===true) {
 		UI_infoClear();
 		UI_info('British navy forced the Narrows and captured Constantinople.');
 		UI_info('Campaign ends in a crushing defeat.');
@@ -235,7 +230,7 @@ function OSnext() {
 		return;
 	}			
 
-	if (game.ConstantinopleTaken==true) {
+	if (game.ConstantinopleTaken===true) {
 		UI_infoClear();
 		UI_info('Constantinople has fallen');
 		UI_info('GAME OVER');
@@ -254,23 +249,23 @@ function OSnext() {
 
 function Headline()
 {
-	game.Blocked['Sinai']              = false;
-	game.Blocked['Mesopotamia']        = false;
-	game.Blocked['Caucasus']           = false;
-	game.Blocked['Arab']               = false;
-	game.Blocked['Salonika']           = false;
-	game.Blocked['Gallipoli']          = false;
-	game.Blocked['Theatres']           = false;
-	game.Blocked['IntelligenceBureau'] = false;
-	game.Blocked['Narrows']            = false;
+	game.Blocked.Sinai              = false;
+	game.Blocked.Mesopotamia        = false;
+	game.Blocked.Caucasus           = false;
+	game.Blocked.Arab               = false;
+	game.Blocked.Salonika           = false;
+	game.Blocked.Gallipoli          = false;
+	game.Blocked.Theatres           = false;
+	game.Blocked.IntelligenceBureau = false;
+	game.Blocked.Narrows            = false;
 				
-  game.DRM['Sinai']                  = 0; 
-  game.DRM['Mesopotamia']            = 0; 
-  game.DRM['Caucasus']               = 0; 
-  game.DRM['Arab']                   = 0; 
-  game.DRM['Gallipoli']              = 0; 
-  game.DRM['Salonika']               = 0; 
-  game.DRM['Kaiserchlacht']          = 0; 
+  game.DRM.Sinai                  = 0; 
+  game.DRM.Mesopotamia            = 0; 
+  game.DRM.Caucasus               = 0; 
+  game.DRM.Arab                   = 0; 
+  game.DRM.Gallipoli              = 0; 
+  game.DRM.Salonika               = 0; 
+  game.DRM.Kaiserchlacht          = 0; 
 		
 	// draw card
 	card = cards[ game.Deck.shift() ];
@@ -281,8 +276,11 @@ function Headline()
 
 
 var state = 0;
+var front = '';
 function OffensivesFSM()
 {	
+    var d6, success;
+    
 	switch (state) 
 	{
 		case 0:
@@ -304,10 +302,10 @@ function OffensivesFSM()
 			UI_infoClear();
 			UI_info('Army Movement on the '+front+' Front');
 			AdvanceFront(front);				
-			if (WaterRollNeeded(front)==true) {
-				var d6 = rollDice();
-				var success = (d6<game.Army['Sinai']);
- 				if (success==false) { state = 5; }
+			if (WaterRollNeeded(front)===true) {
+				d6 = rollDice();
+				success = (d6<game.Army.Sinai);
+ 				if (success===false) { state = 5; }
 				UI_AttritionRoll('Water', d6, success);
 				// yield undefined;
 			} else {
@@ -317,9 +315,9 @@ function OffensivesFSM()
 			
 		case 3:	
 			state = 4;		
-			if (FortificationRollNeeded(front)==true) {
-				var d6 = rollDice();
-				var success = (d6<game.Army['Sinai']);
+			if (FortificationRollNeeded(front)===true) {
+				d6 = rollDice();
+				success = (d6<game.Army.Sinai);
 				if (success) game.GazaBeershebaFortifications--;
 				if (game.GazaBeershebaFortifications>0) { state = 5; }
 				UI_AttritionRoll('Fortification', d6, success);
@@ -331,7 +329,7 @@ function OffensivesFSM()
 
 		case 4:	
 			state = 1;
-			game.ConstantinopleTaken = (game.Front[front]==0); 
+			game.ConstantinopleTaken = (game.Front[front]===0); 
 			UI_showOffensive(front, CanUseYildirim(front));			
 			// yield undefined;		
 			break;
@@ -378,15 +376,15 @@ function GermanStaffOperationsFSM()
 			GermanStaffOperationsFSM();
 			break;
 		case 1:
-			if (CanUseGermanStaffOperations()==true) {
+			if (CanUseGermanStaffOperations()===true) {
 				// If staff operations are possible this turn, 
 				// offer the choice to 1) use Staff Operations or 2) skip
 				state = 2;
 				UI_infoClear();
 				UI_info('Use German Staff Operations?');			
-				if ( game.Theatre['Western']>0 ) UI_enable('Western');
-				if ( game.Theatre['Eastern']>0 ) UI_enable('Eastern');
-				if ( game.Theatre['Naval']>0 )   UI_enable('Naval');			
+				if ( game.Theatre.Western>0 ) UI_enable('Western');
+				if ( game.Theatre.Eastern>0 ) UI_enable('Eastern');
+				if ( game.Theatre.Naval  >0 ) UI_enable('Naval');			
 				UI_showOK('No');				
 			} else {
 				// If staff operations NOT are possible this turn, 
@@ -398,7 +396,7 @@ function GermanStaffOperationsFSM()
 			// Decode player's choice regarding staff operations
 			UI_hideActions(); 
 			UI_updateCardInfo();			
-			if (card.actions==0) {
+			if (card.actions===0) {
 				// Actions count is still at 0 -> User has declined to use staff ops
 				// End this phase
 				state = 0;
@@ -466,7 +464,7 @@ function TurkishOffensive(front) {
 function UseYildirim(front)
 {	
 	console.log('UseYildirim '+ front);
-	game.Yildirim--
+	game.Yildirim--;
 	RetreatFront(front);
 	UI_UseYildirim(front);
 }
@@ -573,27 +571,27 @@ function UpdateNationalWill()
 	game.TurkishNationalWill  = game.Victories.length;
 	game.TurkishNationalWill -= game.Defeats.length;
 		
-	if (game.Front['Caucasus']!=undefined) {
-		if (game.Front['Caucasus']<=2) game.TurkishNationalWill--;
-		if (game.Front['Caucasus']<=1) game.TurkishNationalWill--;
+	if (game.Front.Caucasus!==undefined) {
+		if (game.Front.Caucasus<=2) game.TurkishNationalWill--;
+		if (game.Front.Caucasus<=1) game.TurkishNationalWill--;
 	}
-	if (game.Front['Mesopotamia']!=undefined) {
-		if (game.Front['Mesopotamia']<=2) game.TurkishNationalWill--;
-		if (game.Front['Mesopotamia']<=1) game.TurkishNationalWill--;
+	if (game.Front.Mesopotamia!==undefined) {
+		if (game.Front.Mesopotamia<=2) game.TurkishNationalWill--;
+		if (game.Front.Mesopotamia<=1) game.TurkishNationalWill--;
 	}
-	if (game.Front['Sinai']!=undefined) {
-		if (game.Front['Sinai']<=3) game.TurkishNationalWill--;
-		if (game.Front['Sinai']<=2) game.TurkishNationalWill--;
+	if (game.Front.Sinai!==undefined) {
+		if (game.Front.Sinai<=3) game.TurkishNationalWill--;
+		if (game.Front.Sinai<=2) game.TurkishNationalWill--;
 	}
-	if (game.Front['Arab']!=undefined) {
-		if (game.Front['Sinai']>2)
-			if (game.Front['Arab']<=2) game.TurkishNationalWill--;
+	if (game.Front.Arab!==undefined) {
+		if (game.Front.Sinai>2)
+			if (game.Front.Arab<=2) game.TurkishNationalWill--;
 	}
-	if (game.Front['Salonika']!=undefined) {
-		if (game.Front['Salonika']<=2) game.TurkishNationalWill--;
+	if (game.Front.Salonika!==undefined) {
+		if (game.Front.Salonika<=2) game.TurkishNationalWill--;
 	}
-	if (game.Front['Gallipoli']!=undefined) {
-		if (game.Front['Gallipoli']<=2) game.TurkishNationalWill--;
+	if (game.Front.Gallipoli!==undefined) {
+		if (game.Front.Gallipoli<=2) game.TurkishNationalWill--;
 	}	
 }
 
@@ -656,8 +654,8 @@ function RemoveArmy(front)
 
 function ShuffleDeck(newcards)
 {
-  for (id of newcards) {
-	  game.Deck.push(id);
+  for (var i in newcards) {
+	  game.Deck.push(newcards[i]);
   }
   shuffle(game.Deck);
   newcards = [];
@@ -693,7 +691,7 @@ function CalculateWinningScore()
 {
 	var score = 0;
 	
-	for (front in game.Front) {
+	for (var front in game.Front) {
 		if (FrontActive(front)) {
 			score += game.Front[front];
 			console.log('+ '+front+' position: '+game.Front[front]);
@@ -709,7 +707,7 @@ function CalculateWinningScore()
 		score += 2;
 		console.log('+ Caucasus Front inactive : 2');
 	}
-	if (game.BritishFortitude==0) {
+	if (game.BritishFortitude===0) {
 		score += 1;
 		console.log('+ Won the Narrows         : 1');
 	}
@@ -727,11 +725,16 @@ function CalculateWinningScore()
 // - DB Query Helper Functions
 // ------------------------------------------------------------------
 
+//var front;
 function Offensives() {
-	var offensives = []
-	for (front of card.advances)
-		if ( FrontActive(front) ) 
+	var offensives = [];
+	for (var i in card.advances) {
+		var front = card.advances[i];
+		if ( FrontActive(front) ) { 
 			offensives.push(front);
+		}
+	}
+	console.log(offensives);
 	return offensives;		
 }
 
@@ -740,11 +743,11 @@ function AvailableActions(n) {
 }
 
 function FrontActive(f) {
-	return (game.Front[f]!=undefined);
+	return (game.Front[f]!==undefined);
 }
 
 function FrontInactive(front) {
-	return (game.Front[front]==undefined);
+	return (game.Front[front]===undefined);
 }
 
 function CanAttackFront(front)
@@ -753,7 +756,7 @@ function CanAttackFront(front)
 		AvailableActions(1) && 
 		FrontActive(front) && 
 		(game.Front[front]<maxFrontVal[front]) &&
-		(game.Blocked[front]==false)
+		(game.Blocked[front]===false)
 	);
 }
 
@@ -763,13 +766,13 @@ function CanAllocateTheatre(theatre)
 		AvailableActions(2) && 
 		(game.Resources>0) &&
 		(game.Theatre[theatre]<2) &&
-		(game.Blocked['Theatres']==false)
+		(game.Blocked.Theatres===false)
 	);
 }
 
 function CanDeployBureau()
 {	
-	if ((game.IntelligenceBureau==undefined) || game.Blocked['IntelligenceBureau']) {
+	if ((game.IntelligenceBureau===undefined) || game.Blocked.IntelligenceBureau) {
 		return false;
 	} else if (game.IntelligenceBureau=='Turkey') {
 	  return AvailableActions(1);	
@@ -782,9 +785,9 @@ function CanFortifyNarrows()
 {	
 	return (
 		AvailableActions(1) &&
-		(game.StraitsClosed==false) &&
-		(game.BritishFortitude==undefined) &&
-		(game.Blocked['Narrows']==false)
+		(game.StraitsClosed===false) &&
+		(game.BritishFortitude===undefined) &&
+		(game.Blocked.Narrows===false)
 	);	
 }
 
@@ -799,9 +802,9 @@ function CanUseAsiaKorps()
 function CanUseGermanStaffOperations()
 {
 	return (
-		(game.Theatre['Western']>0) || 
-		(game.Theatre['Eastern']>0) || 
-		(game.Theatre['Naval']>0) 
+		(game.Theatre.Western>0) || 
+		(game.Theatre.Eastern>0) || 
+		(game.Theatre.Naval  >0) 
 	);
 }
 
@@ -822,7 +825,7 @@ function init()
 var d6queue = [];
 function rollDice()
 {
-	if (d6queue.length==0) {
+	if (d6queue.length===0) {
 		return Math.floor(Math.random() * 6) + 1 ;
 	} else {
 		return d6queue.shift();
@@ -831,9 +834,9 @@ function rollDice()
 
 function shuffle(array) {
   var m = array.length, t, i;
-  // While there rehand elements to shuffle
+  // While there remain elements to shuffle
   while (m) {
-    // Pick a rehanding element
+    // Pick a remaining element
     i = Math.floor(Math.random() * m--);
     // And swap it with the current element.
     t = array[m];
@@ -842,28 +845,10 @@ function shuffle(array) {
   }  
   return array;
 } 
-
-function isEven(n) {
-  return n == parseFloat(n)? !(n%2) : void 0;
-}
 
 function clone(obj) {
 	return JSON.parse(JSON.stringify(obj));	
 }
-
-function shuffle(array) {
-  var m = array.length, t, i;
-  // While there rehand elements to shuffle
-  while (m) {
-    // Pick a rehanding element
-    i = Math.floor(Math.random() * m--);
-    // And swap it with the current element.
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }  
-  return array;
-} 
 
 function debug(str)
 {
@@ -875,7 +860,7 @@ function debug(str)
 // ------------------------------------------------------------------
 
 // When the manifest file has changed and the browser has updated the files, 
-// it won’t use them for the current session. The application must be reloaded 
+// it wont use them for the current session. The application must be reloaded 
 window.applicationCache.addEventListener('updateready', function(e) {
 	if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
 	  // A changed manifest file has been found and downloaded by
