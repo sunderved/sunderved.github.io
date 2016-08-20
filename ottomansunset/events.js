@@ -164,6 +164,7 @@ function CentralPowersMeddlingInAfghanistan() {
 function FortificationofGazaBeershebaLine() {
   // You may immediately forfeit 2 actions to place the Gaza-Beersheba Fortification marker, 
   // if that space is controlled by the Turkish
+  UI_hideOK();
   UI_offerChoice(
   	'You may immediately forfeit 2 actions to place the Gaza-Beersheba Fortification marker, if that space is controlled by the Turkish',
   	'Fortify Gaza-Beersheba',
@@ -359,6 +360,7 @@ function ArmyOfIslam() {
 }
 function Dunsterforce() {
   // Forfeit this card's 2 action or receive the Dunsterforce DEFEAT marker
+  UI_hideOK();
   UI_offerChoice(
   	'Forfeit this card\'s 2 actions or receive the Dunsterforce Defeat marker',
   	'Forfeit 2 actions',

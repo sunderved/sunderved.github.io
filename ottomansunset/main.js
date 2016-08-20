@@ -141,14 +141,14 @@ function GameFSM()
     	ShuffleDeck(Morning);
     	game.SubState = 0;
     	game.State++;
-    	GameFSM();
+    	UI_showOK('Start');
     	break;
   	case 1:
     	Headline();
     	game.State++;
     	break;
   	case 2:
-    	UI_infoClear();
+    	UI_clear();
     	card.event();
     	game.State++;
     	break;
@@ -184,21 +184,22 @@ function GameFSM()
   	case 7:
     	UpdateNationalWill();
     	if ( game.TurkishNationalWill < -3 ) {
-      	UI_infoClear();
+      	UI_clear();
       	UI_info('Turkish Morale has collapsed.');
       	UI_info('Campaign ends in a crushing defeat.');
       	UI_info('GAME OVER');
       	game.State = 0;    
       } else if ( game.Deck.length===0 ) {
-      	UI_infoClear();
+      	UI_clear();
       	UI_info('VICTORY!');
       	UI_info('Young Turks have survived all the Allied forces');
       	CalculateWinningScore();
       	game.State = 0;  
       }	else {  
-      	UI_infoClear();
-      	UI_showOK('End Turn');
+      	UI_clear();
+//       	UI_info('End Turn');
       	game.State = 1;
+      	GameFSM();      	
       }
     	break;        
   }
@@ -208,7 +209,7 @@ function GameFSM()
 function OSnext() {
   
 	if (game.NarrowsForced===true) {
-  	UI_infoClear();
+  	UI_clear();
   	UI_info('British navy forced the Narrows and captured Constantinople.');
   	UI_info('Campaign ends in a crushing defeat.');
   	UI_info('GAME OVER');
@@ -216,7 +217,7 @@ function OSnext() {
   }      
 
 	if (game.ConstantinopleTaken===true) {
-  	UI_infoClear();
+  	UI_clear();
   	UI_info('Constantinople has fallen');
   	UI_info('GAME OVER');
   	CalculateLosingScore();
@@ -257,7 +258,7 @@ function Headline()
 	game.Played.push(id);
       
 	UI_showCard(card);
-	UI_infoClear();
+	UI_clear();
 	UI_hideOK();
 	setTimeout(function () {
 		UI_clickedOk(); 
@@ -294,7 +295,7 @@ function OffensivesFSM()
   	case 2:
     	game.SubState = 3;
     	front = offensives.shift();
-    	UI_infoClear();
+    	UI_clear();
     	UI_info('Army Movement on the '+front+' Front');
     	AdvanceFront(front);        
     	if (WaterRollNeeded(front)===true) {
@@ -345,7 +346,7 @@ function PlayerActionFSM()
     	break;
   	case 1:  
     	if (card.actions>0) {
-      	UI_infoClear();
+      	UI_clear();
       	UI_info('Action Phase. You have '+card.actions+' actions');
       	UI_updateCardInfo();
       	UI_showActions();
@@ -371,7 +372,7 @@ function GermanStaffOperationsFSM()
         // If staff operations are possible this turn, 
         // offer the choice to 1) use Staff Operations or 2) skip
       	game.SubState = 2;
-      	UI_infoClear();
+      	UI_clear();
       	UI_info('Use German Staff Operations?');      
       	if ( game.Theatre.Western>0 ) UI_enable('Western');
       	if ( game.Theatre.Eastern>0 ) UI_enable('Eastern');
@@ -394,7 +395,7 @@ function GermanStaffOperationsFSM()
       } else {
         // Action count is 1 -> User has traded off-map resources for 1 extra action
         // Show available actions, and wait for user choice
-      	UI_infoClear();
+      	UI_clear();
       	UI_info('German Staff Operations. You have '+card.actions+' action');
       	UI_showActions();
       	game.SubState = 1;
@@ -483,6 +484,13 @@ function GermanStaffOperationFrom(theatre)
 	card.actions++;
   
 	UI_GermanStaffOperationFrom(theatre);
+}
+
+function SkipActions()
+{
+	card.actions = 0;
+	UI_hideSkipActions();
+	UI_clickedOk();
 }
 
 // -------------------------------------------------------
@@ -649,7 +657,13 @@ function ShuffleDeck(newcards)
   for (var i in newcards) {
     game.Deck.push(newcards[i]);
   }
+  
   shuffle(game.Deck);
+  shuffle(game.Deck);
+  shuffle(game.Deck);
+  shuffle(game.Deck);
+  shuffle(game.Deck);
+  
   newcards = [];
 }
 
@@ -839,11 +853,6 @@ function shuffle(array) {
 
 function clone(obj) {
 	return JSON.parse(JSON.stringify(obj));  
-}
-
-function debug(str)
-{
- 	UI_info(str);
 }
 
 // ------------------------------------------------------------------

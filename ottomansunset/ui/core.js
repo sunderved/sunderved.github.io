@@ -8,6 +8,17 @@ function UI_showOK(str)
   document.getElementById('ok').style.visibility='visible';  
 	document.getElementById('ok').style.pointerEvents = 'auto';     
   document.getElementById('info').style.pointerEvents = 'auto';     
+  
+//   if (callback!==undefined) {
+// 	  console.log('Here');
+// 	  console.log(callback);
+// 	  onTouch('ok', callback);
+// 	  onTouch('info', callback);
+//   } else {
+// 	  console.log('Oh oh');
+// 	  onTouch('ok', UI_clickedOk);
+// 	  onTouch('info', UI_clickedOk);
+//   }
 }
 
 function UI_hideOK()
@@ -22,13 +33,27 @@ function UI_clickedOk()
 	document.getElementById('die').style.pointerEvents = 'none';     
 	document.getElementById('info').style.pointerEvents = 'none';     
 
-  UI_CloseOverlay();
+  UI_closeOverlay();
   UI_hideDie();
   UI_disable('Yildirim_L');
   
   OSnext();
 }
 
+
+function UI_showSkipActions()
+{
+  document.getElementById('skip').style.visibility='visible';  
+	document.getElementById('skip').style.pointerEvents = 'auto';     
+}
+
+function UI_hideSkipActions()
+{
+  document.getElementById('skip').style.visibility='hidden';  
+	document.getElementById('skip').style.pointerEvents = 'none';     
+}
+
+	
 // ------------------------------------------------------------------
 // - D6 
 // ------------------------------------------------------------------
@@ -80,11 +105,13 @@ function UI_waitForDieClick() {
 function UI_offerChoice(options, op1, op1func, op2, op2func)
 {
   document.getElementById('choice').style.visibility='visible';  
-  document.getElementById('options').innerHTML=options;  
+  //document.getElementById('options').innerHTML=options;  
   document.getElementById('op1').innerHTML=op1;  
   document.getElementById('op2').innerHTML=op2;  
   onTouch('op1', function() { document.getElementById('choice').style.visibility='hidden';  op1func(); OSnext(); } ); 
   onTouch('op2', function() { document.getElementById('choice').style.visibility='hidden';  op2func(); OSnext(); } );    
+  UI_enable('op1');
+  UI_enable('op2');
 }
 
 function UI_updateCardInfo() {
@@ -105,7 +132,7 @@ function UI_updateCardInfo() {
 
 function UI_showEvent() 
 {  
-  UI_infoClear();
+  UI_clear();
   UI_info('Event: '+card.name);
   UI_showOK();    
 }
@@ -216,7 +243,7 @@ function UI_updateBattles()
   str += 'Stalemates : '+game.Stalemates.length+'<BR>';
   str += game.Stalemates+'<BR>';
   str += '<BR>';
-  str += 'Captured Flags : '+(game.Victories.length + game.Defeats.length - game.TurkishNationalWill);
+  str += 'Flags Controlled by Allies : '+(game.Victories.length - game.Defeats.length - game.TurkishNationalWill);
   
   document.getElementById('battlemap').innerHTML = str;
 }
@@ -295,6 +322,8 @@ function UI_showActions()
   
   if ( CanUseAsiaKorps )
     UI_enable('AsiaKorps');
+  
+  UI_showSkipActions();        
 }
 
 function UI_hideActions()
@@ -315,6 +344,8 @@ function UI_hideActions()
   UI_disable('Bureau_L');      
   UI_disable('AsiaKorps');
   
+  UI_hideSkipActions();
+  
   document.getElementById('Narrows').classList.remove('highlighted');      
 }
 
@@ -334,7 +365,7 @@ function UI_enable(id, f) {
 
 var secondaries = ['narrowsmap', 'bureaumap', 'battlemap'];
 
-function UI_OpenOverlay(map)
+function UI_openOverlay(map)
 {
   document.getElementById('overlay').style.visibility = 'visible';
   document.getElementById('special').style.visibility = 'visible';  
@@ -346,7 +377,7 @@ function UI_OpenOverlay(map)
   }  
 }
 
-function UI_CloseOverlay()
+function UI_closeOverlay()
 {
   document.getElementById('overlay').style.visibility='hidden';
   document.getElementById('special').style.visibility='hidden';  
@@ -363,19 +394,27 @@ function UI_CloseOverlay()
 // - UI Message API 
 // ------------------------------------------------------------------
 
-var info;
-
-function UI_info(str) {
-  console.log(str);
-  info.innerHTML+=str;
-  info.innerHTML+='<BR>';
-  
-document.getElementById('myconsole').innerHTML+=str;
-document.getElementById('myconsole').innerHTML+='<BR>';
+function UI_clear() {
+  document.getElementById('info').innerHTML='';
 }
 
-function UI_infoClear() {
-  info.innerHTML='';
+
+function UI_info(str) {
+  document.getElementById('info').innerHTML+=str;
+  document.getElementById('info').innerHTML+='<BR>';  
+  UI_log(str);
+}
+
+function UI_log(str)
+{
+	document.getElementById('myconsole').innerHTML+=str;
+	document.getElementById('myconsole').innerHTML+='<BR>';
+	console.log(str);
+}
+
+function debug(str)
+{
+	console.log(str);
 }
 
 // ------------------------------------------------------------------
@@ -384,18 +423,22 @@ function UI_infoClear() {
 
 // Add Event Handlers
 function onTouch(divid, callback) {
+// 	if ("ontouchstart" in document.documentElement) {
+// 	  document.getElementById(divid).addEventListener('touchstart', callback);
+// 	} else {
+//  	  document.getElementById(divid).addEventListener('click', callback);
+// 	}   
+
 	if ("ontouchstart" in document.documentElement) {
-	  document.getElementById(divid).addEventListener('touchstart', callback);
+	  document.getElementById(divid).ontouchstart = callback;
 	} else {
- 	  document.getElementById(divid).addEventListener('click', callback);
-	}   
+ 	  document.getElementById(divid).onclick = callback;
+	}  
 	document.getElementById(divid).style.pointerEvents = 'none';     
-	
 }
 
 function initView() 
 {
-  info = document.getElementById('info');  
   document.getElementById('ok').style.visibility='hidden';  
   
   // disable default event handler  
@@ -405,7 +448,7 @@ function initView()
   }  
       
   onTouch('ok',           function() { UI_clickedOk();              } );
-  onTouch('closespecial', function() { UI_CloseOverlay();           } );
+  onTouch('closespecial', function() { UI_closeOverlay();           } );
   onTouch('bureau_tur',   function() { DeployBureau('Turkey');      } );
   onTouch('bureau_ind',   function() { DeployBureau('India');       } );
   onTouch('bureau_per',   function() { DeployBureau('Persia');      } );
@@ -429,9 +472,9 @@ function initView()
   onTouch('Yildirim_L',   function() { UseYildirim(front); }  );    
   onTouch('AsiaKorps',    function() { UseAsiaKorps(); }  );
                           
-  onTouch('Bureau_L',     function() {                     UI_OpenOverlay('bureaumap');  } );  
-  onTouch('Narrows',      function() { UI_updateNarrows(); UI_OpenOverlay('narrowsmap'); } );          
-  onTouch('score',        function() { UI_updateBattles(); UI_OpenOverlay('battlemap');  } );          
+  onTouch('Bureau_L',     function() {                     UI_openOverlay('bureaumap');  } );  
+  onTouch('Narrows',      function() { UI_updateNarrows(); UI_openOverlay('narrowsmap'); } );          
+  onTouch('score',        function() { UI_updateBattles(); UI_openOverlay('battlemap');  } );          
 	document.getElementById('Narrows').style.pointerEvents = 'auto';     
 	document.getElementById('score').style.pointerEvents = 'auto';     
                           
@@ -442,6 +485,7 @@ function initView()
   onTouch('Nagara',       function() { FortifyNarrows('Nagara');      } );
 
   onTouch('info',         function() { UI_clickedOk(); } ); 
+  onTouch('skip',         function() { SkipActions(); } ); 
         
   UI_initDie();
   UI_hideActions();
@@ -454,7 +498,7 @@ function initView()
   UI_updateNarrows();
   UI_updateCounters();
   UI_updateFortitude(4);    
-  UI_infoClear();    
+  UI_clear();    
 }
 
 

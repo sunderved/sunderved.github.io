@@ -186,7 +186,7 @@ html, body {
 }
 
 #nationalwill_slider {
-	left:0px; top:0px; position:absolute;	
+	left:-220px; top:0px; position:absolute;	
 	width:550px; height:55px;
 	position:absolute;
 	transition: left 1s;
@@ -290,7 +290,7 @@ html, body {
 
 #Pipeline        { left:560px; top:500px; position: absolute; border-radius: 2px; }
 #Fortification   { background-color: dimgray; color: black; z-index: 3;}
-#AsiaKorps       { width:135px; justify-content: center;   padding-left: 0px;}
+#AsiaKorps       { width:135px; text-align: center;   padding-left: 0px;}
 #Narrows         { left:217px; top:281px; position: absolute; width:52px; height:52px; border-radius:2px; }
 #Narrows.closed  { background-image:url("img/uboat.png"); }
 
@@ -357,6 +357,16 @@ html, body {
   height: 50px;
   z-index:16;
 }
+
+#skip {
+	position: absolute;
+  top: 688px;
+  left:878px;
+  width: 100px;
+  height: 50px;
+  z-index:17;
+}
+
 
 /* ----------------------------------------------------------------------- 
     The Narrows Display

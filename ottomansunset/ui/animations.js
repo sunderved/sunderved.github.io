@@ -4,7 +4,7 @@
 
 function UI_showCard() 
 {	
-  UI_infoClear();
+  UI_clear();
 	document.getElementById('card').classList.remove('visible');
 	setTimeout(function () {
 		UI_updateCardInfo();
@@ -38,7 +38,7 @@ function UI_TurkishMinelaying(mine) {
 	if (mine>0) {
 		UI_info('Turks lay a mine in the Narrows');
 	  setTimeout(function () {
-		  UI_OpenOverlay('narrowsmap');
+		  UI_openOverlay('narrowsmap');
 		}, 500);		
 	  setTimeout(function () {
 			UI_updateNarrows();
@@ -52,7 +52,7 @@ function UI_TurkishMinelaying(mine) {
 function UI_ForcingTheNarrows(events) {
 		
 	if (game.StraitsClosed) {
-		UI_infoClear();
+		UI_clear();
 		UI_info('U-boats are protecting the Narrows');
   	UI_showOK();
   	return;		
@@ -61,7 +61,7 @@ function UI_ForcingTheNarrows(events) {
 	
   UI_hideOK();
 	document.getElementById('fortitude').style.visibility = 'visible';
-  UI_OpenOverlay('narrowsmap');
+  UI_openOverlay('narrowsmap');
   document.getElementById('closespecial').style.visibility = 'hidden';  		
 
 	if (events.length===0)
@@ -78,7 +78,7 @@ function UI_ForcingTheNarrows(events) {
 	var defense = events.shift();
 		
   setTimeout(function () {
-	  UI_infoClear();
+	  UI_clear();
 		die.div.className = '';
 		document.getElementById(defense.name).classList.add('highlighted');	
 		UI_info('English fleet facing '+defense.name);
@@ -135,9 +135,6 @@ function UI_LandingAtSalonika() {
 	UI_info('Sarrail (2) Lands at Salonika'); 
 	UI_updateFront('Salonika');
   UI_showOK();
-}
-function UI_FortificationofGazaBeershebaLine() {
-  UI_hideOK();
 }
 function UI_SinaiPipeline() {	
 	UI_info('Shuffling Dusk Cards in Deck'); 
@@ -244,7 +241,7 @@ function UI_WarWeariness(d6) {
 	  UI_info('5 or 6-Gallipoli and Salonika');
   }, 1000);			
   setTimeout(function () {
-	  UI_infoClear();
+	  UI_clear();
 		UI_showDieRoll(d6);
   }, 2500);		
   setTimeout(function () {
@@ -265,9 +262,6 @@ function UI_Kaiserschlacht() {
 		UI_info('Conduct this Phase each turn from now on');	
   	UI_showOK();
   }, 2000);			
-}
-function UI_Dunsterforce() {
-  UI_hideOK();
 }
 function UI_NoEvent() {
 	UI_info('No event this turn');
@@ -294,7 +288,7 @@ function UI_FortifyNarrows() {
 	UI_updateNarrows();
 	UI_updateCardInfo();
 	setTimeout(function () {
-		UI_CloseOverlay(); 
+		UI_closeOverlay(); 
 		UI_clickedOk();		
 	}, 800);
 }
@@ -304,7 +298,7 @@ function UI_DeployBureau(country) {
 	UI_updateCounters();
 	UI_updateCardInfo();
 	setTimeout(function () {
-		UI_CloseOverlay(); 
+		UI_closeOverlay(); 
 		UI_clickedOk();		
 	}, 1000);
 }
@@ -312,7 +306,7 @@ function UI_DeployBureau(country) {
 function UI_TurkishOffensive(front, d6, success)
 {
 	UI_hideActions(); 
-	UI_infoClear();
+	UI_clear();
 	UI_info('Turkish offensive in '+front+' ('+game.Army[front]+')');
 	UI_updateCardInfo();
   setTimeout(function () {
@@ -334,7 +328,7 @@ function UI_TurkishOffensive(front, d6, success)
 
 function UI_UseYildirim()
 {
-	UI_infoClear();
+	UI_clear();
 	UI_info('Advanced blocked. '+game.Yildirim+' Yildirim remaining');
 	UI_disable('Yildirim');
 	UI_updateFront(front);	
@@ -370,7 +364,7 @@ function UI_GermanStaffOperationFrom(theatre)
 
 function UI_OffMapBattle(battle, theatre, value, d6, outcome)
 {	
-	UI_infoClear();
+	UI_clear();
 	UI_info('<U>'+battle+' Battle ('+value+')'+'</U>');
   setTimeout(function () {
 			UI_info(theatre+' theatre DRM: +'+game.Theatre[theatre]);
