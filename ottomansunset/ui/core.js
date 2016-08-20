@@ -357,15 +357,11 @@ function UI_infoClear() {
 
 // Add Event Handlers
 function onTouch(divid, callback) {
-if ("ontouchstart" in document.documentElement) {
-  document.getElementById(divid).addEventListener('touchstart', callback);
-} else {
-  document.getElementById(divid).addEventListener('click', callback);
-}   
-  
-//    document.getElementById(divid).addEventListener('touchstart', callback);
-//     document.getElementById(divid).addEventListener('click', callback);
-  
+	if ("ontouchstart" in document.documentElement) {
+	  document.getElementById(divid).addEventListener('touchstart', callback);
+	} else {
+	  document.getElementById(divid).addEventListener('click', callback);
+	}   
 }
 
 function initView() 
@@ -374,10 +370,10 @@ function initView()
   document.getElementById('ok').style.visibility='hidden';  
   
   // disable default event handler  
-//   if ("ontouchstart" in document.documentElement) {
-//     document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
-//     document.addEventListener('touchstart', function(e){ e.preventDefault(); });     
-//   }  
+  if ("ontouchstart" in document.documentElement) {
+    document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
+    document.addEventListener('touchstart', function(e){ e.preventDefault(); });     
+  }  
       
   onTouch('ok',           function() { UI_clickedOk();              } );
   onTouch('closespecial', function() { UI_CloseOverlay();           } );
