@@ -154,7 +154,6 @@ function GameFSM()
 		case 0:
 			// Initialization stuff
 			ShuffleDeck(morning);
-			game.Deck =[23];
 			state = 0;
 			game.state++;
 			GameFSM();
