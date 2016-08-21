@@ -366,11 +366,10 @@ function UI_GermanStaffOperationFrom(theatre)
 function UI_OffMapBattle(battle, theatre, value, d6, outcome)
 {	
 	UI_clear();
-	UI_info('<U>'+battle+' Battle ('+value+')'+'</U>');
-  setTimeout(function () {
-			UI_info(theatre+' theatre DRM: +'+game.Theatre[theatre]);
-			UI_info('War Weariness DRM: +'+game.WarWeariness);
-  }, 100);		
+	UI_info('<U>'+battle+'</U>'+' - BV '+value);
+// 	UI_info('Battle Value: '+value);
+	UI_info(theatre+' Theatre DRM: +'+game.Theatre[theatre]);
+	UI_info('War Weariness DRM: +'+game.WarWeariness);
   setTimeout(function () {
 		UI_showDieRoll(d6);
   }, 1000);		

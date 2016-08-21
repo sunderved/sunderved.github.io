@@ -158,6 +158,7 @@ function GameFSM()
     	game.SubState = 0;
     	game.State++;
     	UI_showOK('Start');
+    	UI_info('Click to Start Game');
     	break;
   	case 1:
     	DrawCard();
@@ -302,7 +303,7 @@ function OffensivesFSM()
     	game.SubState = 3;
     	front = offensives.shift();
     	UI_clear();
-    	UI_info('Army Movement on the '+front+' Front');
+//     	UI_info('Army Movement on the '+front+' Front');
     	AdvanceFront(front);        
     	if (WaterRollNeeded(front)===true) {
       	d6 = rollDice();
@@ -351,9 +352,12 @@ function PlayerActionFSM()
     	PlayerActionFSM();
     	break;
   	case 1:  
-    	if (card.actions>0) {
+    	if (CanUseActions()===true) {
       	UI_clear();
-      	UI_info('Action Phase. You have '+card.actions+' actions');
+      	if (card.actions>1)
+	      	UI_info('Action Phase. You have '+card.actions+' actions');
+	      else	
+	      	UI_info('Action Phase. You have '+card.actions+' action');
       	UI_updateCardInfo();
       	UI_showActions();
       	game.SubState = 1;
@@ -817,6 +821,41 @@ function CanUseGermanStaffOperations()
     (game.Theatre.Eastern>0) || 
     (game.Theatre.Naval  >0) 
   );
+}
+
+function CanUseActions()
+{
+	return (
+		CanAttackFront('Sinai')          ||
+		CanAttackFront('Mesopotamia')    ||
+		CanAttackFront('Caucasus')       ||
+		CanAttackFront('Arab')           ||
+		CanAttackFront('Salonika')       ||
+		CanAttackFront('Gallipoli')      ||
+		CanAllocateTheatre('Western')    ||
+		CanAllocateTheatre('Naval')      ||
+		CanAllocateTheatre('Eastern')    ||
+		CanFortifyNarrows()              ||
+		CanDeployBureau()
+	);	
+// 	var ok = false;
+//   for (var army in game.Front) {
+//     ok = ok || CanAttackFront(army);
+//     console.log( 'CanAttackFront('+army+') : '+CanAttackFront(army));
+//   }  
+// 
+//   for (var theatre in game.Theatre) {
+//     ok = ok || CanAllocateTheatre(theatre);
+//     console.log( 'CanAllocateTheatre('+theatre+') : '+CanAllocateTheatre(theatre));
+//   }  
+//         
+//   ok = ok || CanFortifyNarrows();
+//   ok = ok || CanDeployBureau();
+//     console.log( 'CanFortifyNarrows : '+CanFortifyNarrows());
+//     console.log( 'CanFortifyNarrows : '+CanDeployBureau());
+//     console.log( '    CanUseActions : '+ok);
+//     
+//   return ok; 
 }
 
 // ------------------------------------------------------------------

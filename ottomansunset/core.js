@@ -4,29 +4,35 @@
 
 function UI_showOK(str)
 {
-//   document.getElementById('ok').innerHTML=((str===undefined)?'Ok':str);
-//   document.getElementById('ok').style.visibility='visible';  
+  document.getElementById('ok').innerHTML=((str===undefined)?'Ok':str);
+  document.getElementById('ok').style.visibility='visible';  
 	document.getElementById('ok').style.pointerEvents = 'auto';     
   document.getElementById('info').style.pointerEvents = 'auto';     
+  
+//   if (callback!==undefined) {
+// 	  console.log('Here');
+// 	  console.log(callback);
+// 	  onTouch('ok', callback);
+// 	  onTouch('info', callback);
+//   } else {
+// 	  console.log('Oh oh');
+// 	  onTouch('ok', UI_clickedOk);
+// 	  onTouch('info', UI_clickedOk);
+//   }
 }
 
 function UI_hideOK()
 {
-//   document.getElementById('ok').style.visibility='hidden';  
-	document.getElementById('ok').style.pointerEvents = 'none';     
-	document.getElementById('die').style.pointerEvents = 'none';     
-	document.getElementById('info').style.pointerEvents = 'none';     
+  document.getElementById('ok').style.visibility='hidden';  
 }
 
 function UI_clickedOk()
 {
-//   document.getElementById('ok').innerHTML='Ok';  
-//   document.getElementById('ok').style.visibility='hidden';  
-	document.getElementById('ok').style.pointerEvents = 'none';     
+  document.getElementById('ok').innerHTML='Ok';  
+  document.getElementById('ok').style.visibility='hidden';  
 	document.getElementById('die').style.pointerEvents = 'none';     
 	document.getElementById('info').style.pointerEvents = 'none';     
 
-	UI_clear();
   UI_closeOverlay();
   UI_hideDie();
   UI_disable('Yildirim_L');
@@ -317,7 +323,7 @@ function UI_showActions()
   if ( CanUseAsiaKorps )
     UI_enable('AsiaKorps');
   
-  //UI_showSkipActions();        
+  UI_showSkipActions();        
 }
 
 function UI_hideActions()
@@ -389,15 +395,13 @@ function UI_closeOverlay()
 // ------------------------------------------------------------------
 
 function UI_clear() {
-  document.getElementById('infospan').innerHTML='';
+  document.getElementById('info').innerHTML='';
 }
 
 
 function UI_info(str) {
-	if (document.getElementById('infospan').innerHTML!='') {
-	  document.getElementById('infospan').innerHTML+='<BR>';  
-	} 
-  document.getElementById('infospan').innerHTML+=str;
+  document.getElementById('info').innerHTML+=str;
+  document.getElementById('info').innerHTML+='<BR>';  
   UI_log(str);
 }
 
@@ -482,15 +486,6 @@ function initView()
 
   onTouch('info',         function() { UI_clickedOk(); } ); 
   onTouch('skip',         function() { SkipActions(); } ); 
-  
-  onTouch('overlay',      function() { UI_closeOverlay(); } );
-  onTouch('battlemap',    function() { UI_closeOverlay(); } );
-  onTouch('narrowsmap',   function() { UI_closeOverlay(); } );
-  onTouch('bureaumap',    function() { UI_closeOverlay(); } );
-	document.getElementById('overlay').style.pointerEvents = 'auto';     
-	document.getElementById('battlemap').style.pointerEvents = 'auto';     
-	document.getElementById('narrowsmap').style.pointerEvents = 'auto';     
-	document.getElementById('bureaumap').style.pointerEvents = 'auto';     
 }
 
 function UI_startNewGame()
