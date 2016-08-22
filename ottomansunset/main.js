@@ -155,7 +155,6 @@ function GameFSM()
   	case 0:
       // Initialization stuff
     	ShuffleDeck(Morning);
-    	game.Deck = [48,1];
     	game.SubState = 0;
     	game.State++;
     	UI_info('Click to Start Game');
