@@ -6,9 +6,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
     <script type="text/javascript" src="events.js"></script> 
     <script type="text/javascript" src="cards.js"></script> 
-    <script type="text/javascript" src="ui/core.js"></script> 
-    <script type="text/javascript" src="ui/d6.js"></script> 
-    <script type="text/javascript" src="ui/animations.js"></script> 
+    <script type="text/javascript" src="uicore.js"></script> 
+    <script type="text/javascript" src="d6.js"></script> 
+    <script type="text/javascript" src="uianimations.js"></script> 
     <script type="text/javascript" src="main.js"></script> 
     <link rel="stylesheet" href="styles.css" media="screen"/>                             
     <link rel="apple-touch-icon" href="./img/icon.png" />
@@ -73,14 +73,12 @@
         </div>
       </div>
                     
-      <div id="card" class="hidden"></div>
-      
-      <div id="whitespace" class="bottombar"></div>
-      <div id="info"  class="bottombar">
+        
+      <div id="hozirontalbar" class="bottombar"></div>
+      <div id="info" class="bottombar">
       	<span id="infospan"></span>
       </div>
-      <button id="ok">Ok</button>
-      <button id="skip">Skip</button>
+      <div id="card" class="hidden"></div>
       
       <div id="choice">
           <div id="options"></div>
@@ -88,45 +86,48 @@
           <button id="op2">Forfeit 2 Actions</button>
       </div>
       
-       <div id="overlay"></div>
-      <div id="special">
-          <div id="narrowsmap" class="centered">
-            <div id="Seddulbahir"    class="defense"></div>
-            <div id="Mumkale"        class="defense"></div>
-            <div id="Minefield_1"    class="defense"></div>
-            <div id="Yildiz"         class="defense"></div>
-            <div id="Dardanos"       class="defense"></div>
-            <div id="Minefield_2"    class="defense"></div>
-            <div id="Canakkale"      class="defense"></div>
-            <div id="Nagara"         class="defense"></div>
-            <div id="Constantinople" class="defense"></div>
-            
-            <div id="fortitude">
-              <div id="fortitude_text">British<BR>Fortitude</div>
-              <div id="fortitude_mask">
-                <div id="fortitude_slider">
-                  <div class="slider_number">0</div>
-                  <div class="slider_number">1</div>
-                  <div class="slider_number">2</div>
-                  <div class="slider_number">3</div>
-                  <div class="slider_number">4</div>
-                </div>
-              </div>
+      <div id="overlay"></div>
+      
+			<div id="bureaumap" class="centered specialmap">
+				<button id="bureau_tur" class="bureaubutton" onclick="DeployBureau('Turkey')">Turkey</button>
+				<button id="bureau_ind" class="bureaubutton" onclick="DeployBureau('India')">India</button>
+				<button id="bureau_per" class="bureaubutton" onclick="DeployBureau('Persia')">Persia</button>
+				<button id="bureau_afg" class="bureaubutton" onclick="DeployBureau('Afghanistan')">Afghanistan</button>
+			</div>
+			
+			<div id="battlemap" class="centered specialmap">
+			</div>         
+			
+      <div id="narrowsmap" class="centered specialmap">
+        <div id="fortitude">
+          <div id="fortitude_text">British<BR>Fortitude</div>
+          <div id="fortitude_mask">
+            <div id="fortitude_slider">
+              <div class="slider_number">0</div>
+              <div class="slider_number">1</div>
+              <div class="slider_number">2</div>
+              <div class="slider_number">3</div>
+              <div class="slider_number">4</div>
             </div>
           </div>
-          <div id="bureaumap" class="centered">
-          <button id="bureau_tur" class="bureaubutton" onclick="DeployBureau('Turkey')">Turkey</button>
-          <button id="bureau_ind" class="bureaubutton" onclick="DeployBureau('India')">India</button>
-          <button id="bureau_per" class="bureaubutton" onclick="DeployBureau('Persia')">Persia</button>
-          <button id="bureau_afg" class="bureaubutton" onclick="DeployBureau('Afghanistan')">Afghanistan</button>
-         </div>
-          <div id="battlemap" class="centered">
-         </div>         
-        <button id="closespecial">X</button>
-      </div>      
-    <div id="myconsole"></div>                                                                                       
-    </div>  
-     <div id="version">v0.5d</div>
+        </div>        
+        <div id="Seddulbahir"    class="defense"></div>
+        <div id="Mumkale"        class="defense"></div>
+        <div id="Minefield_1"    class="defense"></div>
+        <div id="Yildiz"         class="defense"></div>
+        <div id="Dardanos"       class="defense"></div>
+        <div id="Minefield_2"    class="defense"></div>
+        <div id="Canakkale"      class="defense"></div>
+        <div id="Nagara"         class="defense"></div>
+        <div id="Constantinople" class="defense"></div>          
+      </div>
+        
+    	<div id="myconsole"></div>                                                                                       
+    	
+    </div>  <!-- end of container div -->  
+    
+		<div id="version">v0.6</div>
+		
   </body>                                                                                         
 </html>          
                                                                                

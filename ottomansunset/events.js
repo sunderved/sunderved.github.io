@@ -326,8 +326,8 @@ function BalfourDeclaration() {
 }
 function SykesPicotAgreementDivulged() {
 	// Override default DRMs
-	game.DRM.Sinai    = 1; 
-	game.DRM.Caucasus = 1; 
+	game.DRM.Sinai = 1; 
+	game.DRM.Arab  = 1; 
   // No event this turn
   NoEvent();
 }

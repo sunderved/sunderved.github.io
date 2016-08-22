@@ -35,25 +35,8 @@ html, body {
   background-color: black;
   opacity: 0.6;
   visibility: hidden;
-	z-index:2;
+	z-index:30;
 }      
-
-#special {
-  position:absolute;
-  top: 0px;
-  height:100%;
-  width:100%;
-  z-index: 20;
-	visibility:hidden;
-}    
-
-#closespecial {
-	position: absolute;
-  width: 100px;
-  height: 50px;
-  top: 688px;
-  left:878px;
-}
 
 /* ----------------------------------------------------------------------- 
     Army Tokens
@@ -205,8 +188,6 @@ html, body {
 	box-sizing: border-box;	 
 }
 
-
-
 #Defeats {
   width:30px; height:30px; border-radius:30px; background: linear-gradient(#fe9aa4,#fd3e51); border: 2px solid gray;
 	left:10px; top:65px; position: absolute;
@@ -311,7 +292,7 @@ html, body {
 	box-sizing: border-box;  	 
   font-family: Narkisim;	  
   font-size:16px;    
-	transition: top 1s, left 1s; z-index:2;    		    
+	transition: top 1s, left 1s;    		    
 }
 
 .hidden {
@@ -329,9 +310,9 @@ html, body {
   font-family: Narkisim;	  
   font-size:24px;      		  
   color: white;
-  z-index:15;
- // text-align: center;
+  z-index:50;
   display: table;
+//  opacity: 0.7;      
 }
 
 span {
@@ -339,7 +320,7 @@ span {
   vertical-align: middle;
 }
 
-#whitespace {
+#hozirontalbar {
   background-color: lightslategray ;
   opacity: 0.7;      
 }
@@ -356,34 +337,10 @@ span {
   margin: 0;
 }
 
-#ok {
-	position: absolute;
-  top: 688px;
-  left:878px;
-  width: 100px;
-  height: 50px;
-  z-index:16;
-  visibility:hidden;
-}
-
-#skip {
-	position: absolute;
-  top: 688px;
-  left:878px;
-  width: 100px;
-  height: 50px;
-  z-index:17;
-}
-
-
 /* ----------------------------------------------------------------------- 
-    The Narrows Display
+    Die Rolls
    ----------------------------------------------------------------------- */
    
-/*   
-.success { box-shadow: 0px 0px 50px 2px green; }
-.failure { box-shadow: 0px 0px 50px 2px red; }
-*/
 .success { 
   animation-name: greenPulse;
   animation-duration: 2.5s;
@@ -412,13 +369,17 @@ span {
     The Narrows Display
    ----------------------------------------------------------------------- */
 
-#narrowsmap {
+.specialmap {
   position:absolute;
-  background-image:url("img/narrows.png");
   height:500px;
   width:600px;
   opacity: 1;
+  z-index: 35;
 	border: 4px solid gray;  
+}   
+   
+#narrowsmap {
+  background-image:url("img/narrows.png");
 }  
 
 #Seddulbahir     { left: 61px; top:330px; position: absolute; }
@@ -480,12 +441,7 @@ span {
    ----------------------------------------------------------------------- */
    
 #bureaumap {
-  position:absolute;
   background: black;
-  width:600px;
-  height:500px;
-  opacity: 1;
-	border: 4px solid gray;  
 }   
 
 .bureaubutton {
@@ -501,13 +457,7 @@ span {
    ----------------------------------------------------------------------- */
    
 #battlemap {
-  position:absolute;
   background: black;
-  width:600px;
-  height:500px;
-  opacity: 1;
-	border: 4px solid gray;  
-	
 	padding-left: 20px;
   font-family: Narkisim;	  
   font-size:24px; 

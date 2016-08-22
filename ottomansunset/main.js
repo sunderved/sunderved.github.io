@@ -155,10 +155,11 @@ function GameFSM()
   	case 0:
       // Initialization stuff
     	ShuffleDeck(Morning);
+    	game.Deck = [48,1];
     	game.SubState = 0;
     	game.State++;
-    	UI_showOK('Start');
     	UI_info('Click to Start Game');
+			UI_waitForClick();
     	break;
   	case 1:
     	DrawCard();
@@ -384,10 +385,10 @@ function GermanStaffOperationsFSM()
       	game.SubState = 2;
       	UI_clear();
       	UI_info('Use German Staff Operations?');      
-      	if ( game.Theatre.Western>0 ) UI_enable('Western');
-      	if ( game.Theatre.Eastern>0 ) UI_enable('Eastern');
-      	if ( game.Theatre.Naval  >0 ) UI_enable('Naval');      
-      	UI_showOK('No');        
+      	if ( game.Theatre.Western>0 ) UI_focus('Western');
+      	if ( game.Theatre.Eastern>0 ) UI_focus('Eastern');
+      	if ( game.Theatre.Naval  >0 ) UI_focus('Naval');      
+      	UI_waitForClick('No');        
       } else {
         // If staff operations NOT are possible this turn, 
         // End this phase
@@ -428,6 +429,7 @@ function AllocateResourcesToTheatre(theatre) {
 }
 
 function FortifyNarrows(defense) {
+	console.log('FortifyNarrows');
 	game.Narrows[defense] = true;
 	card.actions -= 1;
 	UI_info('Fortifying '+defense+' in the Narrows');
