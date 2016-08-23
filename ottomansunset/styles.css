@@ -192,8 +192,8 @@ html, body {
   width:30px; height:30px; border-radius:30px; background: linear-gradient(#fe9aa4,#fd3e51); border: 2px solid gray;
 	left:10px; top:65px; position: absolute;
   font-family: Narkisim;	 
-  font-size: 18px;
-  line-height: 30px;
+  font-size: 22px;
+  line-height: 34px;
   box-shadow: 0px 0px 65px 0px black;
 }
 
@@ -201,8 +201,8 @@ html, body {
   width:30px; height:30px; border-radius:30px; background: linear-gradient(#99ff99, #009933); border: 2px solid gray;
 	left:50px; top:85px; position: absolute;
   font-family: Narkisim;	 
-  font-size: 18px;
-  line-height: 30px;
+  font-size: 22px;
+  line-height: 34px;
   box-shadow: 0px 0px 65px 0px black;
 }
 
@@ -210,8 +210,8 @@ html, body {
   width:30px; height:30px; border-radius:30px; background: linear-gradient(#a6a6a6,#737373); border: 2px solid gray;
 	left:90px; top:65px; position: absolute;
   font-family: Narkisim;	 
-  font-size: 18px;
-  line-height: 30px;
+  font-size: 22px;
+  line-height: 34px;
   box-shadow: 0px 0px 65px 0px black;
 }
 
@@ -221,16 +221,16 @@ html, body {
 
 
 .label {
-  width:90px;  
+  width:90px;
   height:40px;
+	border-radius: 6px;
   padding-left: 5px;
   margin-bottom:5px;
 	box-sizing: border-box;
-	border-radius: 6px;
   background-color: #EEEEEE;
   opacity: 0.7;   
   font-family: Narkisim;	  
-  font-size:16px;  
+  font-size:18px;  
   line-height:40px;
   text-align: left; 
 }
@@ -238,8 +238,9 @@ html, body {
 .value {
   width:40px;  
   height:40px;
-  margin-bottom:5px;
 	border-radius:6px;
+  margin-bottom:5px;
+	box-sizing: border-box;
   background-color: #EEEEEE;
   opacity: 0.7;   
   font-family: Narkisim;	  
@@ -498,6 +499,15 @@ span {
   left:600px;
   width: 300px;
   height: 60px;
+}
+
+button {
+	border-radius: 8px;
+  font-family: Narkisim;	  
+  font-size:24px;      		  
+  color: white;
+  background-color: lightslategray;
+  	
 }
 
 /* ----------------------------------------------------------------------- 

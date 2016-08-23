@@ -33,13 +33,13 @@ function UI_focus(id) {
 // - Primary Click Management 
 // ------------------------------------------------------------------
 
-function UI_waitForClick(str)
+function UI_waitForClick()
 {
 	UI_enableClick('die');
 	UI_enableClick('info');
 }
 
-function UI_hideOK()
+function UI_disableOK()
 {
 	UI_disableClick('die');
 	UI_disableClick('info');
@@ -48,7 +48,8 @@ function UI_hideOK()
 function UI_clickedOk()
 {
 	UI_clear();
-	UI_hideOK();
+	UI_dieHide();
+	UI_disableOK();
   UI_closeOverlay();
   UI_defocus('Yildirim_L');
   
@@ -90,7 +91,7 @@ function UI_dieInit() {
 
 // Making die a child of container instead
   die = new D6('container', 'die', 80, 'white', '#202020');
-  die.div.style.left=760+'px';
+  die.div.style.left=860+'px';
   die.div.style.top =675+'px';
   die.div.style.zIndex = 55;
   die.div.style.background = 'linear-gradient(45deg,#737373,#BBBBBB)';
@@ -132,12 +133,6 @@ function UI_updateCardInfo()
     el.innerHTML+='<font color="red">'+card.text+'</font>';      
   }  
 } 
-
-function UI_askYildirim(front)
-{
-  UI_info('Expand Yildirim token to block advance?');  
-  UI_focus('Yildirim_L');
-}
 
 // ------------------------------------------------------------------
 // - Update Functions 
@@ -329,8 +324,9 @@ function UI_showActions()
     }                        
   }  
   
-  if ( CanDeployBureau() ) 
+  if ( CanDeployBureau() ) {
     UI_focus('Bureau_L');  
+  }
   
   if ( CanUseAsiaKorps )
     UI_focus('AsiaKorps');  
@@ -393,7 +389,6 @@ function UI_closeOverlay()
 
 function UI_clear() {
   document.getElementById('infospan').innerHTML='';
-  UI_dieHide();  
 }
 
 
@@ -476,7 +471,10 @@ function initView()
 	UI_enableClick('overlay');     
 	UI_enableClick('battlemap');     
 	UI_enableClick('narrowsmap');     
-	UI_enableClick('bureaumap');     
+	UI_enableClick('bureau_tur');     
+	UI_enableClick('bureau_ind');     
+	UI_enableClick('bureau_per');     
+	UI_enableClick('bureau_afg');     
 	
   UI_closeOverlay();   
 	
@@ -497,7 +495,6 @@ function UI_startNewGame()
   UI_updateNarrows();
   UI_updateCounters();
   UI_updateFortitude(4);  
-  OSnext();  
 }
 
 

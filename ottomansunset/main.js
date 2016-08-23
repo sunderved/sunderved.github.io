@@ -157,7 +157,7 @@ function GameFSM()
     	ShuffleDeck(Morning);
     	game.SubState = 0;
     	game.State++;
-    	UI_info('Click to Start Game');
+    	UI_info('Click to Start New Game');
 			UI_waitForClick();
     	break;
   	case 1:
@@ -172,19 +172,19 @@ function GameFSM()
   	case 3:
     	if ( OffensivesFSM()===0 ) { 
       	game.State++;
-      	GameFSM();
+      	OSnext();
       }
     	break;
   	case 4:
     	if ( PlayerActionFSM()===0 ) { 
       	game.State++;
-      	GameFSM();
+      	OSnext();
       }
     	break;
   	case 5:
     	if ( GermanStaffOperationsFSM()===0 ) { 
       	game.State++;
-      	GameFSM();
+      	OSnext();
       }
     	break;
   	case 6:
@@ -195,7 +195,7 @@ function GameFSM()
       	OffMapBattle(battle, 'Western', KaiserschlachtBattleValues[battle]);
       } else {
       	game.State++;    
-      	GameFSM();
+      	OSnext();
       }
     	break;
   	case 7:
@@ -207,23 +207,24 @@ function GameFSM()
       	UI_info('Campaign ends in a crushing defeat.');
       	UI_info('GAME OVER');
       	game.State++;    
-      	GameFSM();  
+				UI_waitForClick();
       } else if ( game.Deck.length===0 ) {
       	UI_clear();
-      	UI_info('VICTORY!');
-      	UI_info('Young Turks have survived all the Allied forces');
+      	UI_info('VICTORY !');
+      	UI_info('Young Turks have survived the Allied forces and the events of the Great War');
       	CalculateWinningScore();
       	game.State++;
-      	GameFSM();  
+				UI_waitForClick();
       }	else {  
       	UI_clear();
       	game.State = 1;
-      	GameFSM();      	
+      	OSnext();      	
       }
     	break;        
     case 8:
-     	UI_hideCard();
-    	console.log('End game');
+      startNewGame();
+     	game.State = 0;
+     	OSnext();      	
     	break;
   }
 	return game.SubState;
@@ -266,7 +267,7 @@ function DrawCard()
       
 	UI_showCard(card);
 	UI_clear();
-	UI_hideOK();
+	UI_disableOK();
 	setTimeout(function () {
 		UI_clickedOk(); 
 	}, 2000);	}
@@ -303,7 +304,6 @@ function OffensivesFSM()
     	game.SubState = 3;
     	front = offensives.shift();
     	UI_clear();
-//     	UI_info('Army Movement on the '+front+' Front');
     	AdvanceFront(front);        
     	if (WaterRollNeeded(front)===true) {
       	d6 = rollDice();
@@ -362,6 +362,7 @@ function PlayerActionFSM()
       	UI_showActions();
       	game.SubState = 1;
       } else {
+	      card.actions  = 0;
       	game.SubState = 0;
       }
     	break;
@@ -371,6 +372,18 @@ function PlayerActionFSM()
 
 function GermanStaffOperationsFSM()
 {        
+	if (card.name == 'Enver To The Front') {
+  	game.Blocked.Sinai = false;
+  	game.Blocked.Mesopotamia = false;
+  	game.Blocked.Caucasus = false;
+  	game.Blocked.Arab = false;
+  	game.Blocked.Salonika = false;
+  	game.Blocked.Gallipoli = false;
+  	game.Blocked.Theatres = false;
+  	game.Blocked.IntelligenceBureau = false;
+  	game.Blocked.Narrows = false;		
+	}
+	
 	switch (game.SubState) 
   {
   	case 0:
@@ -447,9 +460,13 @@ function DeployBureau(country) {
 
 function TurkishOffensive(front) {
 	card.actions -= 1;
-  
-	DeployAsiaKorps(front);
-  
+	
+	if (game.AsiaKorps == 'deploying') {
+  	game.DRM[front]++;
+  	game.AsiaKorps = 0;
+		UI_updateCounters();	
+  }	  
+ 
 	var d6      = rollDice();
 	var score   = d6 + game.DRM[front];
 	var success = (score>game.Army[front]);
@@ -477,15 +494,6 @@ function UseAsiaKorps()
 {
 	game.AsiaKorps = 'deploying';
 	UI_UseAsiaKorps();  
-}
-
-function DeployAsiaKorps(front)
-{
-	if (game.AsiaKorps == 'deploying') {
-  	game.DRM[front]++;
-  	game.AsiaKorps = 0;
-  	UI_DeployAsiaKorps(front);
-  }
 }
 
 function GermanStaffOperationFrom(theatre) 
@@ -723,14 +731,12 @@ function CalculateWinningScore()
 	if (game.BritishFortitude===0) {
   	score += 1;
   	console.log('+ Won the Narrows         : 1');
-  }
-	UI_info('Score                     : '+score);
-  
-	if (score<= 10) { UI_info('Tactical Victory'); return; }
-	if (score<= 19) { UI_info('Marginal Victory'); return; }
-	if (score<= 24) { UI_info('Operational Victory'); return; }
-	if (score<= 28) { UI_info('Strategic Victory'); return; }
-	UI_info('International Victory'); return;
+  }  
+	if (score<= 10) { UI_info('Score : '+score+', Tactical Victory'); return; }
+	if (score<= 19) { UI_info('Score : '+score+', Marginal Victory'); return; }
+	if (score<= 24) { UI_info('Score : '+score+', Operational Victory'); return; }
+	if (score<= 28) { UI_info('Score : '+score+', Strategic Victory'); return; }
+	UI_info('Score : '+score+', International Victory'); return;
 }
 
 
@@ -865,6 +871,7 @@ function CanUseActions()
 
 function startNewGame()
 {
+ 	console.log('Starting New Game');
 	game = new GameState();
 	UI_startNewGame();
 }
@@ -872,9 +879,9 @@ function startNewGame()
 
 function init()
 {
-	initView();     
-	
+	initView();     	
 	startNewGame();	     
+  OSnext();  
 }
 
 // ------------------------------------------------------------------
