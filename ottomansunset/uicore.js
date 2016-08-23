@@ -138,6 +138,11 @@ function UI_updateCardInfo()
 // - Update Functions 
 // ------------------------------------------------------------------
 
+function UI_removeFront(front)
+{  
+	document.getElementById(front).className = 'army inactive '+front+'X';	
+}
+
 function UI_updateFront(front)
 {  
   var pos = game.Front[front];
@@ -153,6 +158,11 @@ function UI_updateFront(front)
   } else {
     el.className = 'army inactive '+front+'X';
   }
+  
+  if (front=='Caucasus') {
+		el.classList.toggle('imperial', game.ImperialRussia);
+  }
+  
   UI_updateNationalWill();  
 }
 
@@ -161,17 +171,13 @@ function UI_updateFortifications()
   switch (game.GazaBeershebaFortifications) {
     case 0:
       document.getElementById('Fortification').style.visibility = 'hidden';
-//      document.getElementById('Fortification').innerHTML = '';
       break;
     case 1:
       document.getElementById('Fortification').style.visibility = 'visible';
-      document.getElementById('Fortification').style.opacity = '0.6';
-//      document.getElementById('Fortification').innerHTML = 'F';
+      document.getElementById('Fortification').classList.add('weakened');
       break;
     case 2:
       document.getElementById('Fortification').style.visibility = 'visible';
-      document.getElementById('Fortification').style.opacity = '0.9';
-//      document.getElementById('Fortification').innerHTML = 'F';
       break;
   }    
 }

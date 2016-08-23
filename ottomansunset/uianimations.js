@@ -186,12 +186,15 @@ function UI_MesopotamianSiege() {
 	UI_info('&nbsp;'); 
   UI_updateCounters();  	
   setTimeout(function () {
+	  UI_removeFront('Mesopotamia');
+	}, 1500);		  		
+  setTimeout(function () {
 	  UI_clear();
 	  UI_info('Siege of Kut VICTORY');
-	  UI_info('Maude takes over in Mesopotamia from Basra');
+	  UI_info('Maude takes over in Mesopotamia from Basra');	  
  	  UI_updateFront('Mesopotamia');  	
   	UI_waitForClick();
-	}, 1500);		  		
+	}, 2600);		  		
 }
 function UI_AsiaKorps() {
   UI_info('Receive the Asia Korps marker');
@@ -218,11 +221,14 @@ function UI_Yildirim() {
 	UI_waitForClick();
 }
 function UI_ProvisionalGovernmentTakesCharge() {
+	UI_disableOK();
   UI_info('If the Caucasus unit is on the map, retreat it one space.');
   UI_info('If it is not, return it to Kars (5).');
   UI_info('Place it to it\'s reduced side.');	
-	UI_updateFront('Caucasus');	  
-	UI_waitForClick();
+  setTimeout(function () {
+		UI_updateFront('Caucasus');	  
+		UI_waitForClick();
+  }, 500);		  
 }
 function UI_Sandstorms(front, d6) {
 	UI_disableOK();
