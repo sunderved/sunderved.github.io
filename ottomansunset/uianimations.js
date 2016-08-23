@@ -102,12 +102,16 @@ function UI_GallipoliLanding() {
 	UI_info('&nbsp;'); 
   UI_updateFront('Gallipoli');  	
   setTimeout(function () {
+	  UI_openOverlay('narrowsmap');
+		UI_disableClick('narrowsmap');
+	}, 1500);	 
+  setTimeout(function () {
 	  UI_clear();
 	  UI_info('Hamilton opens new front in Gallipoli');
 		UI_info('Seddulbahir Gun is Destroyed');
 		UI_updateNarrows();
-	}, 1500);	  
- 	UI_waitForClick();
+	  UI_waitForClick();
+	}, 2500);	
 }
 function UI_GermanUboats() {
   UI_info('German U-boats in the Mediterranean. The Narrows are now closed to English attacks');

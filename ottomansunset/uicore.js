@@ -459,7 +459,7 @@ function initView()
   UI_setClickCallback('Minefield_2',  function() { event.stopPropagation(); FortifyNarrows('Minefield_2'); } );
   UI_setClickCallback('Nagara',       function() { event.stopPropagation(); FortifyNarrows('Nagara');      } );
   
-  UI_setClickCallback('overlay',      function() { UI_closeOverlay(); } );
+//  UI_setClickCallback('overlay',      function() { UI_closeOverlay(); } );
   UI_setClickCallback('battlemap',    function() { UI_closeOverlay(); } );
   UI_setClickCallback('narrowsmap',   function() { UI_closeOverlay(); } );
   UI_setClickCallback('bureaumap',    function() { UI_closeOverlay(); } );

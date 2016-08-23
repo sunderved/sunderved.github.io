@@ -207,14 +207,14 @@ function GameFSM()
       	UI_info('Campaign ends in a crushing defeat.');
       	UI_info('GAME OVER');
       	game.State++;    
-				UI_waitForClick();
+      	OSnext();      	
       } else if ( game.Deck.length===0 ) {
       	UI_clear();
       	UI_info('VICTORY !');
       	UI_info('Young Turks have survived the Allied forces and the events of the Great War');
       	CalculateWinningScore();
       	game.State++;
-				UI_waitForClick();
+      	OSnext();      	
       }	else {  
       	UI_clear();
       	game.State = 1;
@@ -222,10 +222,15 @@ function GameFSM()
       }
     	break;        
     case 8:
+     	game.State++;
+			UI_waitForClick();
+    	break;
+    case 9:
       startNewGame();
      	game.State = 0;
      	OSnext();      	
     	break;
+    	
   }
 	return game.SubState;
 }
@@ -503,13 +508,6 @@ function GermanStaffOperationFrom(theatre)
 	card.actions++;
   
 	UI_GermanStaffOperationFrom(theatre);
-}
-
-function SkipActions()
-{
-	card.actions = 0;
-	UI_hideSkipActions();
-	UI_clickedOk();
 }
 
 // -------------------------------------------------------
