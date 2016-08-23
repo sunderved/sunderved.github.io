@@ -56,14 +56,13 @@ html, body {
 	border-style:outset;
 	border-color:gray;
 	border-radius: 4px;
-	transition: top 1s, left 1s; z-index:2;
+	transition: top 1s, left 1s, transform 1s; 
+	z-index:2;
 }
 
-/*
-.inactive        { 
-	visibility: hidden; 
-}
-*/
+.slideleft  { transform: translateX(-50%) translateY( 10%);}
+.slideright { transform: translateX( 50%) translateY(-10%); }
+
 
 .Sinai5W         { left:539px; top:585px; }
 .Sinai4W         { left:600px; top:552px; }
@@ -279,8 +278,9 @@ html, body {
 #Narrows         { left:217px; top:281px; position: absolute; width:52px; height:52px; border-radius:2px; }
 #Narrows.closed  { background-image:url("img/uboat.png"); }
 
-#Fortification   { border: 3px solid black; z-index: 3;}
-#Fortification.weakened   { border: 3px dotted black; }
+#Fortification      { visibility: hidden; z-index: 3;}
+#Fortification.weak { visibility: visible; border: 3px dotted black; }
+#Fortification.full { visibility: visible; border: 3px solid black; }
 
 
 /* ----------------------------------------------------------------------- 

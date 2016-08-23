@@ -140,7 +140,7 @@ function UI_updateCardInfo()
 
 function UI_removeFront(front)
 {  
-	document.getElementById(front).className = 'army inactive '+front+'X';	
+	document.getElementById(front).className = 'army '+front+'X';	
 }
 
 function UI_updateFront(front)
@@ -156,12 +156,28 @@ function UI_updateFront(front)
       el.className = 'army Constantinople';  
     }
   } else {
-    el.className = 'army inactive '+front+'X';
+    UI_removeFront(front);
   }
   
   if (front=='Caucasus') {
 		el.classList.toggle('imperial', game.ImperialRussia);
   }
+  
+  if (front=='Sinai') {
+		document.getElementById('Arab').classList.toggle('slideright', false)
+  }
+  if (front=='Arab') {
+		document.getElementById('Sinai').classList.toggle('slideleft', false)
+  }  
+  if ((front=='Sinai') || (front=='Arab')) {
+	  if (game.Front[front]<3) {
+		  if (game.Front['Sinai']==game.Front['Arab']) {
+			  document.getElementById('Sinai').classList.add('slideleft')
+			  document.getElementById('Arab').classList.add('slideright')
+		  }
+	  }
+  }
+  
   
   UI_updateNationalWill();  
 }
@@ -170,14 +186,13 @@ function UI_updateFortifications()
 {  
   switch (game.GazaBeershebaFortifications) {
     case 0:
-      document.getElementById('Fortification').style.visibility = 'hidden';
+      document.getElementById('Fortification').className = 'army Sinai4';
       break;
     case 1:
-      document.getElementById('Fortification').style.visibility = 'visible';
-      document.getElementById('Fortification').classList.add('weakened');
+      document.getElementById('Fortification').className = 'army Sinai4 weak';
       break;
     case 2:
-      document.getElementById('Fortification').style.visibility = 'visible';
+      document.getElementById('Fortification').className = 'army Sinai4 full';
       break;
   }    
 }
