@@ -35,13 +35,11 @@ function UI_focus(id) {
 
 function UI_waitForClick()
 {
-	UI_enableClick('die');
 	UI_enableClick('info');
 }
 
 function UI_disableOK()
 {
-	UI_disableClick('die');
 	UI_disableClick('info');
 }
 
@@ -93,10 +91,9 @@ function UI_dieInit() {
   die = new D6('container', 'die', 80, 'white', '#202020');
   die.div.style.left=860+'px';
   die.div.style.top =675+'px';
-  die.div.style.zIndex = 55;
+  die.div.style.zIndex = 45;
   die.div.style.background = 'linear-gradient(45deg,#737373,#BBBBBB)';
   die.div.style.pointerEvents = 'none';     
-  UI_setClickCallback('die', function() { UI_clickedOk(); } ); 
   die.hide();
 }
 
@@ -119,18 +116,19 @@ function UI_offerChoice(options, op1, op1func, op2, op2func)
 
 function UI_updateCardInfo() 
 {
-  var el =  document.getElementById('card');  
+  var c  = CurrentCard();
+  var el = document.getElementById('card');  
   el.innerHTML='<BR>';
-  el.innerHTML+='<B>'+card.name+'</B><BR>';
+  el.innerHTML+='<B>'+c.name+'</B><BR>';
   el.innerHTML+='<BR>';
   el.innerHTML+='<U>Offensives:</U><BR>';
-  for (var i in card.advances) {
-    el.innerHTML+='&#8226; '+card.advances[i]+'<BR>';
+  for (var i in game.Offensives) {
+    el.innerHTML+='&#8226; '+game.Offensives[i]+'<BR>';
   }  
   el.innerHTML+='<BR>';
-  el.innerHTML+='<U>Actions:</U> '+card.actions+'<BR>';
-  if (card.text) {
-    el.innerHTML+='<font color="red">'+card.text+'</font>';      
+  el.innerHTML+='<U>Actions:</U> '+c.actions+'<BR>';
+  if (c.text) {
+    el.innerHTML+='<font color="red">'+c.text+'</font>';      
   }  
 } 
 
@@ -295,13 +293,19 @@ function UI_updateBattles()
   str += '<BR>';
   str += '<BR>';
   str += 'Victories : '+game.Victories.length+'<BR>';
-  str += game.Victories+'<BR>';
+  for (var i in game.Victories)
+	  str += (i>0?', ':'')+game.Victories[i];
+  str += '<BR>';
   str += '<BR>';
   str += 'Defeats : '+game.Defeats.length+'<BR>';
-  str += game.Defeats+'<BR>';
+  for (var i in game.Defeats)
+	  str += (i>0?', ':'')+game.Defeats[i];
+  str += '<BR>';
   str += '<BR>';
   str += 'Stalemates : '+game.Stalemates.length+'<BR>';
-  str += game.Stalemates+'<BR>';
+  for (var i in game.Stalemates)
+	  str += (i>0?', ':'')+game.Stalemates[i];
+  str += '<BR>';
   str += '<BR>';
   str += 'Flags Controlled by Allies : '+(game.Victories.length - game.Defeats.length - game.TurkishNationalWill);
   
@@ -418,13 +422,12 @@ function UI_info(str) {
 	  document.getElementById('infospan').innerHTML+='<BR>';  
 	} 
   document.getElementById('infospan').innerHTML+=str;
-  UI_log(str);
 }
 
 function UI_log(str)
 {
-	document.getElementById('myconsole').innerHTML+=str;
-	document.getElementById('myconsole').innerHTML+='<BR>';
+// 	document.getElementById('myconsole').innerHTML+=str;
+// 	document.getElementById('myconsole').innerHTML+='<BR>';
 	console.log(str);
 }
 

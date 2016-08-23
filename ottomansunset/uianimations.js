@@ -62,8 +62,8 @@ function UI_ForcingTheNarrows(events) {
   	return;		
 	}	
 	
-	document.getElementById('fortitude').style.visibility = 'visible';
   UI_openOverlay('narrowsmap');
+	document.getElementById('fortitude').style.visibility = 'visible';
 
 	if (events.length===0)
 	{	
@@ -182,7 +182,7 @@ function UI_GallipoliEvacuation() {
 }
 function UI_MesopotamianSiege() {
 	UI_disableOK();
-  UI_info('Siege of Kut VICTORY');
+  UI_info('Siege of Kut Victory');
 	UI_info('&nbsp;'); 
   UI_updateCounters();  	
   setTimeout(function () {
@@ -190,7 +190,7 @@ function UI_MesopotamianSiege() {
 	}, 1500);		  		
   setTimeout(function () {
 	  UI_clear();
-	  UI_info('Siege of Kut VICTORY');
+	  UI_info('Siege of Kut Victory');
 	  UI_info('Maude takes over in Mesopotamia from Basra');	  
  	  UI_updateFront('Mesopotamia');  	
   	UI_waitForClick();
@@ -232,8 +232,7 @@ function UI_ProvisionalGovernmentTakesCharge() {
 }
 function UI_Sandstorms(front, d6) {
 	UI_disableOK();
-	UI_info('Roll a die');
-	UI_info('Retreat Mesopotamia unit on 1,2,3 or Sinai unit on 4,5,6');
+	UI_info('Roll a die. Retreat Mesopotamia on 1,2,3 or Sinai on 4,5,6.');
 	UI_info('&nbsp;'); 
 	UI_info('&nbsp;'); 	
   setTimeout(function () {
@@ -241,16 +240,14 @@ function UI_Sandstorms(front, d6) {
   }, 1000);		
   setTimeout(function () {
 	  UI_clear();
-		UI_info('Roll a die');
-		UI_info('Retreat Mesopotamia unit on 1,2,3 or Sinai unit on 4,5,6');
+		UI_info('Roll a die. Retreat Mesopotamia on 1,2,3 or Sinai on 4,5,6.');
 		UI_info(front+' Front Retreats');
 		UI_info('&nbsp;'); 	
 	  UI_updateFront(front);  	
    }, 1900);	
    setTimeout(function () {
 	  UI_clear();
-		UI_info('Roll a die');
-		UI_info('Retreat Mesopotamia unit on 1,2,3 or Sinai unit on 4,5,6');
+		UI_info('Roll a die. Retreat Mesopotamia on 1,2,3 or Sinai on 4,5,6.');
 		UI_info(front+' Front Retreats');
 		UI_info('No offensives vs '+front+' this turn');
 		UI_waitForClick();
@@ -281,8 +278,8 @@ function UI_WarWeariness(d6) {
   setTimeout(function () {	
 	  UI_clear();
 		UI_info('All off-map battles get -1 DRM until the end of the game');
-	  UI_info('Roll a die to determine which Front advances : 1-Sinai, ');
-	  UI_info('2-Mesopotamia, 3 or 4-Arab, 5 or 6-Gallipoli and Salonika');
+	  UI_info('Roll a die. Advance Sinai on 1, Mesopotamia on 2,');
+	  UI_info('Arab on 3,4, Gallipoli and Salonika 5,6');
 		UI_info('&nbsp;'); 	
   }, 1000);			
   setTimeout(function () {
@@ -291,9 +288,9 @@ function UI_WarWeariness(d6) {
   setTimeout(function () {
 	  UI_clear();
 		UI_info('All off-map battles get -1 DRM until the end of the game');
-	  UI_info('Roll a die to determine which Front advances : 1-Sinai, ');
-	  UI_info('2-Mesopotamia, 3 or 4-Arab, 5 or 6-Gallipoli and Salonika');
-		UI_info('Front advancing this turn: '+card.advances);
+	  UI_info('Roll a die. Advance Sinai on 1, Mesopotamia on 2,');
+	  UI_info('Arab on 3,4, Gallipoli and Salonika 5,6');
+		UI_info('Front advancing this turn: '+game.Offensives);
 		UI_updateCardInfo();
 		UI_waitForClick();
    }, 3000);		
@@ -323,7 +320,6 @@ function UI_AllocateResourcesToTheatre(theatre) {
 	UI_clear();
 	UI_hideActions(); 
 	UI_updateCounters();
-	UI_updateCardInfo();
 	setTimeout(function () {
 		UI_clickedOk();		
 	}, 1000);
@@ -334,7 +330,6 @@ function UI_FortifyNarrows() {
 	UI_clear();
 	UI_hideActions(); 
 	UI_updateNarrows();
-	UI_updateCardInfo();
 	setTimeout(function () {
 		UI_closeOverlay(); 
 		UI_clickedOk();		
@@ -346,7 +341,6 @@ function UI_DeployBureau(country) {
 	UI_clear();
 	UI_hideActions(); 
 	UI_updateCounters();
-	UI_updateCardInfo();
 	setTimeout(function () {
 		UI_closeOverlay(); 
 		UI_clickedOk();		
@@ -365,7 +359,6 @@ function UI_TurkishOffensive(front, d6, success) {
   setTimeout(function () {  	
 	  UI_dieShowSuccess(success);
 		UI_updateFront(front);
-		UI_updateCardInfo();
 		UI_waitForClick();
   }, 1200);	  		
 }	
@@ -404,7 +397,7 @@ function UI_OffMapBattle(battle, theatre, value, d6, outcome)
 	UI_clear();
 	UI_info('<U>'+battle+'</U>'+' - BV '+value);
 	UI_info(theatre+' Theatre DRM: +'+game.Theatre[theatre]);
-	UI_info('War Weariness DRM: +'+game.WarWeariness);
+	UI_info('War Weariness DRM: '+game.WarWeariness);
   setTimeout(function () {
 		UI_dieShowRoll(d6);
   }, 1000);		
@@ -447,6 +440,7 @@ function UI_AttritionRoll(type, d6, success)
   setTimeout(function () {  	
 	  UI_dieShowSuccess(success);
 		UI_updateCounters();								
+    UI_log(type+' attrition roll '+((success===true)?'successfull':'failed') );
 		UI_waitForClick();
 	}, 1900);
 }

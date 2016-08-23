@@ -44,14 +44,22 @@ html, body {
 
 .army {
 	position: absolute;
+	/*
   height:43px;	
   width:43px;
+	line-height:43px;
+  */
+  height:47px;	
+  width:47px;
+	line-height:47px;
+  transform: translateX(-2px) translateY(-2px);
+  
+  
 	box-sizing: border-box;
   font-family: Narkisim;	  
   font-size:32px;
 	text-align: center;
   color: white;      		  
-	line-height:43px;
 	border-width:1px;
 	border-style:outset;
 	border-color:gray;
@@ -76,7 +84,7 @@ html, body {
 .Sinai1          { left:658px; top:264px; }
                  
 .MesopotamiaX    { left:1025px; top:310px; }
-.Mesopotamia5    { left:971px; top:417px; }
+.Mesopotamia5    { left:972px; top:418px; }
 .Mesopotamia4    { left:947px; top:341px; }
 .Mesopotamia3    { left:907px; top:275px; }
 .Mesopotamia2    { left:828px; top:264px; }
@@ -258,7 +266,8 @@ html, body {
 
 .highlighted { 
 	animation-name: softbluePulse;
-  animation-duration: 2.5s;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;  
   animation-iteration-count: infinite;
 }
 
@@ -278,7 +287,16 @@ html, body {
 #Narrows         { left:217px; top:281px; position: absolute; width:52px; height:52px; border-radius:2px; }
 #Narrows.closed  { background-image:url("img/uboat.png"); }
 
-#Fortification      { visibility: hidden; z-index: 3;}
+#Fortification      { 
+	visibility: hidden;
+	z-index: 3;
+	position: absolute;
+  height:49px;	
+  width:49px;
+  transform: translateX(-3px) translateY(-3px);
+	box-sizing: border-box;
+	border-radius: 4px;
+}
 #Fortification.weak { visibility: visible; border: 3px dotted black; }
 #Fortification.full { visibility: visible; border: 3px solid black; }
 
@@ -351,13 +369,15 @@ span {
    
 .success { 
   animation-name: greenPulse;
-  animation-duration: 2.5s;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;  
   animation-iteration-count: infinite;
 }
 
 .failure { 
   animation-name: redPulse;
-  animation-duration: 2.5s;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;  
   animation-iteration-count: infinite;
 }
 

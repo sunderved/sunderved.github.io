@@ -168,7 +168,7 @@ function FortificationofGazaBeershebaLine() {
   UI_offerChoice(
   	'You may immediately forfeit 2 actions to place the Gaza-Beersheba Fortification marker, if that space is controlled by the Turkish',
   	'Fortify Gaza-Beersheba',
-  	function() { card.actions=0; game.GazaBeershebaFortifications=2; UI_updateCardInfo(); UI_updateCounters(); },
+  	function() { game.Actions=0; game.GazaBeershebaFortifications=2; UI_updateFortifications(); },
   	'Keep 2 Actions',
   	function() { console.log('Clicked'); }
 	);  
@@ -263,10 +263,10 @@ function Sandstorms() {
 	// On 1,2 or 3 the Mesopotamia unit retreats on space	
 	// On 4,5 or 6 the Sinai unit retreats on space	
 	var front = (d6<=3)?'Mesopotamia':'Sinai';
+	// Retreat front
 	RetreatFront(front);	
 	// No offensives vs retreated front this turn
 	game.Blocked[front]=true;
-	card.text='No Offensives vs '+front+' this turn';
 
   UI_Sandstorms(front, d6);
 }
@@ -298,12 +298,12 @@ function WarWeariness() {
   // Advance: 1-Sinai, 2-Mesopotamia, 3 or 4-Arab, 5 or 6-Gallipoli and Salonika
   var d6 = rollDice();
   switch (d6) {
-	  case 1: card.advances = ['Sinai']; break;
-	  case 2: card.advances = ['Mesopotamia']; break;
-	  case 3: card.advances = ['Arab']; break;
-	  case 4: card.advances = ['Arab']; break;
-	  case 5: card.advances = ['Gallipoli', 'Salonika']; break;
-	  case 6: card.advances = ['Gallipoli', 'Salonika']; break;
+	  case 1: game.Offensives = ['Sinai']; break;
+	  case 2: game.Offensives = ['Mesopotamia']; break;
+	  case 3: game.Offensives = ['Arab']; break;
+	  case 4: game.Offensives = ['Arab']; break;
+	  case 5: game.Offensives = ['Gallipoli', 'Salonika']; break;
+	  case 6: game.Offensives = ['Gallipoli', 'Salonika']; break;
   }
   UI_WarWeariness(d6);
 }
@@ -362,7 +362,7 @@ function Dunsterforce() {
   UI_offerChoice(
   	'Forfeit this card\'s 2 actions or receive the Dunsterforce Defeat marker',
   	'Forfeit 2 actions',
-  	function() { card.actions=0; UI_updateCardInfo(); },
+  	function() { game.Actions=0; },
   	'Dunsterforce Defeat',
   	function() { game.Defeats.push('Dunsterforce'); UI_updateCounters(); }
 	);

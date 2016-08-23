@@ -76,6 +76,8 @@ function GameState ()
 	this.Played = [];
 	this.State = 0;
 	this.SubState = 0;
+	this.Actions = 0;
+	this.Offensives = [];
 }
 
 var KaiserschlachtBattleValues = {
@@ -129,31 +131,15 @@ function CanUseYildirim(front)
   );  
 }
 
-
-var offensives = [];
-
 function GameFSM()
-{
-	if (game.NarrowsForced===true) {
-  	UI_clear();
-  	UI_info('British navy forced the Narrows and captured Constantinople.');
-  	UI_info('Campaign ends in a crushing defeat.');
-  	UI_info('GAME OVER');
-  	game.State = 8;
-  }      
-
-	if (game.ConstantinopleTaken===true) {
-  	UI_clear();
-  	UI_info('Constantinople has fallen');
-  	UI_info('GAME OVER');
-  	CalculateLosingScore();
-  	game.State = 8;
-  }	
-	
+{	
 	switch(game.State) 
   {
   	case 0:
       // Initialization stuff
+			UI_log('');
+			UI_log('Initializing game');
+			UI_log('Shuffling Morning deck in draw pile');
     	ShuffleDeck(Morning);
     	game.SubState = 0;
     	game.State++;
@@ -161,17 +147,28 @@ function GameFSM()
 			UI_waitForClick();
     	break;
   	case 1:
-    	DrawCard();
-    	game.State++;
+			UI_log('Start of turn');
+  		StartOfTurnReset();
+  		DrawCard();
+  		game.State++;
     	break;
   	case 2:
-    	UI_clear();
-    	card.event();
-    	game.State++;
+    	UI_clear();  	
+			// execute card event			
+    	cards[ game.Played[0] ].event(); 	  	
+			if (game.NarrowsForced===true) {
+		  	game.State = 8;
+		  } else {
+	     	game.State++;
+		  }  
     	break;
   	case 3:
     	if ( OffensivesFSM()===0 ) { 
-      	game.State++;
+				if (game.ConstantinopleTaken===true) {
+			  	game.State = 8;
+			  }	else {
+	      	game.State++;
+			  }      	    	
       	OSnext();
       }
     	break;
@@ -201,27 +198,33 @@ function GameFSM()
   	case 7:
     	UpdateNationalWill();
      	UI_hideCard();
-    	if ( game.TurkishNationalWill < -3 ) {
-      	UI_clear();
+     	UI_clear();
+    	if (( game.TurkishNationalWill < -3 ) || ( game.Deck.length===0 )) {
+      	game.State = 8;
+      }	else {  
+      	game.State = 1;
+      }
+     	OSnext();      	
+    	break;        
+    case 8:
+	  	UI_clear();
+			if (game.ConstantinopleTaken===true) {
+		  	UI_info('Constantinople has fallen');
+		  	UI_info('GAME OVER');
+      	CalculateLosingScore();
+	  	} else if (game.NarrowsForced===true) {
+		  	UI_info('British navy forced the Narrows and captured Constantinople.');
+		  	UI_info('Campaign ends in a crushing defeat.');
+		  	UI_info('GAME OVER');
+	  	} else if ( game.TurkishNationalWill < -3 ) {
       	UI_info('Turkish Morale has collapsed.');
       	UI_info('Campaign ends in a crushing defeat.');
       	UI_info('GAME OVER');
-      	game.State++;    
-      	OSnext();      	
       } else if ( game.Deck.length===0 ) {
-      	UI_clear();
       	UI_info('VICTORY !');
       	UI_info('Young Turks have survived the Allied forces and the events of the Great War');
       	CalculateWinningScore();
-      	game.State++;
-      	OSnext();      	
-      }	else {  
-      	UI_clear();
-      	game.State = 1;
-      	OSnext();      	
-      }
-    	break;        
-    case 8:
+    	}
      	game.State++;
 			UI_waitForClick();
     	break;
@@ -245,7 +248,7 @@ function OSnext() {
 // Game Phase
 // -------------------------------------------------------
 
-function DrawCard()
+function StartOfTurnReset()
 {
 	game.Blocked.Sinai              = false;
 	game.Blocked.Mesopotamia        = false;
@@ -264,19 +267,33 @@ function DrawCard()
   game.DRM.Gallipoli              = 0; 
   game.DRM.Salonika               = 0; 
   game.DRM.Kaiserchlacht          = 0; 
-    
-  // draw card
-	var id = game.Deck.shift()
-	card = cards[ id ];
-	game.Played.unshift(id);
-      
-	UI_showCard(card);
+}
+
+function DrawCard()
+{   
+	// draw card
+	var id = game.Deck.shift();
+	
+	// add card to the game.Played list (current card id is game.Played[0]);
+	game.Played.unshift(id);			
+	
+	// copy number of card actions to game state
+	game.Actions = cards[id].actions;
+	
+	// copy list of advancing fronts to game state			
+	game.Offensives = [];
+	for (var i in cards[id].advances) {
+	  game.Offensives.push(cards[id].advances[i]);
+	}  
+	UI_log(cards[id].name+ ' (card id.'+id+')');
+	  			
 	UI_clear();
+	UI_showCard(card);
 	UI_disableOK();
 	setTimeout(function () {
-		UI_clickedOk(); 
-	}, 2000);	}
-
+		OSnext(); 
+	}, 2000);
+}
 
 /* 
 Can front be global?
@@ -292,54 +309,67 @@ function OffensivesFSM()
       
 	switch (game.SubState) 
   {
-  	case 0:
-    	offensives = Offensives();  
+  	case 0:  	
     	game.SubState = 1;
     	OffensivesFSM();
     	break;
+    	
   	case 1:
-    	if (offensives.length>0) {
+    	if (game.Offensives.length>0) {
       	game.SubState = 2;
       	OffensivesFSM();
       } else {
       	game.SubState = 0;
       }
     	break;
+    	
   	case 2:
-    	game.SubState = 3;
-    	front = offensives.shift();
+    	front = game.Offensives.shift();
+   		if ( FrontActive(front) ) {
+	      UI_log('Offensive on the '+front+' front');
+ 		   	game.SubState++;
+      	OffensivesFSM();
+   		} else {
+	      UI_log('Offensive on the '+front+' front. Front inactive, skipping offensive');
+	    	game.SubState = 1;
+      	OffensivesFSM();
+   		}
+   		break;
+   		
+  	case 3:
+    	game.SubState++;
     	UI_clear();
     	AdvanceFront(front);        
     	if (WaterRollNeeded(front)===true) {
       	d6 = rollDice();
       	success = (d6<game.Army.Sinai);
-       	if (success===false) { game.SubState = 5; }
+       	if (success===false) { game.SubState = 6; }
       	UI_AttritionRoll('Water', d6, success);
       } else {
       	OffensivesFSM();
       }
     	break;
       
-  	case 3:  
-    	game.SubState = 4;    
+  	case 4:  
+    	game.SubState++;
     	if (FortificationRollNeeded(front)===true) {
       	d6 = rollDice();
       	success = (d6<game.Army.Sinai);
       	if (success) game.GazaBeershebaFortifications--;
-      	if (game.GazaBeershebaFortifications>0) { game.SubState = 5; }
+      	if (game.GazaBeershebaFortifications>0) { game.SubState = 6; }
       	UI_AttritionRoll('Fortification', d6, success);
       }	else {
       	OffensivesFSM();
       }
     	break;        
 
-  	case 4:  
+  	case 5:  
     	game.SubState = 1;
     	game.ConstantinopleTaken = (game.Front[front]===0); 
     	UI_showOffensive(front, CanUseYildirim(front));      
     	break;
       
-  	case 5:  
+  	case 6:  
     	game.SubState = 1;
     	RetreatFront(front);
     	UI_showOffensive(front, false);      
@@ -359,15 +389,14 @@ function PlayerActionFSM()
   	case 1:  
     	if (CanUseActions()===true) {
       	UI_clear();
-      	if (card.actions>1)
-	      	UI_info('Action Phase. You have '+card.actions+' actions');
+      	if (game.Actions>1)
+	      	UI_info('Action Phase: '+game.Actions+' Actions Remaining');
 	      else	
-	      	UI_info('Action Phase. You have '+card.actions+' action');
-      	UI_updateCardInfo();
+	      	UI_info('Action Phase: '+game.Actions+' Action Remaining');
       	UI_showActions();
       	game.SubState = 1;
       } else {
-	      card.actions  = 0;
+	      game.Actions  = 0;
       	game.SubState = 0;
       }
     	break;
@@ -377,7 +406,8 @@ function PlayerActionFSM()
 
 function GermanStaffOperationsFSM()
 {        
-	if (card.name == 'Enver To The Front') {
+	// Special case for Card #4 'Enver To The Front'
+	if (game.Played[0] == 4 ) { 
   	game.Blocked.Sinai = false;
   	game.Blocked.Mesopotamia = false;
   	game.Blocked.Caucasus = false;
@@ -415,8 +445,7 @@ function GermanStaffOperationsFSM()
   	case 2:
       // Decode player's choice regarding staff operations
     	UI_hideActions(); 
-    	UI_updateCardInfo();      
-    	if (card.actions===0) {
+    	if (game.Actions===0) {
         // Actions count is still at 0 -> User has declined to use staff ops
         // End this phase
       	game.SubState = 0;
@@ -424,7 +453,7 @@ function GermanStaffOperationsFSM()
         // Action count is 1 -> User has traded off-map resources for 1 extra action
         // Show available actions, and wait for user choice
       	UI_clear();
-      	UI_info('German Staff Operations. You have '+card.actions+' action');
+      	UI_info('German Staff Operations. You have '+game.Actions+' action');
       	UI_showActions();
       	game.SubState = 1;
       }
@@ -441,30 +470,30 @@ function GermanStaffOperationsFSM()
 function AllocateResourcesToTheatre(theatre) {
 	game.Resources--;
 	game.Theatre[theatre] += 1;
-	card.actions -= 2;
+	game.Actions -= 2;
 	UI_AllocateResourcesToTheatre(theatre);
 }
 
 function FortifyNarrows(defense) {
 	console.log('FortifyNarrows');
 	game.Narrows[defense] = true;
-	card.actions -= 1;
+	game.Actions -= 1;
 	UI_info('Fortifying '+defense+' in the Narrows');
 	UI_FortifyNarrows();
 }
 
 function DeployBureau(country) {
 	if (game.IntelligenceBureau=='Turkey') {
-  	card.actions -= 1;
+  	game.Actions -= 1;
   } else {
-  	card.actions -= 2;
+  	game.Actions -= 2;
   }
 	game.IntelligenceBureau = country;
 	UI_DeployBureau(country);
 }
 
 function TurkishOffensive(front) {
-	card.actions -= 1;
+	game.Actions -= 1;
 	
 	if (game.AsiaKorps == 'deploying') {
   	game.DRM[front]++;
@@ -505,7 +534,7 @@ function GermanStaffOperationFrom(theatre)
 {
 	console.log('GermanStaffOperationFrom '+theatre);
 	game.Theatre[theatre]--;
-	card.actions++;
+	game.Actions++;
   
 	UI_GermanStaffOperationFrom(theatre);
 }
@@ -555,6 +584,7 @@ function CoupAttempt(country)
   	game.Victories.push(country);
   	success = true;
   } else {
+  //	game.Stalemates.push(country);
   	success = false;
   }
   
@@ -679,9 +709,7 @@ function ShuffleDeck(newcards)
   shuffle(game.Deck);
   shuffle(game.Deck);
   shuffle(game.Deck);
-  shuffle(game.Deck);
-  
-  newcards = [];
+  shuffle(game.Deck);  
 }
 
 // ------------------------------------------------------------------
@@ -697,13 +725,12 @@ function CalculateLosingScore()
   
 	console.log('  Number of unrevealed cards: '+RemainingCards());
 	console.log('- National Will             : '+BoundedWill());
-      UI_info('Score                       : '+score);
   
-	if (score<=  1) { UI_info('Pyrrhic Victory'); return; }
-	if (score<= 10) { UI_info('Strategic Stalemate'); return; }
-	if (score<= 25) { UI_info('Marginal Defeat'); return; }
-	if (score<= 35) { UI_info('Strategic Defeat'); return; }
-	UI_info('Crushing Defeat'); return;  
+	if (score<=  1) { UI_info('Score : '+score+', Pyrrhic Victory'); return; }
+	if (score<= 10) { UI_info('Score : '+score+', Strategic Stalemate'); return; }
+	if (score<= 25) { UI_info('Score : '+score+', Marginal Defeat'); return; }
+	if (score<= 35) { UI_info('Score : '+score+', Strategic Defeat'); return; }
+	                  UI_info('Score : '+score+', Crushing Defeat'); return;  
 }
 
 function CalculateWinningScore()
@@ -734,7 +761,7 @@ function CalculateWinningScore()
 	if (score<= 19) { UI_info('Score : '+score+', Marginal Victory'); return; }
 	if (score<= 24) { UI_info('Score : '+score+', Operational Victory'); return; }
 	if (score<= 28) { UI_info('Score : '+score+', Strategic Victory'); return; }
-	UI_info('Score : '+score+', International Victory'); return;
+	                  UI_info('Score : '+score+', International Victory'); return;
 }
 
 
@@ -742,15 +769,9 @@ function CalculateWinningScore()
 // - DB Query Helper Functions
 // ------------------------------------------------------------------
 
-function Offensives() {
-	var offensives = [];
-	for (var i in card.advances) {
-  	var front = card.advances[i];
-  	if ( FrontActive(front) ) { 
-    	offensives.push(front);
-    }
-  }
-	return offensives;    
+function CurrentCard()
+{
+	return cards[game.Played[0]];
 }
 
 function RemainingCards()
@@ -759,7 +780,7 @@ function RemainingCards()
 }
 
 function AvailableActions(n) {
-	return (card.actions>=n);
+	return (game.Actions>=n);
 }
 
 function FrontActive(f) {
