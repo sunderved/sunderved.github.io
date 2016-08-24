@@ -385,7 +385,7 @@ function UI_TurkishOffensive(front, d6, success) {
   }, 1200);	  		
 }	
 
-function UI_UseYildirim() {
+function UI_UseYildirim(front) {
 	UI_disableOK();
 	UI_clear();
 	UI_info('Advanced blocked. '+game.Yildirim+' Yildirim remaining');

@@ -172,6 +172,10 @@ function UI_hideBV()
 function UI_removeFront(front)
 {  
 	document.getElementById(front).className = 'army '+front+'X';	
+	
+  if (front=='Caucasus') {
+		document.getElementById(front).classList.toggle('imperial', game.ImperialRussia);
+  }	
 }
 
 function UI_updateFront(front)
@@ -476,11 +480,11 @@ function debug(str)
 function initView() 
 {  
   // disable default event handler  
-  if ("UI_setClickCallbackstart" in document.documentElement) {
-    document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
-    document.addEventListener('touchstart', function(e){ e.preventDefault(); });     
-  }  
- 
+  if ('ontouchstart' in document.documentElement) {
+		document.addEventListener('touchmove',  function(e){ e.preventDefault(); }); 
+		document.addEventListener('touchstart', function(e){ e.preventDefault(); }); 	  
+	}	
+  
   UI_dieInit();
          
   UI_setClickCallback('bureau_tur',   function() { DeployBureau('Turkey');      } );
@@ -503,7 +507,7 @@ function initView()
   UI_setClickCallback('East',         function() { GermanStaffOperationFrom('East');    } );  
   UI_setClickCallback('Naval',        function() { GermanStaffOperationFrom('Naval');   } );  
     
-  UI_setClickCallback('Yildirim_L',   function() { UseYildirim(front); }  );    
+  UI_setClickCallback('Yildirim_L',   function() { UseYildirim(); }  );    
   UI_setClickCallback('AsiaKorps',    function() { UseAsiaKorps(); }  );
                           
   UI_setClickCallback('Bureau_L',     function() {                     UI_openOverlay('bureaumap');  } );  

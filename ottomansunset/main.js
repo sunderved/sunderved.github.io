@@ -101,26 +101,27 @@ var NarrowsDefenseValues = {
 };    
 
 
+/*
+var zzz = 0;
+function special() {
+	zzz++;
+	
+	game.Played[0] = zzz;
+	
+	game.Offensives = [];
+	for (o of cards[zzz].advances)
+	  game.Offensives.push(o); // game.Played[0].advances;
+	
+	if (zzz==1) UI_showCard();
+	
+	UI_updateCardInfo();
+	
+	return (zzz==49)?0:1;
+}
 
-// var zzz = 0;
-// function special() {
-// 	zzz++;
-// 	
-// 	game.Played[0] = zzz;
-// 	
-// 	game.Offensives = [];
-// 	for (o of cards[zzz].advances)
-// 	  game.Offensives.push(o); // game.Played[0].advances;
-// 	
-// 	if (zzz==1) UI_showCard();
-// 	
-// 	UI_updateCardInfo();
-// 	
-// 	return (zzz==49)?0:1;
-// }
-// 
+// Add this line in state 0 of the Game FSM
 // if ( special() != 0 ) { game.State=0; }
-
+*/
     	
 var game;
     	
@@ -289,14 +290,6 @@ function DrawCard()
 	}, 2000);
 }
 
-/* 
-Can front be global?
-Should it be part of state?
-Can it be local?
-*/
-
-var front = '';
-
 function OffensivesFSM()
 {  
   var d6, success;
@@ -318,23 +311,24 @@ function OffensivesFSM()
     	break;
     	
   	case 2:
-    	front = game.Offensives.shift();
-   		if ( FrontActive(front) ) {
-	      UI_log('Offensive on the '+front+' front');
+    	var _front = game.Offensives[0];
+   		if ( FrontActive(_front) ) {
+	      UI_log('Offensive on the '+_front+' front');
  		   	game.SubState++;
       	OffensivesFSM();
    		} else {
-	      UI_log('Offensive on the '+front+' front. Front inactive, skipping offensive');
-	    	game.SubState = 1;
+	      UI_log('Offensive on the '+_front+' front. Front inactive, skipping offensive');
+	    	game.SubState = 7;
       	OffensivesFSM();
    		}
    		break;
    		
   	case 3:
+    	var _front = game.Offensives[0];
     	game.SubState++;
     	UI_clear();
-    	AdvanceFront(front);        
-    	if (WaterRollNeeded(front)===true) {
+    	AdvanceFront(_front);        
+    	if (WaterRollNeeded(_front)===true) {
       	d6 = rollDice();
       	success = (d6<game.Army.Sinai);
        	if (success===false) { game.SubState = 6; }
@@ -345,8 +339,9 @@ function OffensivesFSM()
     	break;
       
   	case 4:  
+    	var _front = game.Offensives[0];
     	game.SubState++;
-    	if (FortificationRollNeeded(front)===true) {
+    	if (FortificationRollNeeded(_front)===true) {
       	d6 = rollDice();
       	success = (d6<game.Army.Sinai);
       	if (success) game.GazaBeershebaFortifications--;
@@ -358,19 +353,31 @@ function OffensivesFSM()
     	break;        
 
   	case 5:  
-    	game.SubState = 1;
-    	game.ConstantinopleTaken = (game.Front[front]===0); 
-    	UI_showOffensive(front, CanUseYildirim(front));      
+    	var _front = game.Offensives[0];
+    	game.SubState = 7;
+    	game.ConstantinopleTaken = (game.Front[_front]===0); 
+    	UI_showOffensive(_front, CanUseYildirim(_front));      
     	break;
       
   	case 6:  
-    	game.SubState = 1;
-    	RetreatFront(front);
-    	UI_showOffensive(front, false);      
+    	var _front = game.Offensives[0];
+    	game.SubState = 7;
+    	RetreatFront(_front);
+    	UI_showOffensive(_front, false);      
     	break;      
+    	
+  	case 7:  
+    	game.SubState = 1;
+    	game.Offensives.shift();
+     	OffensivesFSM();
+    	break;          	
   }      
 	return game.SubState;
 }
+/*
+AdvanceFront
+RetreatFront
+*/
 
 function PlayerActionFSM() 
 {
@@ -509,13 +516,14 @@ function TurkishOffensive(front) {
 	UI_TurkishOffensive(front, d6, success);  
 }
 
-function UseYildirim(front)
+function UseYildirim()
 {  
-	console.log('UseYildirim '+ front);
+ 	var _front = game.Offensives[0];
+	console.log('UseYildirim '+ _front);
 	game.Yildirim--;
-	RetreatFront(front);
- 	game.ConstantinopleTaken = (game.Front[front]===0); 	
-	UI_UseYildirim(front);
+	RetreatFront(_front);
+ 	game.ConstantinopleTaken = (game.Front[_front]===0); 	
+	UI_UseYildirim(_front);
 }
 
 function UseAsiaKorps()
@@ -900,6 +908,7 @@ function startNewGame()
 
 function init()
 {
+	console.log('init');
 	initView();     	
 	startNewGame();	     
   OSnext();  
@@ -935,6 +944,22 @@ function shuffle(array) {
 
 function clone(obj) {
 	return JSON.parse(JSON.stringify(obj));  
+}
+
+// ------------------------------------------------------------------
+// - Save/Restore Game 
+// ------------------------------------------------------------------
+
+
+function saveGame(game)
+{
+	localStorage.setItem('ottomansunset', JSON.stringify(game));	
+	console.log( JSON.stringify(game) );
+}
+
+function loadGame()
+{
+	return JSON.parse( localStorage.getItem('ottomansunset') );	
 }
 
 // ------------------------------------------------------------------
