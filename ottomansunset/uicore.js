@@ -183,7 +183,9 @@ function UI_updateFront(front)
   var pos = game.Front[front];
 	var el = document.getElementById(front);
 	
-  el.innerHTML = game.Army[front];  
+	//if (front!='Sinai')
+	  el.innerHTML = game.Army[front];  
+	  
   if (pos!==undefined) {
     if (pos>0) {
       el.className = 'army '+front+''+pos;

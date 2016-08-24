@@ -58,7 +58,7 @@ div {
 	border-color:gray;
 	border-radius: 4px;
 	transition: top 1s, left 1s, transform 1s; 
-	z-index:2;
+	z-index:4;
 }
 
 .slideleft  { transform: translateX(-50%) translateY( 10%);}
@@ -114,6 +114,8 @@ div {
 .Constantinople  { left:420px; top:112px; } 
         
 #Sinai             { background-color: saddlebrown; z-index: 4;}
+//#Sinai             { background-image:url("C:\Users\tbollaert\Downloads\github\Ottoman\w\work\board\murray.png"); }
+//#Sinai             { background-image:url("C:\\Users\\tbollaert\\Downloads\\github\\Ottoman\\w\\work\\board\\murray2.png"); 	background-size:100%; color: black;}
 #Mesopotamia       { background-color: blue; }
 #Caucasus          { background-color: lemonchiffon; color: black; }
 #Caucasus.imperial { background-color: darkorange; color: white;}

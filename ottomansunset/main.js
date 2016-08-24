@@ -230,6 +230,7 @@ function GameFSM()
     	break;
     	
   }
+	saveGame();  
 	return game.SubState;
 }
 
@@ -472,6 +473,7 @@ function AllocateResourcesToTheatre(theatre) {
 	game.Resources--;
 	game.Theatre[theatre] += 1;
 	game.Actions -= 2;
+	saveGame();
 	UI_AllocateResourcesToTheatre(theatre);
 }
 
@@ -479,6 +481,7 @@ function FortifyNarrows(defense) {
 	console.log('FortifyNarrows');
 	game.Narrows[defense] = true;
 	game.Actions -= 1;
+	saveGame();
 	UI_info('Fortifying '+defense+' in the Narrows');
 	UI_FortifyNarrows();
 }
@@ -490,6 +493,7 @@ function DeployBureau(country) {
   	game.Actions -= 2;
   }
 	game.IntelligenceBureau = country;
+	saveGame();
 	UI_DeployBureau(country);
 }
 
@@ -513,6 +517,8 @@ function TurkishOffensive(front) {
   	RetreatFront(front);
   }
   
+	saveGame();
+  
 	UI_TurkishOffensive(front, d6, success);  
 }
 
@@ -523,12 +529,14 @@ function UseYildirim()
 	game.Yildirim--;
 	RetreatFront(_front);
  	game.ConstantinopleTaken = (game.Front[_front]===0); 	
+	saveGame();
 	UI_UseYildirim(_front);
 }
 
 function UseAsiaKorps()
 {
 	game.AsiaKorps = 'deploying';
+	saveGame();
 	UI_UseAsiaKorps();  
 }
 
@@ -537,6 +545,7 @@ function GermanStaffOperationFrom(theatre)
 	console.log('GermanStaffOperationFrom '+theatre);
 	game.Theatre[theatre]--;
 	game.Actions++;
+	saveGame();
   
 	UI_GermanStaffOperationFrom(theatre);
 }
@@ -910,7 +919,29 @@ function init()
 {
 	console.log('init');
 	initView();     	
-	startNewGame();	     
+ 	startNewGame();
+	
+// 	deleteGame();
+// 	loadGame();
+// 	
+// 	if (game==null) {
+// 		startNewGame();
+// 	} else {
+// 	  UI_clear(); 
+// 	  UI_closeOverlay();   
+// 	  UI_hideActions();
+// 	 	UI_hideCard();
+// 	  UI_updateFront('Sinai');
+// 	  UI_updateFront('Mesopotamia');
+// 	  UI_updateFront('Caucasus');
+// 	  UI_updateFront('Arab');
+// 	  UI_updateFront('Gallipoli');
+// 	  UI_updateFront('Salonika');
+// 	  UI_updateNarrows();
+// 	  UI_updateCounters();			
+// 		console.log('loaded previous game');
+// 	}
+		     
   OSnext();  
 }
 
@@ -951,15 +982,31 @@ function clone(obj) {
 // ------------------------------------------------------------------
 
 
-function saveGame(game)
+function saveGame()
 {
-	localStorage.setItem('ottomansunset', JSON.stringify(game));	
-	console.log( JSON.stringify(game) );
+// 		console.log('Saving Game');
+// 		console.log('game.State      : '+game.State);
+// 		console.log('game.SubState   : '+game.SubState);
+// 		console.log('game.Offensives : '+game.Offensives);
+// 		
+// 	localStorage.setItem('ottomansunset', JSON.stringify(game));	
 }
 
 function loadGame()
 {
-	return JSON.parse( localStorage.getItem('ottomansunset') );	
+	game = JSON.parse( localStorage.getItem('ottomansunset') );	
+	
+	if (game!=undefined) {
+		console.log('Loading Game');
+		console.log('game.State      : '+game.State);
+		console.log('game.SubState   : '+game.SubState);
+		console.log('game.Offensives : '+game.Offensives);
+	}	
+}
+
+function deleteGame()
+{
+	localStorage.removeItem('ottomansunset');	
 }
 
 // ------------------------------------------------------------------
@@ -973,6 +1020,7 @@ window.applicationCache.addEventListener('updateready', function(e) {
     // A changed manifest file has been found and downloaded by
     // the browser. Swap cache and reload the page to use the new files.
     console.log('A changed manifest file has been found and downloaded. Reloading app');
+    deleteGame();
     window.applicationCache.swapCache();
     window.location.reload();
   }
