@@ -47,6 +47,8 @@ function UI_clickedOk()
 {
 	UI_clear();
 	UI_dieHide();
+ 	UI_hideBV();
+ 	UI_hideDRM();	
 	UI_disableOK();
   UI_closeOverlay();
   UI_defocus('Yildirim_L');
@@ -131,6 +133,37 @@ function UI_updateCardInfo()
     el.innerHTML+='<font color="red">'+c.text+'</font>';      
   }  
 } 
+
+function UI_showDRM(drm)
+{
+	if (drm!=0) { 
+		var str = (drm>0)?'+'+drm:drm;
+		document.getElementById('drmvalue').innerHTML  = '<div class="battlenumber">'+str+'</div>';
+		document.getElementById('drmvalue').innerHTML += '<div class="battlelabel">DRM</div>';		
+  	document.getElementById('drmvalue').classList.add('show');  
+  }
+}
+
+function UI_hideDRM()
+{
+  document.getElementById('drmvalue').innerHTML = '';  
+ 	document.getElementById('drmvalue').classList.remove('show');  
+}
+
+function UI_showBV(bv, theatre)
+{
+	document.getElementById('battlevalue').innerHTML  = '<div class="battlenumber">'+bv+'</div>';
+	document.getElementById('battlevalue').innerHTML += '<div class="battlelabel">'+theatre+'</div>';
+  document.getElementById('battlevalue').className  = 'battleinfo '+theatre;  
+ 	document.getElementById('battlevalue').classList.add('show');  
+}
+
+function UI_hideBV()
+{
+  document.getElementById('battlevalue').innerHTML = '';  
+ 	document.getElementById('battlevalue').classList.remove('show');  
+}
+
 
 // ------------------------------------------------------------------
 // - Update Functions 
@@ -428,7 +461,7 @@ function UI_log(str)
 {
 // 	document.getElementById('myconsole').innerHTML+=str;
 // 	document.getElementById('myconsole').innerHTML+='<BR>';
-	console.log(str);
+//	console.log(str);
 }
 
 function debug(str)

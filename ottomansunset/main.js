@@ -1,7 +1,6 @@
 
-
 function GameState () 
-{  
+{  	
 	this.TurkishNationalWill = 0;
 	this.Victories = [];
 	this.Defeats = [];
@@ -102,35 +101,29 @@ var NarrowsDefenseValues = {
 };    
 
 
+
+// var zzz = 0;
+// function special() {
+// 	zzz++;
+// 	
+// 	game.Played[0] = zzz;
+// 	
+// 	game.Offensives = [];
+// 	for (o of cards[zzz].advances)
+// 	  game.Offensives.push(o); // game.Played[0].advances;
+// 	
+// 	if (zzz==1) UI_showCard();
+// 	
+// 	UI_updateCardInfo();
+// 	
+// 	return (zzz==49)?0:1;
+// }
+// 
+// if ( special() != 0 ) { game.State=0; }
+
+    	
 var game;
-var card;
-
-function FortificationRollNeeded(front)
-{
-	return (
-  	front=='Sinai' &&
-    (game.Front.Sinai==4) && 
-    (game.GazaBeershebaFortifications>0)
-  );
-}
-
-function WaterRollNeeded(front)
-{
-	return (
-  	front=='Sinai' &&
-    (game.Front.Sinai>=4) && 
-    (game.SinaiPipelineBuilt===false)
-  );
-}
-
-function CanUseYildirim(front)
-{
-	return (
-    ((front=='Sinai') || (front=='Mesopotamia')) &&
-    (game.Yildirim > 0)        
-  );  
-}
-
+    	
 function GameFSM()
 {	
 	switch(game.State) 
@@ -142,7 +135,8 @@ function GameFSM()
 			UI_log('Shuffling Morning deck in draw pile');
     	ShuffleDeck(Morning);
     	game.SubState = 0;
-    	game.State++;
+    	game.State++;    	
+    	UI_clear();
     	UI_info('Click to Start New Game');
 			UI_waitForClick();
     	break;
@@ -222,7 +216,7 @@ function GameFSM()
       	UI_info('GAME OVER');
       } else if ( game.Deck.length===0 ) {
       	UI_info('VICTORY !');
-      	UI_info('Young Turks have survived the Allied forces and the events of the Great War');
+      	UI_info('You have survived the Allied forces and the events of the Great War');
       	CalculateWinningScore();
     	}
      	game.State++;
@@ -431,7 +425,7 @@ function GermanStaffOperationsFSM()
         // offer the choice to 1) use Staff Operations or 2) skip
       	game.SubState = 2;
       	UI_clear();
-      	UI_info('Use German Staff Operations?');      
+      	UI_info('Use German Staff Operations or Click to Continue');      
       	if ( game.Theatre.Western>0 ) UI_focus('Western');
       	if ( game.Theatre.Eastern>0 ) UI_focus('Eastern');
       	if ( game.Theatre.Naval  >0 ) UI_focus('Naval');      
@@ -864,24 +858,32 @@ function CanUseActions()
 		CanFortifyNarrows()              ||
 		CanDeployBureau()
 	);	
-// 	var ok = false;
-//   for (var army in game.Front) {
-//     ok = ok || CanAttackFront(army);
-//     console.log( 'CanAttackFront('+army+') : '+CanAttackFront(army));
-//   }  
-// 
-//   for (var theatre in game.Theatre) {
-//     ok = ok || CanAllocateTheatre(theatre);
-//     console.log( 'CanAllocateTheatre('+theatre+') : '+CanAllocateTheatre(theatre));
-//   }  
-//         
-//   ok = ok || CanFortifyNarrows();
-//   ok = ok || CanDeployBureau();
-//     console.log( 'CanFortifyNarrows : '+CanFortifyNarrows());
-//     console.log( 'CanFortifyNarrows : '+CanDeployBureau());
-//     console.log( '    CanUseActions : '+ok);
-//     
-//   return ok; 
+}
+
+function FortificationRollNeeded(front)
+{
+	return (
+  	front=='Sinai' &&
+    (game.Front.Sinai==4) && 
+    (game.GazaBeershebaFortifications>0)
+  );
+}
+
+function WaterRollNeeded(front)
+{
+	return (
+  	front=='Sinai' &&
+    (game.Front.Sinai>=4) && 
+    (game.SinaiPipelineBuilt===false)
+  );
+}
+
+function CanUseYildirim(front)
+{
+	return (
+    ((front=='Sinai') || (front=='Mesopotamia')) &&
+    (game.Yildirim > 0)        
+  );  
 }
 
 // ------------------------------------------------------------------

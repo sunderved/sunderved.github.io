@@ -129,12 +129,19 @@ function UI_SuvlaLanding() {
 }
 function UI_GrandDukeNicholasTakesControl() {
 	if (game.Front.Caucasus !== undefined) {
-		UI_info('New Caucasus Front value: '+game.Army.Caucasus);
-		UI_updateFront('Caucasus');
+	  UI_clear();
+		UI_info('Grand Duke Nicholas takes control in Caucasus');
+	  setTimeout(function () {
+		  UI_removeFront('Caucasus');
+		}, 1000);		
+	  setTimeout(function () {
+		  UI_updateFront('Caucasus');
+			UI_waitForClick();
+		}, 2100);		
 	} else {
 		UI_info('Caucasus front inactive. Nothing happens');
+		UI_waitForClick();
 	}	
-	UI_waitForClick();
 }
 function UI_SenussiRevolt() {
 	UI_info('Sinai Front Retreat'); 
@@ -142,7 +149,7 @@ function UI_SenussiRevolt() {
   UI_waitForClick();
 }
 function UI_LandingAtSalonika() {
-	UI_info('Sarrail opens new front in Salonika'); 
+	UI_info('Sarrail lands in Salonika'); 
 	UI_updateFront('Salonika');
   UI_waitForClick();
 }
@@ -169,16 +176,20 @@ function UI_SinaiPipeline() {
 }
 function UI_GallipoliEvacuation() {
 	UI_disableOK();
-  UI_info('Gallipoli unit is removed');
+  UI_clear();
+  UI_info('Gallipoli is evacuated');
 	UI_info('&nbsp;'); 
   UI_updateFront('Gallipoli');  	
   setTimeout(function () {
 	  UI_clear();
-	  UI_info('Gallipoli unit is removed');
-	  UI_info('If in play, flip the Salonika unit to its D\'Esperey side');
- 	  UI_updateFront('Salonika');  	
+	  UI_info('Gallipoli is evacuated');
+	  UI_info('D\'Esperey takes command of the Salonika front, if open');
+	  UI_removeFront('Salonika');
+	}, 1500); 
+  setTimeout(function () {
+	  UI_updateFront('Salonika');
   	UI_waitForClick();
-	}, 1500);  
+  }, 2600);			
 }
 function UI_MesopotamianSiege() {
 	UI_disableOK();
@@ -208,12 +219,19 @@ function UI_ArabRevolt() {
 }
 function UI_YudenichNamedCommanderInChief() {
 	if (game.Front.Caucasus !== undefined) {
-		UI_info('New Caucasus Front value: '+game.Army.Caucasus);
-		UI_updateFront('Caucasus');
+	  UI_clear();
+		UI_info('Yudenich names Commander in Chief in Caucasus');
+	  setTimeout(function () {
+		  UI_removeFront('Caucasus');
+		}, 1000);		
+	  setTimeout(function () {
+		  UI_updateFront('Caucasus');
+			UI_waitForClick();	  
+		}, 2100);		
 	} else {
 		UI_info('Caucasus front inactive. Nothing happens');
+		UI_waitForClick();	
 	}	
-	UI_waitForClick();
 }
 function UI_Yildirim() {
   UI_info('Receive 3 Yildirim tokens');
@@ -255,11 +273,14 @@ function UI_Sandstorms(front, d6) {
 }
 function UI_AffenbyTakesTheHelm() {
 	UI_disableOK();
-	UI_info('Sinai flipped marker to its Affenby side');	
-  setTimeout(function () {	
-	  UI_updateFront('Sinai');  	
+	UI_info('Affenby takes the helm in sinai');	
+  setTimeout(function () {
+	  UI_removeFront('Sinai');
+	}, 1000);		
+  setTimeout(function () {
+	  UI_updateFront('Sinai');
   	UI_waitForClick();
-  }, 2000);			
+  }, 2100);			
 }
 function UI_LawrenceStirsTheArabs() {
 	UI_disableOK();
@@ -351,8 +372,9 @@ function UI_TurkishOffensive(front, d6, success) {
 	UI_disableOK();
 	UI_clear();
 	UI_hideActions(); 
-	UI_info('Turkish Offensive in '+front);
-	UI_info(front+' DRM: +'+game.DRM[front]);
+	UI_info('Turkish Offensive on the '+front+' Front');
+	UI_log('Turkish Offensive on the '+front+' Front');
+ 	UI_showDRM(game.DRM[front]);		
   setTimeout(function () {
 		UI_dieShowRoll(d6);
   }, 500);
@@ -394,11 +416,16 @@ function UI_GermanStaffOperationFrom(theatre) {
 function UI_OffMapBattle(battle, theatre, value, d6, outcome)
 {	
 	UI_disableOK();
-	UI_clear();
-	UI_info('<U>'+battle+'</U>'+' - BV '+value);
-	UI_info(theatre+' Theatre DRM: +'+game.Theatre[theatre]);
-	UI_info('War Weariness DRM: '+game.WarWeariness);
-  setTimeout(function () {
+	UI_clear();	
+ 	UI_info('Off Map Battle: ');
+ 	UI_info(battle);
+ 	UI_showBV(value, theatre);
+ 	UI_showDRM(game.Theatre[theatre]+game.WarWeariness);
+
+	UI_log('Off Map Battle: '+battle+' - BV '+value);
+	UI_log(theatre+' Theatre DRM: +'+game.Theatre[theatre]);
+	UI_log('War Weariness DRM: '+game.WarWeariness);
+	 setTimeout(function () {
 		UI_dieShowRoll(d6);
   }, 1000);		
   setTimeout(function () {  	
@@ -412,12 +439,18 @@ function UI_OffMapBattle(battle, theatre, value, d6, outcome)
 function UI_CoupAttempt(country, d6, drm, outcome)
 {
 	UI_disableOK();
-	UI_info('<U>'+'Coup attempt in '+country+' (5)'+'</U>');
+	UI_clear();	
+ 	UI_info('Coup Attempt in '+country);
+ 	UI_showBV(5, 'Coup');
+ 	UI_showDRM(drm);
+
+ 	UI_log('Coup attempt in '+country);
   if (game.IntelligenceBureau===undefined) {
-		UI_info('Intelligence Bureau of the East not deployed, DRM: 0');
+		UI_log('Intelligence Bureau of the East not deployed, DRM: 0');
 	} else {
-		UI_info('Intelligence Bureau of the East in '+ game.IntelligenceBureau+', DRM: '+drm);
+		UI_log('Intelligence Bureau of the East in '+ game.IntelligenceBureau+', DRM: '+drm);
 	}
+		
   setTimeout(function () {
 		UI_dieShowRoll(d6);
   }, 1000);		
@@ -452,7 +485,7 @@ function UI_showOffensive(front, ask_yildirim)
 	UI_updateFront(front);	
 	if (ask_yildirim===true) {					
 	  setTimeout(function () {  		
-		  UI_info('Expand Yildirim token to block advance?');  
+		  UI_info('Use Yildirim to Block Advance or Click to Continue');  
 		  UI_focus('Yildirim_L');
 			UI_waitForClick();										
 	  }, 1000);		

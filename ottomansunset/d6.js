@@ -59,17 +59,17 @@ function D6(container, name, size, background, dotcolor)
 	  return array;
 	}; 	
 	
-  var el = document.createElement("div");
-  el.id=name;
+	var el = document.createElement("div");
+	el.id=name;
 	el.style.width = size+'px';	
 	el.style.height = size+'px';	
 	el.style.borderRadius = '10%';	
 	el.style.position = 'absolute';
-  el.style.backgroundColor = background;
+	el.style.backgroundColor = background;
 	el.style.boxSizing = 'border-box';
-  el.style.padding = 0;
-  el.style.margin = 0;
-  el.style.zIndex = 1;
+	el.style.padding = 0;
+	el.style.margin = 0;
+	el.style.zIndex = 1;
 	document.getElementById(container).appendChild(el);     	
 		
 	this.createDot = function(id, x, y) {
