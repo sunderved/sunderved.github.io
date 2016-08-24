@@ -103,7 +103,7 @@ function ArmenianVolunteerUnits() {
 }
 function SecondBattleofYpres() {
   // Western 4
-	OffMapBattle('Second Battle of Ypres', 'Western', 4);
+	OffMapBattle('Second Battle of Ypres', 'West', 4);
 }
 function GallipoliLanding() {
   // Place the Hamilton (2) marker on space 4. Destroy the Seddulbahir Gun in the Narrows
@@ -113,11 +113,11 @@ function GallipoliLanding() {
 }
 function GorliceTarnow() {
 	// Conduct Eastern Front Battle, GarliceTarnow / 2
-	OffMapBattle('Gorlice Tarnow', 'Eastern', 2);
+	OffMapBattle('Gorlice Tarnow', 'East', 2);
 }
 function ItalyJoinsTheWar() {
   // Eastern 3
-	OffMapBattle('Italy Joins The War', 'Eastern', 3);
+	OffMapBattle('Italy Joins The War', 'East', 3);
 }
 function GermanUboats() {
 	// Override default DRMs
@@ -199,7 +199,7 @@ function ErzurumOffensive() {
 }
 function Verdun() {
   // Western 4
-	OffMapBattle('Verdun', 'Western', 4);
+	OffMapBattle('Verdun', 'West', 4);
 }
 function MesopotamianSiege() {
   // Remove Townsend (3) from the Mesopotamia front 
@@ -218,7 +218,7 @@ function Jutland() {
 }
 function BrusilovOffensive() {
   // Eastern 3
-	OffMapBattle('Brusilov Offensive', 'Eastern', 3);
+	OffMapBattle('Brusilov Offensive', 'East', 3);
 }
 function AsiaKorps() {
   // Take the AK marker
@@ -227,7 +227,7 @@ function AsiaKorps() {
 }
 function TheSomme() {
   // Western 3
-	OffMapBattle('The Somme', 'Western', 3);
+	OffMapBattle('The Somme', 'West', 3);
 }
 function ArabRevolt() {
   // Place the Feisal Hussein (2) unit on the 6 space of its track, if not yet in play
@@ -311,7 +311,7 @@ function HoffmanOffensive() {
 	// Override default DRMs
 	game.DRM.Caucasus = 1;
   // Eastern 2
-	OffMapBattle('Hoffman Offensive', 'Eastern', 2);
+	OffMapBattle('Hoffman Offensive', 'East', 2);
 }
 function BolshevikRevolution() {
   // Remove the Caucasus unit
@@ -369,7 +369,7 @@ function Dunsterforce() {
 }
 function VittorioVeneto() {
   // Eastern 4
-	OffMapBattle('Vittorio Veneto', 'Eastern', 4);
+	OffMapBattle('Vittorio Veneto', 'East', 4);
 }
 
 // ------------------

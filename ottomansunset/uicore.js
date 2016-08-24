@@ -268,9 +268,9 @@ function UI_updateScore()
 
 function UI_updateOffMapTheatres()
 {
-	document.getElementById('Western'   ).innerHTML = game.Theatre.Western;    
-  document.getElementById('Naval'     ).innerHTML = game.Theatre.Naval;      
-  document.getElementById('Eastern'   ).innerHTML = game.Theatre.Eastern;    
+	document.getElementById('West' ).innerHTML = game.Theatre.West;    
+  document.getElementById('Naval').innerHTML = game.Theatre.Naval;      
+  document.getElementById('East' ).innerHTML = game.Theatre.East;    
 }
 
 function UI_updateNarrows()
@@ -495,13 +495,13 @@ function initView()
   UI_setClickCallback('Salonika',     function() { TurkishOffensive('Salonika');    } );
   UI_setClickCallback('Arab',         function() { TurkishOffensive('Arab');        } );
                           
-  UI_setClickCallback('Western_L',    function() { AllocateResourcesToTheatre('Western'); } );  
-  UI_setClickCallback('Eastern_L',    function() { AllocateResourcesToTheatre('Eastern'); } );  
-  UI_setClickCallback('Naval_L',      function() { AllocateResourcesToTheatre('Naval');   } );  
+  UI_setClickCallback('West_L',       function() { AllocateResourcesToTheatre('West');  } );  
+  UI_setClickCallback('East_L',       function() { AllocateResourcesToTheatre('East');  } );  
+  UI_setClickCallback('Naval_L',      function() { AllocateResourcesToTheatre('Naval'); } );  
                           
-  UI_setClickCallback('Western',      function() { GermanStaffOperationFrom('Western');   } );  
-  UI_setClickCallback('Eastern',      function() { GermanStaffOperationFrom('Eastern');   } );  
-  UI_setClickCallback('Naval',        function() { GermanStaffOperationFrom('Naval');     } );  
+  UI_setClickCallback('West',         function() { GermanStaffOperationFrom('West');    } );  
+  UI_setClickCallback('East',         function() { GermanStaffOperationFrom('East');    } );  
+  UI_setClickCallback('Naval',        function() { GermanStaffOperationFrom('Naval');   } );  
     
   UI_setClickCallback('Yildirim_L',   function() { UseYildirim(front); }  );    
   UI_setClickCallback('AsiaKorps',    function() { UseAsiaKorps(); }  );

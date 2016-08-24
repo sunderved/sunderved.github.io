@@ -42,9 +42,9 @@ function GameState ()
   	Kaiserchlacht: 0
   };  
 	this.Theatre = {
-  	Western: 0, 
+  	West : 0, 
   	Naval: 0, 
-  	Eastern: 0
+  	East : 0
   };
 	this.Resources = 6;
 	this.WarWeariness = 0;
@@ -183,7 +183,7 @@ function GameFSM()
       {  
       	game.State++;    
       	var battle = SelectKaiserschlachtBattle();
-      	OffMapBattle(battle, 'Western', KaiserschlachtBattleValues[battle]);
+      	OffMapBattle(battle, 'West', KaiserschlachtBattleValues[battle]);
       } else {
       	game.State++;    
       	OSnext();
@@ -426,9 +426,9 @@ function GermanStaffOperationsFSM()
       	game.SubState = 2;
       	UI_clear();
       	UI_info('Use German Staff Operations or Click to Continue');      
-      	if ( game.Theatre.Western>0 ) UI_focus('Western');
-      	if ( game.Theatre.Eastern>0 ) UI_focus('Eastern');
-      	if ( game.Theatre.Naval  >0 ) UI_focus('Naval');      
+      	if ( game.Theatre.West >0 ) UI_focus('West');
+      	if ( game.Theatre.East >0 ) UI_focus('East');
+      	if ( game.Theatre.Naval>0 ) UI_focus('Naval');      
       	UI_waitForClick('No');        
       } else {
         // If staff operations NOT are possible this turn, 
@@ -837,9 +837,9 @@ function CanUseAsiaKorps()
 function CanUseGermanStaffOperations()
 {
 	return (
-    (game.Theatre.Western>0) || 
-    (game.Theatre.Eastern>0) || 
-    (game.Theatre.Naval  >0) 
+    (game.Theatre.West >0) || 
+    (game.Theatre.East >0) || 
+    (game.Theatre.Naval>0) 
   );
 }
 
@@ -852,9 +852,9 @@ function CanUseActions()
 		CanAttackFront('Arab')           ||
 		CanAttackFront('Salonika')       ||
 		CanAttackFront('Gallipoli')      ||
-		CanAllocateTheatre('Western')    ||
+		CanAllocateTheatre('West')       ||
 		CanAllocateTheatre('Naval')      ||
-		CanAllocateTheatre('Eastern')    ||
+		CanAllocateTheatre('East')       ||
 		CanFortifyNarrows()              ||
 		CanDeployBureau()
 	);	
