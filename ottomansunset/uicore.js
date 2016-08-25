@@ -3,10 +3,10 @@
 // ------------------------------------------------------------------
 
 function UI_setClickCallback(divid, callback) {
-	if ('ontouch' in document.documentElement) {
-	  document.getElementById(divid).ontouchstart = callback;
+	if ('ontouchstart' in document.documentElement) {
+	  document.getElementById(divid).addEventListener('touchstart', callback);
 	} else {
- 	  document.getElementById(divid).onclick = callback;
+ 	  document.getElementById(divid).addEventListener('click', callback);;
 	}  
 	UI_disableClick(divid);     
 }
