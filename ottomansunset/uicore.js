@@ -236,9 +236,13 @@ function UI_updateFortifications()
 
 function UI_updatePipeline()
 {
-	console.log('UI_pipelineComplete');
-  document.getElementById('waterS4').style.visibility = 'hidden';    
-  document.getElementById('waterS5').style.visibility = 'hidden';
+	if (game.SinaiPipelineBuilt===true) {
+	  document.getElementById('waterS4').style.visibility = 'hidden';    
+  	document.getElementById('waterS5').style.visibility = 'hidden';
+	} else {
+	  document.getElementById('waterS4').style.visibility = 'visible';    
+  	document.getElementById('waterS5').style.visibility = 'visible';
+	}
 }
 
 function UI_updateBureau()
@@ -290,7 +294,7 @@ function UI_updateNarrows()
     if (game.Narrows[defense]===false) {
       document.getElementById(defense).className = 'defense';
       if (defense=='Seddulbahir') {
-        document.getElementById(defense).innerHTML = 'X';
+        document.getElementById(defense).innerHTML = 'x';
       }
     } else {       
       if ((defense=='Minefield_1') || (defense=='Minefield_2')) {
@@ -549,6 +553,7 @@ function UI_startNewGame()
   UI_closeOverlay();   
   UI_hideActions();
  	UI_hideCard();
+	UI_updatePipeline();
   UI_updateFront('Sinai');
   UI_updateFront('Mesopotamia');
   UI_updateFront('Caucasus');
