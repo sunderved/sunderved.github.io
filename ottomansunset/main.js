@@ -138,7 +138,7 @@ function GameFSM()
     	game.SubState = 0;
     	game.State++;    	
     	UI_clear();
-    	UI_info('Click to Start New Game');
+//    	UI_info('Click to Start New Game');
 			UI_waitForClick();
     	break;
   	case 1:
@@ -224,6 +224,7 @@ function GameFSM()
 			UI_waitForClick();
     	break;
     case 9:
+			UI_game2splash();
       startNewGame();
      	game.State = 0;
      	OSnext();      	
@@ -920,6 +921,10 @@ function init()
 	console.log('init');
 	initView();     	
  	startNewGame();
+  OSnext();  
+ 	
+//	setTimeout(	UI_splash2game, 2000);		 	
+ 		
 	
 // 	deleteGame();
 // 	loadGame();
@@ -942,7 +947,6 @@ function init()
 // 		console.log('loaded previous game');
 // 	}
 		     
-  OSnext();  
 }
 
 // ------------------------------------------------------------------

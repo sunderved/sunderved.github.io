@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# Cache manifest version: 0.7c
+# Cache manifest version: 0.8
 # If you change the version number in this comment, 
 # the cache manifest is no longer byte-for-byte identical 
 index.html
@@ -11,6 +11,7 @@ uianimations.js
 uicore.js
 d6.js
 fonts/nrkis.ttf
+img/splash.png
 img/board.png
 img/flag.png
 img/icon.png

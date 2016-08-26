@@ -496,3 +496,23 @@ function UI_showOffensive(front, ask_yildirim)
   }
 }
 
+function UI_splash2game() 
+{
+	document.getElementById('container').classList.add('fade'); 
+	setTimeout(function () {
+		document.getElementById('game').classList.remove('hidden'); 
+		document.getElementById('splash').classList.add('hidden'); 
+		document.getElementById('container').classList.remove('fade'); 
+		UI_clickedOk(); 
+	}, 1000);		
+}
+
+function UI_game2splash() 
+{
+	document.getElementById('container').classList.add('fade'); 
+	setTimeout(function () {
+		document.getElementById('game').classList.add('hidden'); 
+		document.getElementById('splash').classList.remove('hidden'); 
+		document.getElementById('container').classList.remove('fade'); 
+	}, 1000);		 
+}

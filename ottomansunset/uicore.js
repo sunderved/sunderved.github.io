@@ -236,13 +236,8 @@ function UI_updateFortifications()
 
 function UI_updatePipeline()
 {
-	if (game.SinaiPipelineBuilt===true) {
-	  document.getElementById('waterS4').style.visibility = 'hidden';    
-  	document.getElementById('waterS5').style.visibility = 'hidden';
-	} else {
-	  document.getElementById('waterS4').style.visibility = 'visible';    
-  	document.getElementById('waterS5').style.visibility = 'visible';
-	}
+  document.getElementById('waterS4').classList.toggle('hidden', game.SinaiPipelineBuilt);    
+	document.getElementById('waterS5').classList.toggle('hidden', game.SinaiPipelineBuilt);
 }
 
 function UI_updateBureau()
@@ -492,7 +487,11 @@ function initView()
 	}	
   
   UI_dieInit();
-         
+
+  UI_setClickCallback('splash', function() { UI_splash2game();      }  );
+	UI_enableClick('splash');     
+  
+           
   UI_setClickCallback('bureau_tur',   function() { DeployBureau('Turkey');      } );
   UI_setClickCallback('bureau_ind',   function() { DeployBureau('India');       } );
   UI_setClickCallback('bureau_per',   function() { DeployBureau('Persia');      } );
