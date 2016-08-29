@@ -28,7 +28,7 @@ function GameState ()
 	this.Front = {
   	Sinai: 6,
   	Mesopotamia: 5,
-  	Caucasus: 5,
+  	Caucasus: 1,
   	Arab: undefined,
   	Salonika: undefined,
   	Gallipoli: undefined,
