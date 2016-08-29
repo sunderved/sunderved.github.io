@@ -161,16 +161,16 @@ function CentralPowersMeddlingInAfghanistan() {
   // Coup in Afgha 5
   CoupAttempt('Afghanistan');
 }
-function FortificationofGazaBeershebaLine() {
+function FortificationOfGazaBeershebaLine() {
   // You may immediately forfeit 2 actions to place the Gaza-Beersheba Fortification marker, 
   // if that space is controlled by the Turkish
-  UI_disableOK();
+  UI_disableOK();  
   UI_offerChoice(
   	'You may immediately forfeit 2 actions to place the Gaza-Beersheba Fortification marker, if that space is controlled by the Turkish',
   	'Fortify Gaza-Beersheba',
-  	function() { game.Actions=0; game.GazaBeershebaFortifications=2; UI_updateFortifications(); },
+  	( (game.Front.Sinai>4) ? function() { game.Actions=0; game.GazaBeershebaFortifications=2; UI_updateFortifications(); } : undefined ),
   	'Keep 2 Actions',
-  	function() { console.log('Clicked'); }
+  	function() { }
 	);  
 }
 function SinaiPipeline() {

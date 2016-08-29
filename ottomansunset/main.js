@@ -1,3 +1,23 @@
+var KaiserschlachtBattleValues = {
+	Kaiserschlacht1: 3,
+	Kaiserschlacht2: 3,
+	Kaiserschlacht3: 4,
+	Kaiserschlacht4: 4,
+	Kaiserschlacht5: 5,
+	Kaiserschlacht6: 5
+};
+
+var NarrowsDefenseValues = {
+	Seddulbahir:   	4,
+	Mumkale:       	2,
+	Minefield_1:   	4,
+	Yildiz:       	3,
+	Dardanos:     	3,
+	Minefield_2:   	4,
+	Canakkale:     	2,
+	Nagara:       	3,
+	Constantinople: 4
+};    
 
 function GameState () 
 {  	
@@ -78,52 +98,8 @@ function GameState ()
 	this.Actions = 0;
 	this.Offensives = [];
 }
-
-var KaiserschlachtBattleValues = {
-	Kaiserschlacht1: 3,
-	Kaiserschlacht2: 3,
-	Kaiserschlacht3: 4,
-	Kaiserschlacht4: 4,
-	Kaiserschlacht5: 5,
-	Kaiserschlacht6: 5
-};
-
-var NarrowsDefenseValues = {
-	Seddulbahir:   	4,
-	Mumkale:       	2,
-	Minefield_1:   	4,
-	Yildiz:       	3,
-	Dardanos:     	3,
-	Minefield_2:   	4,
-	Canakkale:     	2,
-	Nagara:       	3,
-	Constantinople: 4
-};    
-
-
-/*
-var zzz = 0;
-function special() {
-	zzz++;
-	
-	game.Played[0] = zzz;
-	
-	game.Offensives = [];
-	for (o of cards[zzz].advances)
-	  game.Offensives.push(o); // game.Played[0].advances;
-	
-	if (zzz==1) UI_showCard();
-	
-	UI_updateCardInfo();
-	
-	return (zzz==49)?0:1;
-}
-
-// Add this line in state 0 of the Game FSM
-// if ( special() != 0 ) { game.State=0; }
-*/
     	
-var game;
+var game = new GameState();
     	
 function GameFSM()
 {	
@@ -131,14 +107,12 @@ function GameFSM()
   {
   	case 0:
       // Initialization stuff
-			UI_log('');
-			UI_log('Initializing game');
-			UI_log('Shuffling Morning deck in draw pile');
+		 	console.log('Starting New Game');
+			game = new GameState();
     	ShuffleDeck(Morning);
     	game.SubState = 0;
     	game.State++;    	
-    	UI_clear();
-//    	UI_info('Click to Start New Game');
+			UI_startNewGame();      
 			UI_waitForClick();
     	break;
   	case 1:
@@ -225,9 +199,10 @@ function GameFSM()
     	break;
     case 9:
 			UI_game2splash();
-      startNewGame();
-     	game.State = 0;
-     	OSnext();      	
+			setTimeout(function () {
+	     	game.State = 0;
+	     	OSnext();      	
+			}, 1000);		
     	break;
     	
   }
@@ -421,6 +396,11 @@ function GermanStaffOperationsFSM()
   	game.Blocked.IntelligenceBureau = false;
   	game.Blocked.Narrows = false;		
 	}
+	
+	// Special case for Card #41 'War Weariness' - No actions allowed
+	if (game.Played[0] == 41 ) { 
+		return 0;
+	}	
 	
 	switch (game.SubState) 
   {
@@ -823,14 +803,21 @@ function CanAllocateTheatre(theatre)
   );
 }
 
+function CoupHasHappened(country)
+{
+	var card = {India:5, Persia:6, Afghanistan:21};
+	
+	return (game.Played.indexOf(card[country]) >= 0);
+}
+
 function CanDeployBureau()
 {  
 	if ((game.IntelligenceBureau===undefined) || game.Blocked.IntelligenceBureau) {
   	return false;
   } else if (game.IntelligenceBureau=='Turkey') {
-    return AvailableActions(1);  
+    return ( AvailableActions(1) && ( !CoupHasHappened('India') || !CoupHasHappened('Persia') || !CoupHasHappened('Afghanistan') ) );  
   } else {  
-  	return AvailableActions(2);
+    return ( AvailableActions(2) && ( !CoupHasHappened('India') || !CoupHasHappened('Persia') || !CoupHasHappened('Afghanistan') ) );  
   }
 }
 
@@ -840,7 +827,12 @@ function CanFortifyNarrows()
   	AvailableActions(1) &&
     (game.StraitsClosed===false) &&
     (game.BritishFortitude===undefined) &&
-    (game.Blocked.Narrows===false)
+    (game.Blocked.Narrows===false) &&
+		( (game.Narrows.Minefield_1     === false) ||
+		  (game.Narrows.Minefield_2     === false) ||
+		  (game.Narrows.Yildiz          === false) ||
+		  (game.Narrows.Dardanos        === false) ||
+		  (game.Narrows.Nagara          === false) )
   );  
 }
 
@@ -908,19 +900,10 @@ function CanUseYildirim(front)
 // - init Function (Entry Point) 
 // ------------------------------------------------------------------
 
-function startNewGame()
-{
- 	console.log('Starting New Game');
-	game = new GameState();
-	UI_startNewGame();
-}
-
-
 function init()
 {
 	console.log('init');
 	initView();     	
- 	startNewGame();
   OSnext();  
  	
 //	setTimeout(	UI_splash2game, 2000);		 	
@@ -1032,3 +1015,24 @@ window.applicationCache.addEventListener('updateready', function(e) {
 
 
 
+/*
+var zzz = 0;
+function special() {
+	zzz++;
+	
+	game.Played[0] = zzz;
+	
+	game.Offensives = [];
+	for (o of cards[zzz].advances)
+	  game.Offensives.push(o); // game.Played[0].advances;
+	
+	if (zzz==1) UI_showCard();
+	
+	UI_updateCardInfo();
+	
+	return (zzz==49)?0:1;
+}
+
+// Add this line in state 0 of the Game FSM
+// if ( special() != 0 ) { game.State=0; }
+*/

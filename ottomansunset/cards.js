@@ -139,7 +139,7 @@ cards[21] = {
   text: undefined};
 cards[22] = {
   name:'Fortification Of Gaza-Beersheba Line',
-  event:FortificationofGazaBeershebaLine,
+  event:FortificationOfGazaBeershebaLine,
   advances:['Arab', 'Mesopotamia', 'Salonika'],
   actions:2,
   text: undefined};

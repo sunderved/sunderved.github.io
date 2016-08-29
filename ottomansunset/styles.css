@@ -191,7 +191,7 @@ div {
     Score: National Will, Victories & Defeats
    ----------------------------------------------------------------------- */
 
-#score { 
+#Score { 
 	width:100px; height:100px;
 	text-align: center;
 	left:20px; top:20px; 	 
@@ -312,7 +312,7 @@ div {
 	visibility: hidden;
 	z-index: 3;	
   height:49px; width:49px;
-  transform: translateX(-3px) translateY(-3px);
+	margin: -1px;
 	border-radius: 4px;
 }
 #Fortification.weak { visibility: visible; border: 3px dotted black; }
@@ -560,6 +560,11 @@ span {
   margin-top: 190px;
   margin-left: 12px;
   margin-right: 12px;
+  position: static;
+}
+
+.bureaubutton:disabled {
+	opacity:0.6;
 }
 
 /* ----------------------------------------------------------------------- 

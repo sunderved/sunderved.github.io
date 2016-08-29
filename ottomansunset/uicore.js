@@ -110,10 +110,14 @@ function UI_offerChoice(options, op1, op1func, op2, op2func)
   //document.getElementById('options').innerHTML=options;  
   document.getElementById('op1').innerHTML=op1;  
   document.getElementById('op2').innerHTML=op2;  
-  UI_setClickCallback('op1', function() { document.getElementById('choice').style.visibility='hidden';  op1func(); OSnext(); } ); 
-  UI_setClickCallback('op2', function() { document.getElementById('choice').style.visibility='hidden';  op2func(); OSnext(); } );    
-  UI_focus('op1');
-  UI_focus('op2');
+  if (op1func!==undefined) {
+	  UI_setClickCallback('op1', function() { document.getElementById('choice').style.visibility='hidden';  op1func(); OSnext(); } ); 
+	  UI_focus('op1');
+  }
+  if (op2func!==undefined) {
+  	UI_setClickCallback('op2', function() { document.getElementById('choice').style.visibility='hidden';  op2func(); OSnext(); } );    
+  	UI_focus('op2');
+	}
 }
 
 function UI_updateCardInfo() 
@@ -250,6 +254,15 @@ function UI_updateBureau()
     document.getElementById('Bureau').style.visibility = 'visible';
     document.getElementById('Bureau').innerHTML = game.IntelligenceBureau.charAt(0);
   }	
+  
+  document.getElementById('India').disabled       = CoupHasHappened('India');
+  document.getElementById('Persia').disabled      = CoupHasHappened('Persia');
+  document.getElementById('Afghanistan').disabled = CoupHasHappened('Afghanistan');
+  
+  if (game.IntelligenceBureau!==undefined) {
+	  document.getElementById(game.IntelligenceBureau).disabled = true;
+  }
+  
 }
 
 function UI_updateYildirim()
@@ -492,10 +505,10 @@ function initView()
 	UI_enableClick('splash');     
   
            
-  UI_setClickCallback('bureau_tur',   function() { DeployBureau('Turkey');      } );
-  UI_setClickCallback('bureau_ind',   function() { DeployBureau('India');       } );
-  UI_setClickCallback('bureau_per',   function() { DeployBureau('Persia');      } );
-  UI_setClickCallback('bureau_afg',   function() { DeployBureau('Afghanistan'); } );
+  UI_setClickCallback('Turkey'     ,  function() { DeployBureau('Turkey');      } );
+  UI_setClickCallback('India'      ,  function() { DeployBureau('India');       } );
+  UI_setClickCallback('Persia'     ,  function() { DeployBureau('Persia');      } );
+  UI_setClickCallback('Afghanistan',  function() { DeployBureau('Afghanistan'); } );
   
   UI_setClickCallback('Sinai',        function() { TurkishOffensive('Sinai');       } );
   UI_setClickCallback('Mesopotamia',  function() { TurkishOffensive('Mesopotamia'); } );
@@ -517,7 +530,7 @@ function initView()
                           
   UI_setClickCallback('Bureau_L',     function() {                     UI_openOverlay('bureaumap');  } );  
   UI_setClickCallback('Narrows',      function() { UI_updateNarrows(); UI_openOverlay('narrowsmap'); } );          
-  UI_setClickCallback('score',        function() { UI_updateBattles(); UI_openOverlay('battlemap');  } );          
+  UI_setClickCallback('Score',        function() { UI_updateBattles(); UI_openOverlay('battlemap');  } );          
                           
   UI_setClickCallback('Minefield_1',  function() { event.stopPropagation(); FortifyNarrows('Minefield_1'); } );
   UI_setClickCallback('Yildiz',       function() { event.stopPropagation(); FortifyNarrows('Yildiz');      } );
@@ -525,7 +538,6 @@ function initView()
   UI_setClickCallback('Minefield_2',  function() { event.stopPropagation(); FortifyNarrows('Minefield_2'); } );
   UI_setClickCallback('Nagara',       function() { event.stopPropagation(); FortifyNarrows('Nagara');      } );
   
-//  UI_setClickCallback('overlay',      function() { UI_closeOverlay(); } );
   UI_setClickCallback('battlemap',    function() { UI_closeOverlay(); } );
   UI_setClickCallback('narrowsmap',   function() { UI_closeOverlay(); } );
   UI_setClickCallback('bureaumap',    function() { UI_closeOverlay(); } );
@@ -533,14 +545,14 @@ function initView()
   UI_setClickCallback('info',         function() { UI_clickedOk(); } ); 
       
 	UI_enableClick('Narrows');     
-	UI_enableClick('score');       
+	UI_enableClick('Score');       
 	UI_enableClick('overlay');     
 	UI_enableClick('battlemap');     
 	UI_enableClick('narrowsmap');     
-	UI_enableClick('bureau_tur');     
-	UI_enableClick('bureau_ind');     
-	UI_enableClick('bureau_per');     
-	UI_enableClick('bureau_afg');     
+	UI_enableClick('Turkey');     
+	UI_enableClick('India');     
+	UI_enableClick('Persia');     
+	UI_enableClick('Afghanistan');     
 	
   UI_closeOverlay();   
 	

@@ -67,6 +67,7 @@ function UI_ForcingTheNarrows(events) {
 
 	if (events.length===0)
 	{	
+	  UI_clear();
 		if (game.BritishFortitude===0) {
 			UI_info('Turks have won the campaign');
 		} else {
@@ -82,7 +83,13 @@ function UI_ForcingTheNarrows(events) {
 	  UI_clear();
 		die.div.className = '';
 		document.getElementById(defense.name).classList.add('highlighted');	
-		UI_info('English fleet facing '+defense.name);
+		if (defense.name=='Minefield_1') {
+			UI_info('English fleet going through the first Minefield');
+		} else if (defense.name=='Minefield_2') {
+			UI_info('English fleet going through the second Minefield');
+		} else {
+			UI_info('English fleet facing '+defense.name+' defenses');
+		}
 	}, 1000);		
   setTimeout(function () {
 		UI_dieShowRoll(defense.d6);
@@ -273,7 +280,7 @@ function UI_Sandstorms(front, d6) {
 }
 function UI_AffenbyTakesTheHelm() {
 	UI_disableOK();
-	UI_info('Affenby takes the helm in sinai');	
+	UI_info('Affenby takes the helm in Sinai');	
   setTimeout(function () {
 	  UI_removeFront('Sinai');
 	}, 1000);		
