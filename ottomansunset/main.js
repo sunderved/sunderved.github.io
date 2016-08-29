@@ -28,7 +28,7 @@ function GameState ()
 	this.Front = {
   	Sinai: 6,
   	Mesopotamia: 5,
-  	Caucasus: 1,
+  	Caucasus: 5,
   	Arab: undefined,
   	Salonika: undefined,
   	Gallipoli: undefined,
@@ -332,7 +332,6 @@ function OffensivesFSM()
   	case 5:  
     	var _front = game.Offensives[0];
     	game.SubState = 7;
-    	game.ConstantinopleTaken = (game.Front[_front]===0); 
     	UI_showOffensive(_front, CanUseYildirim(_front));      
     	break;
       
@@ -344,9 +343,15 @@ function OffensivesFSM()
     	break;      
     	
   	case 7:  
-    	game.SubState = 1;
-    	game.Offensives.shift();
-     	OffensivesFSM();
+    	var _front = game.Offensives[0];
+    	game.ConstantinopleTaken = (game.Front[_front]===0); 
+    	if (game.ConstantinopleTaken===true) {
+	    	game.SubState = 0;
+    	} else {
+	    	game.SubState = 1;
+	    	game.Offensives.shift();
+	     	OffensivesFSM();
+     	}
     	break;          	
   }      
 	return game.SubState;
@@ -509,7 +514,6 @@ function UseYildirim()
 	console.log('UseYildirim '+ _front);
 	game.Yildirim--;
 	RetreatFront(_front);
- 	game.ConstantinopleTaken = (game.Front[_front]===0); 	
 	saveGame();
 	UI_UseYildirim(_front);
 }
@@ -1036,3 +1040,24 @@ function special() {
 // Add this line in state 0 of the Game FSM
 // if ( special() != 0 ) { game.State=0; }
 */
+
+function testDie(n)
+{
+	var rolls = [0,0,0,0,0,0,0];
+	var stats = [0,0,0,0,0,0,0];
+	
+	if (n===undefined) n=50;
+	
+	for (var i=0; i<n; i++) {
+		var d = rollDice();
+		rolls[d]++;
+	}
+
+	for (var i=1; i<=6; i++) {
+		stats[i] = rolls[i]*100/n;
+	}
+	
+	for (var i=1; i<=6; i++) {
+		console.log(i+': '+rolls[i]+' '+stats[i]+'%');
+	}
+}
