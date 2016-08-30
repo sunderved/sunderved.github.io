@@ -26,7 +26,18 @@ function UI_defocus(id) {
 
 function UI_focus(id) {
   document.getElementById(id).classList.add('highlighted');
+  UI_show(id);
 	UI_enableClick(id)
+}
+
+function UI_hide(id)
+{
+	document.getElementById(id).classList.toggle('hidden', true);	
+}
+
+function UI_show(id)
+{
+	document.getElementById(id).classList.toggle('hidden', false);	
 }
 
 // ------------------------------------------------------------------
@@ -86,11 +97,11 @@ function UI_dieHide() {
 function UI_dieInit() {
 // For some reason the glow effect doesn't work as well when die is a child of 'info'  
 //   die = new D6('info', 'die', 80, 'white', '#202020');
-//   die.div.style.left=760+'px';
+//   die.div.style.left=860+'px';
 //   die.div.style.top = 15+'px';
 
-// Making die a child of container instead
-  die = new D6('container', 'die', 80, 'white', '#202020');
+// Making die a child of 'board' instead
+  die = new D6('board', 'die', 80, 'white', '#202020');
   die.div.style.left=860+'px';
   die.div.style.top =675+'px';
   die.div.style.zIndex = 45;
@@ -102,23 +113,6 @@ function UI_dieInit() {
 // ------------------------------------------------------------------
 // - Misc UI Stuff 
 // ------------------------------------------------------------------
-
-
-function UI_offerChoice(options, op1, op1func, op2, op2func)
-{
-  document.getElementById('choice').style.visibility='visible';  
-  //document.getElementById('options').innerHTML=options;  
-  document.getElementById('op1').innerHTML=op1;  
-  document.getElementById('op2').innerHTML=op2;  
-  if (op1func!==undefined) {
-	  UI_setClickCallback('op1', function() { document.getElementById('choice').style.visibility='hidden';  op1func(); OSnext(); } ); 
-	  UI_focus('op1');
-  }
-  if (op2func!==undefined) {
-  	UI_setClickCallback('op2', function() { document.getElementById('choice').style.visibility='hidden';  op2func(); OSnext(); } );    
-  	UI_focus('op2');
-	}
-}
 
 function UI_updateCardInfo() 
 {
@@ -247,11 +241,11 @@ function UI_updatePipeline()
 function UI_updateBureau()
 {
   if (game.IntelligenceBureau===undefined) {
-    document.getElementById('Bureau_L').style.visibility = 'hidden';
-    document.getElementById('Bureau').style.visibility = 'hidden';
+    UI_hide('Bureau_L');
+    UI_hide('Bureau');
   } else {
-    document.getElementById('Bureau_L').style.visibility = 'visible';
-    document.getElementById('Bureau').style.visibility = 'visible';
+    UI_show('Bureau_L');
+    UI_show('Bureau');
     document.getElementById('Bureau').innerHTML = game.IntelligenceBureau.charAt(0);
   }	
   
@@ -267,14 +261,23 @@ function UI_updateBureau()
 
 function UI_updateYildirim()
 {
-  document.getElementById('Yildirim_L').style.visibility = (game.Yildirim>0)?'visible':'hidden';
-  document.getElementById('Yildirim').style.visibility = (game.Yildirim>0)?'visible':'hidden';
+	if (game.Yildirim>0) {
+		UI_show('Yildirim_L');
+		UI_show('Yildirim');
+	} else {
+		UI_hide('Yildirim_L');
+		UI_hide('Yildirim');
+	}
   document.getElementById('Yildirim').innerHTML = game.Yildirim; 
 }
 
 function UI_updateAsiaKorps()
 { 
-  document.getElementById('AsiaKorps').style.visibility = (game.AsiaKorps==1)?'visible':'hidden';
+	if (game.AsiaKorps==1) {
+		UI_show('AsiaKorps');
+	} else {
+		UI_hide('AsiaKorps');
+	}
 }
 
 function UI_updateScore()
@@ -293,9 +296,7 @@ function UI_updateOffMapTheatres()
 
 function UI_updateNarrows()
 {  
-  if (game.StraitsClosed) {
-    document.getElementById('Narrows').className = 'closed';
-  }    
+  document.getElementById('Narrows').classList.toggle('closed', game.StraitsClosed);    
 		
   for (var defense in game.Narrows) {
     document.getElementById(defense).innerHTML = NarrowsDefenseValues[defense];
@@ -438,25 +439,23 @@ function UI_hideActions()
 
 function UI_openOverlay(map)
 {
-  document.getElementById('overlay').style.visibility = 'visible';
-//   document.getElementById('special').style.visibility = 'visible';    
-  document.getElementById('fortitude').style.visibility = 'hidden';
-  document.getElementById('narrowsmap').style.visibility = 'hidden';  
-  document.getElementById('bureaumap').style.visibility = 'hidden';  
-  document.getElementById('battlemap').style.visibility = 'hidden';  
-  document.getElementById(map).style.visibility = 'visible';  
+  UI_show('overlay');
+  UI_hide('fortitude');
+  UI_hide('narrowsmap');  
+  UI_hide('bureaumap'); 
+  UI_hide('battlemap'); 
+  UI_show(map);  
   UI_enableClick(map);
   
 }
 
 function UI_closeOverlay()
 {	
-  document.getElementById('overlay').style.visibility='hidden';
-//   document.getElementById('special').style.visibility='hidden';  
-  document.getElementById('fortitude').style.visibility = 'hidden';
-  document.getElementById('narrowsmap').style.visibility = 'hidden';  
-  document.getElementById('bureaumap').style.visibility = 'hidden';  
-  document.getElementById('battlemap').style.visibility = 'hidden';  
+  UI_hide('overlay');
+  UI_hide('fortitude');
+  UI_hide('narrowsmap'); 
+  UI_hide('bureaumap');
+  UI_hide('battlemap');
 }
 
 // ------------------------------------------------------------------
@@ -477,9 +476,6 @@ function UI_info(str) {
 
 function UI_log(str)
 {
-// 	document.getElementById('myconsole').innerHTML+=str;
-// 	document.getElementById('myconsole').innerHTML+='<BR>';
-//	console.log(str);
 }
 
 function debug(str)
@@ -541,7 +537,7 @@ function initView()
   UI_setClickCallback('battlemap',    function() { UI_closeOverlay(); } );
   UI_setClickCallback('narrowsmap',   function() { UI_closeOverlay(); } );
   UI_setClickCallback('bureaumap',    function() { UI_closeOverlay(); } );
-
+  
   UI_setClickCallback('info',         function() { UI_clickedOk(); } ); 
       
 	UI_enableClick('Narrows');     

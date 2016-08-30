@@ -63,7 +63,7 @@ function UI_ForcingTheNarrows(events) {
 	}	
 	
   UI_openOverlay('narrowsmap');
-	document.getElementById('fortitude').style.visibility = 'visible';
+	UI_show('fortitude');
 
 	if (events.length===0)
 	{	

@@ -163,15 +163,30 @@ function CentralPowersMeddlingInAfghanistan() {
 }
 function FortificationOfGazaBeershebaLine() {
   // You may immediately forfeit 2 actions to place the Gaza-Beersheba Fortification marker, 
-  // if that space is controlled by the Turkish
+  // if that space is controlled by the Turkish  
   UI_disableOK();  
-  UI_offerChoice(
-  	'You may immediately forfeit 2 actions to place the Gaza-Beersheba Fortification marker, if that space is controlled by the Turkish',
-  	'Fortify Gaza-Beersheba',
-  	( (game.Front.Sinai>4) ? function() { game.Actions=0; game.GazaBeershebaFortifications=2; UI_updateFortifications(); } : undefined ),
-  	'Keep 2 Actions',
-  	function() { }
-	);  
+  if (game.Front.Sinai>4) {  
+	  UI_setClickCallback('gazabeersheba1', function() { 
+				document.getElementById('gazabeersheba1').classList.toggle('hidden',true);  
+				document.getElementById('gazabeersheba2').classList.toggle('hidden',true);  
+				OSnext(); 
+			} 
+		); 
+	  UI_focus('gazabeersheba1');
+	 	UI_setClickCallback('gazabeersheba2', function() { 
+				document.getElementById('gazabeersheba1').classList.toggle('hidden',true);  
+				document.getElementById('gazabeersheba2').classList.toggle('hidden',true);  
+		  	game.Actions=0; 
+		  	game.GazaBeershebaFortifications=2; 
+		  	UI_updateFortifications();;
+				OSnext(); 
+			} 
+		); 	
+	  UI_focus('gazabeersheba2');
+	} else {
+		UI_info('Gaza-Beersheba controlled by the English, Fortification not possible');
+	  UI_waitForClick();
+	}
 }
 function SinaiPipeline() {
   // Shuffle the Dusk cards into the deck. 
@@ -359,14 +374,25 @@ function ArmyOfIslam() {
 function Dunsterforce() {
   // Forfeit this card's 2 action or receive the Dunsterforce DEFEAT marker
   UI_disableOK();
-  UI_offerChoice(
-  	'Forfeit this card\'s 2 actions or receive the Dunsterforce Defeat marker',
-  	'Forfeit 2 actions',
-  	function() { game.Actions=0; },
-  	'Dunsterforce Defeat',
-  	function() { game.Defeats.push('Dunsterforce'); UI_updateCounters(); }
-	);
+  UI_setClickCallback('dunsterforce1', function() { 
+			document.getElementById('dunsterforce1').classList.toggle('hidden',true);  
+			document.getElementById('dunsterforce2').classList.toggle('hidden',true);  
+  		game.Actions=0;
+			OSnext(); 
+		} 
+	); 
+  UI_focus('dunsterforce1');
+ 	UI_setClickCallback('dunsterforce2', function() { 
+			document.getElementById('dunsterforce1').classList.toggle('hidden',true);  
+			document.getElementById('dunsterforce2').classList.toggle('hidden',true);  
+  		game.Defeats.push('Dunsterforce'); 
+  		UI_updateCounters();
+			OSnext(); 
+		} 
+	); 
+  UI_focus('dunsterforce2');
 }
+
 function VittorioVeneto() {
   // Eastern 4
 	OffMapBattle('Vittorio Veneto', 'East', 4);
