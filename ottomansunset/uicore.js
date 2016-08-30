@@ -405,7 +405,7 @@ function UI_showActions()
     UI_focus('Bureau_L');  
   }
   
-  if ( CanUseAsiaKorps )
+  if ( CanUseAsiaKorps() )
     UI_focus('AsiaKorps');  
 }
 
