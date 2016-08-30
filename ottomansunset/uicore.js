@@ -187,7 +187,7 @@ function UI_updateFront(front)
   var pos = game.Front[front];
 	var el = document.getElementById(front);
 	
-	//if (front!='Sinai')
+// 	if ((front!='Sinai') && (front!='Mesopotamia'))
 	  el.innerHTML = game.Army[front];  
 	  
   if (pos!==undefined) {

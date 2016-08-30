@@ -396,11 +396,13 @@ function UI_UseYildirim(front) {
 	UI_disableOK();
 	UI_clear();
 	UI_info('Advanced blocked. '+game.Yildirim+' Yildirim remaining');
+	UI_updateYildirim();
 	UI_defocus('Yildirim');
-	UI_updateFront(front);	
-  setTimeout(function () {  		
-		UI_clickedOk(); 
-	}, 1000);					
+	UI_clickedOk();
+// 	UI_updateFront(front);	
+//   setTimeout(function () {  		
+// 		UI_clickedOk(); 
+// 	}, 1000);					
 }
 
 function UI_UseAsiaKorps() {
@@ -479,7 +481,7 @@ function UI_AttritionRoll(type, d6, success)
   }, 1200);		
   setTimeout(function () {  	
 	  UI_dieShowSuccess(success);
-		UI_updateCounters();								
+// 		UI_updateCounters();								
     UI_log(type+' attrition roll '+((success===true)?'successfull':'failed') );
 		UI_waitForClick();
 	}, 1900);

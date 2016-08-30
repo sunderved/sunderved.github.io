@@ -105,68 +105,19 @@ div {
 .Gallipoli1 { left:392px; top:230px; }
 .Constantinople { left:418px; top:110px; }
 
-
-
-/*
-
-.Sinai5W         { left:539px; top:585px; }
-.Sinai4W         { left:600px; top:552px; }
-.Sinai4F         { left:620px; top:535px; }
-
-.Sinaix          { left:565px; top:800px; }
-.Sinai6          { left:495px; top:594px; }
-.Sinai5          { left:583px; top:576px; }
-.Sinai4          { left:640px; top:508px; }
-.Sinai3          { left:684px; top:440px; }
-.Sinai2          { left:706px; top:350px; }
-.Sinai1          { left:658px; top:264px; }
-                 
-.MesopotamiaX    { left:1025px; top:310px; }
-.Mesopotamia5    { left:972px; top:418px; }
-.Mesopotamia4    { left:947px; top:341px; }
-.Mesopotamia3    { left:907px; top:275px; }
-.Mesopotamia2    { left:828px; top:264px; }
-.Mesopotamia1    { left:756px; top:248px; }
-
-.CaucasusX       { left:999px; top:-60px; }
-.Caucasus5       { left:938px; top: 17px; }
-.Caucasus4       { left:897px; top: 93px; }
-.Caucasus3       { left:815px; top:143px; }
-.Caucasus2       { left:726px; top:136px; }
-.Caucasus1       { left:628px; top:140px; }
-
-.ArabX           { left:1030px; top:600px; }
-.Arab6           { left:962px; top:569px; }
-.Arab5           { left:894px; top:507px; }
-.Arab4           { left:816px; top:529px; }
-.Arab3           { left:795px; top:451px; }
-.Arab2           { left:706px; top:350px; }
-.Arab1           { left:658px; top:264px; }
-
-.SalonikaX       { left:-50px; top:300px; }
-.Salonika4       { left:167px; top:140px; }
-.Salonika3       { left:180px; top: 50px; }
-.Salonika2       { left:261px; top: 26px; }
-.Salonika1       { left:336px; top: 42px; }
-
-.GallipoliX      { left:-50px; top:500px; }
-.Gallipoli4      { left:287px; top:459px; }
-.Gallipoli3      { left:331px; top:387px; }
-.Gallipoli2      { left:379px; top:316px; }
-.Gallipoli1      { left:394px; top:232px; }
-         
-.Constantinople  { left:420px; top:112px; } 
-*/
         
 #Sinai             { background-color: saddlebrown; z-index: 4;}
-//#Sinai             { background-image:url("C:\Users\tbollaert\Downloads\github\Ottoman\w\work\board\murray.png"); }
-//#Sinai             { background-image:url("C:\\Users\\tbollaert\\Downloads\\github\\Ottoman\\w\\work\\board\\murray2.png"); 	background-size:100%; color: black;}
 #Mesopotamia       { background-color: blue; }
 #Caucasus          { background-color: lemonchiffon; color: black; }
 #Caucasus.imperial { background-color: darkorange; color: white;}
 #Arab              { background-color: green; }
 #Gallipoli         { background-color: yellow; color: dimgray; }
 #Salonika          { background-color: red; }
+
+/*
+#Sinai             { background-image:url("C:\\Users\\tbollaert\\Downloads\\github\\Ottoman\\work\\board\\murray1.png"); 	background-size:100%; color: black;}
+#Mesopotamia       { background-image:url("C:\\Users\\tbollaert\\Downloads\\github\\Ottoman\\work\\board\\townshend.png"); 	background-size:100%; color: black;}
+*/
 
 .flag { 
 	background-image:url('./img/flag.png');

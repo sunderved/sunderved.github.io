@@ -270,6 +270,7 @@ function DrawCard()
 function OffensivesFSM()
 {  
   var d6, success;
+ 	var front = game.Offensives[0];
       
 	switch (game.SubState) 
   {
@@ -279,87 +280,109 @@ function OffensivesFSM()
     	break;
     	
   	case 1:
+  		// Are there still Offensives in the list? 
     	if (game.Offensives.length>0) {
+	    	// if yes, proceed
       	game.SubState = 2;
       	OffensivesFSM();
       } else {
+	      // it not, end Offensives phase
       	game.SubState = 0;
       }
     	break;
     	
   	case 2:
-    	var _front = game.Offensives[0];
-   		if ( FrontActive(_front) ) {
-	      UI_log('Offensive on the '+_front+' front');
+   		if ( FrontActive(front) ) {
+	   		// If the tentative offensive is on an active front, advance the front. 
+ 		   	// Note: front will be retreat if Yildirim is used or Attrition roll fails or Fortification not destroyed
+	    	AdvanceFront(front);        
  		   	game.SubState++;
       	OffensivesFSM();
    		} else {
-	      UI_log('Offensive on the '+_front+' front. Front inactive, skipping offensive');
+	   		// If the tentative offensive is not on an active front, skip to end
 	    	game.SubState = 7;
       	OffensivesFSM();
    		}
    		break;
    		
+   	// Water Roll	
   	case 3:
-    	var _front = game.Offensives[0];
-    	game.SubState++;
-    	UI_clear();
-    	AdvanceFront(_front);        
-    	if (WaterRollNeeded(_front)===true) {
+    	game.SubState = 4;
+    	if (WaterRollNeeded(front)===true) {
       	d6 = rollDice();
       	success = (d6<game.Army.Sinai);
-       	if (success===false) { game.SubState = 6; }
-      	UI_AttritionRoll('Water', d6, success);
+       	if (success===false) game.SubState = 99; // Next state = Retreat
+      	UI_AttritionRoll('Water', d6, success);  // Show Attrition roll
       } else {
       	OffensivesFSM();
       }
     	break;
       
+    // Fortification Roll	
   	case 4:  
-    	var _front = game.Offensives[0];
-    	game.SubState++;
-    	if (FortificationRollNeeded(_front)===true) {
+    	game.SubState = 5;
+    	if (FortificationRollNeeded(front)===true) {
       	d6 = rollDice();
       	success = (d6<game.Army.Sinai);
-      	if (success) game.GazaBeershebaFortifications--;
-      	if (game.GazaBeershebaFortifications>0) { game.SubState = 6; }
-      	UI_AttritionRoll('Fortification', d6, success);
+       	if (success===false) game.SubState = 99;         // Next state = Retreat
+      	UI_AttritionRoll('Fortification', d6, success);  // Show Attrition roll
       }	else {
       	OffensivesFSM();
       }
     	break;        
 
+    // Show Offensive	
   	case 5:  
-    	var _front = game.Offensives[0];
-    	game.SubState = 7;
-    	UI_showOffensive(_front, CanUseYildirim(_front));      
+    	game.SubState = 6;
+    	UI_showOffensive(front, CanUseYildirim(front));     
     	break;
-      
-  	case 6:  
-    	var _front = game.Offensives[0];
-    	game.SubState = 7;
-    	RetreatFront(_front);
-    	UI_showOffensive(_front, false);      
+          	
+    // Resolve Offensive Outcome 	
+  	case 6: 	
+    	if (FortificationRollNeeded(front)===true) {
+	    	// If unit is Gaza and a Fortification Roll was needed, weaken the fortification
+      	game.GazaBeershebaFortifications--;	 
+      	UI_updateFortifications();
+      	if (game.GazaBeershebaFortifications>0) {
+	      	// If the fortification is not destroyed, retreat the army marker
+	      	game.SubState = 99; 	      	
+		     	OffensivesFSM();
+      	} else {
+	      	// If the fortification is destroyed, the army marker stays
+	      	game.SubState = 7;   	
+	 	     	OffensivesFSM();
+      	}  	
+    	} else {    	
+	    	// All others cases when a Fortification roll was not needed
+	    	game.ConstantinopleTaken = (game.Front[front]===0); 
+	    	if (game.ConstantinopleTaken===true) {
+		    	// If army has reached Constantinople, end Offensives phase (Game Over)
+		    	game.SubState = 0;
+	    	} else {
+		    	// If army hasn't reached Constantinople, continue Offensives phase
+		    	game.SubState = 7;
+		     	OffensivesFSM();
+	     	}
+     	}
+    	break;   
+    	
+    // Final state, remove current offensive from list, go to stage 1	
+  	case 7:  
+    	game.SubState = 1;
+    	game.Offensives.shift();
+     	OffensivesFSM();
     	break;      
     	
-  	case 7:  
-    	var _front = game.Offensives[0];
-    	game.ConstantinopleTaken = (game.Front[_front]===0); 
-    	if (game.ConstantinopleTaken===true) {
-	    	game.SubState = 0;
-    	} else {
-	    	game.SubState = 1;
-	    	game.Offensives.shift();
-	     	OffensivesFSM();
-     	}
-    	break;          	
+    // Retreat: Attrition roll failed or Yildirim used	
+  	case 99:  
+    	game.SubState = 7;
+    	RetreatFront(front);
+    	UI_showOffensive(front, false);      
+    	break;      
+    	       	
   }      
 	return game.SubState;
 }
-/*
-AdvanceFront
-RetreatFront
-*/
 
 function PlayerActionFSM() 
 {
@@ -513,7 +536,8 @@ function UseYildirim()
  	var _front = game.Offensives[0];
 	console.log('UseYildirim '+ _front);
 	game.Yildirim--;
-	RetreatFront(_front);
+	game.SubState = 99;
+// 	RetreatFront(_front);
 	saveGame();
 	UI_UseYildirim(_front);
 }
@@ -901,7 +925,7 @@ function CanUseYildirim(front)
 }
 
 // ------------------------------------------------------------------
-// - init Function (Entry Point) 
+// - Init Function (Entry Point) 
 // ------------------------------------------------------------------
 
 function init()
@@ -909,10 +933,7 @@ function init()
 	console.log('init');
 	initView();     	
   OSnext();  
- 	
-//	setTimeout(	UI_splash2game, 2000);		 	
- 		
-	
+ 	 		
 // 	deleteGame();
 // 	loadGame();
 // 	
@@ -1060,4 +1081,15 @@ function testDie(n)
 	for (var i=1; i<=6; i++) {
 		console.log(i+': '+rolls[i]+' '+stats[i]+'%');
 	}
+}
+
+function testAttrition()
+{
+	d6queue=[5,1,5,1,1,1,1,1,1,1,1,1,1,1,1,1];
+	game.Deck=[18,18,18,18,18,18,18,18,18,18];
+	game.Front.Sinai=5;
+	game.GazaBeershebaFortifications=2;
+	game.Yildirim=3;
+	UI_updateCounters();
+	UI_updateFront('Sinai');
 }
