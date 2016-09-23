@@ -1,0 +1,27 @@
+CACHE MANIFEST 
+# Cache manifest version: 0.1
+# If you change the version number in this comment, 
+# the cache manifest is no longer byte-for-byte identical 
+index.html
+styles.css
+main.js
+ui.js
+animations.js
+model.js
+img/crew1.png
+img/crew2.png
+img/crew3.png
+img/crew4.png
+img/crew5.png
+img/crew6.png
+img/explosions.png
+img/gun1.png
+img/gun2.png
+img/gun3.png
+img/pirate0.png
+img/pirate1.png
+img/pirate2.png
+img/pirate3.png
+img/pirate4.png
+img/pirate5.png
+img/ship.png

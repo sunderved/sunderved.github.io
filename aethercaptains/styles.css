@@ -1,0 +1,468 @@
+/* ----------------------------------------------------------------------- 
+    Default
+   ----------------------------------------------------------------------- */
+
+body {
+  user-select: none;
+  background-color: black;
+}
+
+html, body {
+	margin: 0; 
+	height: 100%; 
+	overflow: hidden
+}
+
+div {
+	margin: 0;
+	box-sizing: border-box;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 18px;	  
+  font-style:italic;
+	position: absolute;
+}
+
+
+/* ----------------------------------------------------------------------- 
+    Board
+   ----------------------------------------------------------------------- */
+
+#game {
+  width:100%; height:100%;
+	top: 0px; left: 0px;
+  background-color: white;
+}   
+   
+#sky {
+  width:1340px; height:1024px;
+	top: 0px; left: 14px;
+  background-color: transparent;
+	transition: top 1s, left 1s, transform 1s;   
+}
+
+.stackl6 { transform: translateX(   0px); }
+.stackl5 { transform: translateX(-100px); }
+.stackl4 { transform: translateX(-200px); }
+.normal  { transform: translateX(-300px); }
+.stackr4 { transform: translateX(-400px); }
+.stackr5 { transform: translateX(-500px); }
+.stackr6 { transform: translateX(-600px); }
+
+.row0 { top:  70px; }
+.row1 { top: 170px; }
+.row2 { top: 270px; }
+.row3 { top: 370px; }
+.row4 { top: 470px; }
+.row5 { top: 570px; }
+.row6 { top: 670px; }
+.row7 { top: 770px; }
+
+.l5 { left:  000px; } 
+.l4 { left:  100px; } 
+.l3 { left:  200px; } 
+.l2 { left:  300px; } 
+.l1 { left:  400px; } 
+.l0 { left:  500px; } 
+.c  { left:  620px; }  /* CENTER */
+.r0 { left:  740px; } 
+.r1 { left:  840px; } 
+.r2 { left:  940px; } 
+.r3 { left: 1040px; } 
+.r4 { left: 1140px; } 
+.r5 { left: 1240px; } 
+
+/* ----------------------------------------------------------------------- 
+    Ship
+   ----------------------------------------------------------------------- */
+
+   
+   
+.shipsection {
+  height:100px; width:100px;
+	border-bottom:1px dashed white;
+	transition: top 1s; 
+}
+
+.counter {
+	height:27px; width:27px; border-radius:100%;
+  font-size:18px;
+  font-style:italic bold;
+  color:white;
+  text-align:center;
+  line-height:27px;
+} 
+.counter.left   { top: 25px; left: 15px; }
+.counter.right  { top: 25px; left: 58px; }
+.counter.center { top: 65px; left: 36px; }
+.defense        { background-color: rgb(  0, 85,125); }
+.attack         { background-color: rgb(210, 35, 43); }
+.movement       { background-color: rgb(125,139, 29); }
+.repair         { background-color: rgb(253,176, 23); }
+.hits           { background-color: transparent; }
+
+.gun       { height: 50px; width: 27px; background-size:100%; }
+.gun.left  { transform: rotate(-90deg); top: 55px; left: 0px; }
+.gun.right { transform: rotate( 90deg); top: 55px; left:72px; }
+.gun1      { background-image: url('./img/gun1.png'); }
+.gun2      { background-image: url('./img/gun2.png'); }
+.gun3      { background-image: url('./img/gun3.png'); }
+	
+
+.shipsection.defendedright:after {
+  height:94px; width:3px;
+  background-color: rgb(0, 85,125);  
+	position: absolute; top: 3px; left: 102px;
+  content:''; 
+}
+
+.shipsection.defendedleft:before {
+  height:94px; width:3px;
+  background-color: rgb(0, 85,125);  
+	position: absolute; top: 3px; left: -6px;
+  content:''; 
+}
+
+.shipsection.attackedright:after {
+  height:0px; width:0px;
+	position: absolute; top: 30px; left: 102px;
+	border-top: 20px solid transparent;
+	border-right: 10px solid rgb(210, 35, 43);
+	border-bottom: 20px solid transparent;	
+  content:''; 
+}
+
+.shipsection.attackedleft:before {
+  height:0px; width:0px;
+	position: absolute; top: 30px; left: -12px;
+	border-top: 20px solid transparent;
+	border-left: 10px solid rgb(210, 35, 43);
+	border-bottom: 20px solid transparent;	
+  content:''; 
+}
+
+.shipsection.damaged {
+	/*
+	animation-name: SectionDamaged;
+	animation-duration: 0.2s;
+	animation-iteration-count: 2;
+	animation-timing-function: linear;
+	*/
+}
+
+.shipsection.damaged:after {
+	position: absolute; top: 20px; left: 20px;
+  content:'';
+  width: 64px;
+  height: 64px;
+  background-image: url('./img/explosions.png');
+  background-position-x: 0px;
+	background-position-y: -64px;
+  animation: PlaySprite .8s steps(16) 1;
+	visibility:hidden;
+}
+
+.shipsection.defended {
+	background-color: rgb(0, 85,125);
+}
+
+@keyframes SectionDamaged {
+    from { transform: translateX( 0%); background-color:rgb(210, 35, 43); }
+    25%  { transform: translateX(-5%); background-color:rgb(210, 35, 43); }
+    50%  { transform: translateX( 0%); background-color:rgb(210, 35, 43); }
+    75%  { transform: translateX( 5%); background-color:rgb(210, 35, 43); }
+    to   { transform: translateX( 0%); background-color:rgb(210, 35, 43); }    
+} 
+
+@keyframes PlaySprite {
+   from { background-position-x:     0px; visibility:visible; }
+     to { background-position-x: -1024px; visibility:visible; }
+}
+
+                      
+/* ----------------------------------------------------------------------- 
+    Pirates
+   ----------------------------------------------------------------------- */
+
+#pirate1img { animation-delay: 0.5s }
+#pirate2img { animation-delay: 0.5s }
+#pirate3img { animation-delay: 0.5s }
+#pirate4img { animation-delay: 0.5s }
+#pirate5img { animation-delay: 0.5s }
+#pirate6img { animation-delay: 0.5s }
+     
+.pirate {
+  height:100px; width:100px;
+ 	background-size:100%; 
+	transition: top 1.5s, left 2s, transform 1s; 
+}
+
+.pirate0 { background-image:url('./img/pirate0.png'); }
+.pirate1 { background-image:url('./img/pirate1.png'); }
+.pirate2 { background-image:url('./img/pirate2.png'); }
+.pirate3 { background-image:url('./img/pirate3.png'); }
+.pirate4 { background-image:url('./img/pirate4.png'); }
+.pirate5 { background-image:url('./img/pirate5.png'); }
+
+
+.arriveFromLeft  { left: -150px; }
+.arriveFromRight { left: 1150px; }
+
+.pleft  { 
+	animation-name: FloatLeft;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+.pright {
+	animation-name: FloatRight;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+
+@keyframes FloatLeft{
+    from { transform: translateY(0%) }
+    65%  { transform: translateY(3%) }
+    to   { transform: translateY(0%) }    
+} 
+
+@keyframes FloatRight{
+    from { transform: translateY(0%) scaleX(-1); }
+    65%  { transform: translateY(3%) scaleX(-1); }
+    to   { transform: translateY(0%) scaleX(-1); }    
+} 
+
+.damage {
+  height:30px; width:30px;
+  left:50%;
+  line-height:30px;
+  font-size: 18px;	    
+  text-align:center;
+  font-style:italic bold;
+	border-width:1px;
+	border-style:solid;
+	border-color:lightgrey;
+	border-radius:100%; 
+	background-color: rgb(210, 35, 43); 
+	color:white; 
+	opacity:0;
+}
+
+.damage.show{
+	animation-name: LoseLife;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+}
+
+@keyframes LoseLife{
+    from { opacity: 1; transform: translateY(   0%); }
+    50%  { opacity: 1; transform: translateY(-080%); }
+    to   { opacity: 0; transform: translateY(-160%); }    
+} 
+
+/* ----------------------------------------------------------------------- 
+    Crew
+   ----------------------------------------------------------------------- */
+
+.crew {
+	top:24px; left:644px;
+  height:100px; width:100px;
+ 	background-size:100%; 
+	border-width:1px;
+	border-style:solid;
+	border-color:white; 	
+}
+
+.crew1 { background-image:url('./img/crew1.png'); }
+.crew2 { background-image:url('./img/crew2.png'); }
+.crew3 { background-image:url('./img/crew3.png'); }
+.crew4 { background-image:url('./img/crew4.png'); }
+.crew5 { background-image:url('./img/crew5.png'); }
+.crew6 { background-image:url('./img/crew6.png'); }
+
+/* ----------------------------------------------------------------------- 
+    Message
+   ----------------------------------------------------------------------- */
+
+#info {
+	top:24px; left:40px;
+  height:100px; width:500px;
+  line-height:100px;
+  font-size:28px;
+  text-align:left;
+}
+
+
+/* ----------------------------------------------------------------------- 
+    Action Selection
+   ----------------------------------------------------------------------- */
+
+#attack {
+	top:170px; left:620px;
+	width:100px; height:600px; 
+	background-image:url('./img/ship.png');
+	/*
+	border-width:1px;
+	border-style:solid;
+	border-color:white;
+	*/
+}
+   
+#moveup {
+	top:120px; left:620px;
+	width: 0; height: 0;
+	border-left: 50px solid transparent;
+	border-right: 50px solid transparent;
+	border-bottom: 40px solid lightgray;
+}
+
+#movedown {
+	top:780px; left:620px;
+	width: 0; height: 0;
+	border-left: 50px solid transparent;
+	border-right: 50px solid transparent;
+	border-top: 40px solid lightgray;
+}
+
+
+/* ----------------------------------------------------------------------- 
+    Dice Roll Info
+   ----------------------------------------------------------------------- */
+
+#number1 { left: 150px; }
+#number2 { left: 250px; }
+#number3 { left: 350px; }
+#number4 { left: 450px; }
+#number5 { left: 550px; }
+      
+.number {
+  height:70px; width:70px;
+  line-height:70px;
+  font-size: 32px;	    
+  text-align:center;
+  font-style:italic;
+	border-width:1px;
+	border-style:solid;
+	border-color:lightgrey;
+	top:915px;
+}
+
+.dice     { border-radius:10px; background-color: white; }
+.attack   { border-radius:100%; background-color: rgb(210, 35, 43); color:white; font-style:bold; }
+.defense  { border-radius:100%; background-color: rgb(  0, 85,125); color:white; font-style:bold; }
+.movement { border-radius:100%; background-color: rgb(125,139, 29); color:white; font-style:bold; }
+.repair   { border-radius:100%; background-color: rgb(253,176, 23); color:white; font-style:bold; }
+.text     { background-color: white; width:300px; border-width:0px; text-align: left;}
+
+.bonus {
+  height:35px; width:35px;
+  line-height:30px;
+  font-size: 18px;	    
+  text-align:center;
+  font-style:italic;
+	border-width:1px;
+	border-style:solid;
+	border-color:lightgrey;
+	top:905px;
+}
+
+#bonus1 { left: 295px; }
+#bonus2 { left: 495px; }
+
+
+
+/* 
+For floating animation, check this:
+http://fiddle.jshell.net/djsbaker/rkzZG/
+
+Cloud background:
+http://cssdeck.com/labs/animated-clouds-background-pure-css3
+
+Parallax background:
+http://codepen.io/oknoblich/full/AxdBy
+
+Random Map Generator: Seed 1339230
+http://topps.diku.dk/torbenm/maps.msp
+
+ */ 
+
+/* ----------------------------------------------------------------------- 
+    Focus Styles
+   ----------------------------------------------------------------------- */
+
+.shipsection.highlighted { 
+	z-index: 5;
+	-webkit-filter: drop-shadow(0px 0px 5px rgba(0, 134, 179, 0.8) );
+	        filter: drop-shadow(0px 0px 5px rgba(0, 134, 179, 0.8) );
+} 
+ 
+.highlighted { 
+	-webkit-filter: drop-shadow(0px 0px 5px rgba(0, 134, 179, 0.8) );
+	        filter: drop-shadow(0px 0px 5px rgba(0, 134, 179, 0.8) );
+}
+
+/* ----------------------------------------------------------------------- 
+   Container
+   ----------------------------------------------------------------------- */
+   
+#container {   
+  width:   768px;
+  height: 1024px;
+  background-color: black;
+  overflow: hidden;
+  transition: opacity 0.8s ease-in-out;
+}
+
+#container.fade {
+	opacity: 0;
+}
+
+#splash {
+  background-image:url("img/splash.png");
+  width:100%; height:100%;
+  z-index: 100;
+  transition: opacity 1s ease-in-out;
+}
+
+#splash.fade {
+	opacity: 0;
+}
+
+/*
+@media screen and (orientation:landscape) {
+  #container { 	  
+	  width: 768px; height: 1024px;
+    top: 50%; left: 50%;
+	  transform: rotate(-90deg) translateY(-50%) translateX(-50%);
+    transform-origin: left top;
+  }	
+}
+*/
+
+/* ----------------------------------------------------------------------- */
+
+.centered {
+	top: 50%; left: 50%;
+	transform: translateY(-50%) translateX(-50%); 	
+}
+
+.hcentered {
+	left: 50%;
+	transform: translateX(-50%); 	
+}
+
+.hidden  { visibility: hidden; }
+
+/* ----------------------------------------------------------------------- */
+
+#version {
+  font-size: 12px; 
+  font-style: italic;
+  text-align: right;
+	position: fixed;
+	right:5;
+	bottom:5;
+  margin-right: 7;	  
+}
+
