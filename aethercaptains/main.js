@@ -3,7 +3,7 @@ var pirateAttackFSM = (function(id)
 {	
 	function waitForNewPirateAttackPhase() {
 		if (game.crew == THE_DIPLOMAT) {
-	  	UI_info('The Diplomat: select a pirate');
+	  	UI_info('Choose which Pirate won\'t Attack');
 		  UI_showDiplomatTargets();
 			next = waitForSelectedPirate;
 		} else {
@@ -205,11 +205,9 @@ var actionPhaseFSM = (function(id)
 		if (selectedAction(id)==0) {
 			if ( playerHasWon() ) {
 			  UI_info('Victory!');
-			  UI_hideRolls();
 			  next = waitForNewActionPhase;
 			}	else {
 				if ( numActions==maxActions) {
-					UI_hideRolls();	
 				  next = waitForNewActionPhase;
 				} else {
 					proposePossibleActions();
@@ -342,6 +340,7 @@ function newTurn()
 var GameFSM = (function(id)
 {
 	function initialize() {
+		//d12queue=[12,12,12,12,12,12,12,12] ;
 		setupGame();
 		next = waitForEndOfInitPhase;
 	}
@@ -360,7 +359,6 @@ var GameFSM = (function(id)
 		if ( pirateAttackFSM(id) == 0 ) { 
 			if ( playerHasLost() ) { 
 				UI_info('Defeat...'); 
-				UI_hideRolls(); 
 				waitForNewGame();
 			} else {
 				waitForEndOfPhase2(id);
@@ -413,6 +411,7 @@ var GameFSM = (function(id)
 })();	
 
 function Next(id) { 
+	console.log('  --> Next');
 	GameFSM(id);
 }
 
@@ -444,16 +443,14 @@ function clickedSection(id)
 
 function clickedAction(id)
 {
-	UI_hideActions();
+	UI_hideActions();	
 	
 	Next(id);
 }
 
-function clickedNumber(id)
+function clickedBonus(id)
 {
-  UI_disableClick('number2');  UI_hide('number2');
-  UI_disableClick('number3');  UI_hide('number3');
-  UI_disableClick('number4');  UI_hide('number4');
+	UI_hide('ablecrewoptions');	
 	
 	Next(id);
 }
@@ -466,7 +463,6 @@ function clickedNumber(id)
 function setupGame() 
 {
   console.log('Setup');
-	UI_hideRolls();
 	UI_hideActions();
 	
 	game = {
@@ -476,7 +472,14 @@ function setupGame()
 		bonus: {attack:0, defense:0, movement:0},
 		destroyed: []
 	};
+	
 	UI_updateShip();
+	UI_hide('pirate0');	
+	UI_hide('pirate1');	
+	UI_hide('pirate2');	
+	UI_hide('pirate3');	
+	UI_hide('pirate4');	
+	UI_hide('pirate5');	
 	UI_hide('crew');	
 	
 	function initPirate(i) {
@@ -497,9 +500,11 @@ function setupGame()
 		
 		setTimeout( function() {   
 			UI_info('Pirates Arrive!'); 
+			UI_show('pirate'+i);	
 			UI_updatePirates(); 
 		}, 500 );
 	}
+	
 	
 	setTimeout( function() { initPirate(0); },  600);
 	setTimeout( function() { initPirate(1); }, 1200);
@@ -511,21 +516,6 @@ function setupGame()
 	setTimeout(Next, 5500);	
 }
 
-function UI_initPirate(pirate)
-{
-	var pos2row = [1,2,3,4,5,6,6,5,4,3,2,1];
-	var row = 'row'+pos2row[pirate.position];
-	var col = (pirate.position<6)?'arriveFromRight':'arriveFromLeft';	
-	var orientation = (pirate.position<6)?'pright':'pleft';	
-	document.getElementById('pirate'+pirate.id).className = 'pirate'+' '+row+' '+col;
-	document.getElementById('pirate'+pirate.id+'txt').innerHTML = '('+pirate.id+') '+pirate.attack+'/'+pirate.hitpoints;		
-	document.getElementById('pirate'+pirate.id+'img').className = 'pirate'+' pirate'+pirate.type+' '+orientation;	
-}
-
-
-
-
-
 // ------------------------------------------------------------------
 // - Air Pirate Actions
 // ------------------------------------------------------------------
@@ -533,20 +523,19 @@ function UI_initPirate(pirate)
 function pirateAttack(pirate)
 {	
 	var sectionId = getSectionId(pirate);
-	var defense = getSectionById(sectionId).defense;
-	var roll1 = rollD12();
-	var roll2 = rollD12();
-	var hit = false;
+	var side      = (sectionId<6)?'right':'left';
+	var roll1     = rollD12();
+	var roll2     = rollD12();
 			
 	if ( pirateAttackSuccessful(roll1, pirate) ) {
 		if ( sectionDefenseSuccessful(roll2, sectionId) ) {
-			UI_showPirateRolls(pirate, sectionId, defense, roll1, roll2, false);
+			UI_showPirateAttack(sectionId, side, pirate, 0);
 		} else {
 			damageShipSection(sectionId);
-			UI_showPirateRolls(pirate, sectionId, defense, roll1, roll2, true);
+			UI_showPirateAttack(sectionId, side, pirate, 1);
 		}
 	} else {
-		UI_showPirateRolls(pirate, sectionId, defense, roll1, undefined, false);
+		UI_showPirateAttack(sectionId, side, pirate, 0);
 	}		
 }
 
@@ -599,9 +588,9 @@ function moveShipDown()
 				setPiratePosition(pirate, pirate.position+1);
 			}
 		}				
-		UI_showMovementRolls(d12, 'Down');								
+		UI_showMovementAction(5, 'Down', true);								
 	} else {
-		UI_showMovementRolls(d12, undefined);								
+		UI_showMovementAction(5, 'Down', false);								
 		console.log('ship fails to move down / '+d12+' <= '+getSectionById(5).movement);	
 	}	
 	
@@ -624,9 +613,9 @@ function moveShipUp()
 				setPiratePosition(pirate, pirate.position-1);
 			}
 		}				
-		UI_showMovementRolls(d12, 'Up');								
+		UI_showMovementAction(5, 'Up', true);								
 	} else {
-		UI_showMovementRolls(d12, undefined);								
+		UI_showMovementAction(5, 'Up', false);								
 		console.log('ship fails to move up / '+d12+' <= '+getSectionById(5).movement);	
 	}		
 	
@@ -648,10 +637,10 @@ function attackPirate(sectionId, side, pirate)
 			console.log('ship section '+sectionId+' does '+damage+' damage to pirate '+pirate.id+'. pirate destroyed!');	
 			destroyPirate(pirate);
 		}
-		UI_showAttackRolls(sectionId, side, pirate, roll1, roll2, damage);
+		UI_showAttackAction(sectionId, side, pirate, damage);
 	} else {
 		console.log('ship section '+sectionId+' attack on pirate '+pirate.id+' failed / '+roll1+' <= '+getSectionById(sectionId).attack);	
-		UI_showAttackRolls(sectionId, side, pirate, roll1, undefined, undefined);
+		UI_showAttackAction(sectionId, side, pirate, 0);
 	}	
 }
 
@@ -662,10 +651,10 @@ function repairSectionWithRoll(sectionId)
 	if ( repairRollSuccessful(d12) ) {
 		console.log('ship section '+sectionId+' successfully repaired / '+d12+' > '+threshold);	
 		repairSection(sectionId);
-		UI_showRepairRolls(threshold, d12, true);				
+		UI_showRepairAction(sectionId, true);				
 	} else {
 		console.log('ship section '+sectionId+' not repaired / '+d12+' <= '+threshold);	
-		UI_showRepairRolls(threshold, d12, false);				
+		UI_showRepairAction(sectionId, false);				
 	}	
 }
 
@@ -673,12 +662,14 @@ function repairSectionWithEngineer(sectionId)
 {	
 	console.log('ship section '+sectionId+' successfully repaired by the engineer');	
 	repairSection(sectionId);
-	UI_showEngineerRepair();
+	UI_showRepairAction(sectionId, true);				
 }
 
 
 function updateCrew()
 {
+	var first = (game.crew==0);
+	
 	game.crew = rollD6();
 			
 	game.bonus = {attack:0, defense:0, movement:0};
@@ -688,10 +679,8 @@ function updateCrew()
 	
 
 	var crewstr = ['?','The Captain','The Diplomat','The Steam Welder','The Lieutenant','The Engineer','The Able Crew'];    	
-
-	console.log('crew member on deck: '+game.crew+' '+crewstr[game.crew]);
 	
-  UI_updateCrew();		
+  UI_updateCrew(first);		
 }
 
 

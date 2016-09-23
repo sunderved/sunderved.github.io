@@ -1,5 +1,5 @@
 CACHE MANIFEST 
-# Cache manifest version: 0.1
+# Cache manifest version: 0.1b
 # If you change the version number in this comment, 
 # the cache manifest is no longer byte-for-byte identical 
 index.html
@@ -14,14 +14,20 @@ img/crew3.png
 img/crew4.png
 img/crew5.png
 img/crew6.png
+img/downarrow.png
 img/explosions.png
+img/failed.png
 img/gun1.png
 img/gun2.png
 img/gun3.png
+img/icon.png
 img/pirate0.png
 img/pirate1.png
 img/pirate2.png
 img/pirate3.png
 img/pirate4.png
 img/pirate5.png
+img/repaired.png
 img/ship.png
+img/smoke.png
+img/uparrow.png

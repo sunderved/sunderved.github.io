@@ -10,7 +10,8 @@
     <script type="text/javascript" src="model.js"></script> 
     <script type="text/javascript" src="main.js"></script> 
     <link rel="apple-touch-icon" href="./img/icon.png" />
-  </head>   
+  </head>  
+   
   <body onLoad="init();">    
   
     <div id="container" class="centered">     
@@ -18,41 +19,40 @@
       <div id="game">   
               
       	<div id="sky" class="normal">
-	       	<div id="attack"   class="highlighted"></div>
-	      	<div id="moveup"   class="highlighted"></div>
-	      	<div id="movedown" class="highlighted"></div>
-	      	<div id="section0"></div>
-	      	<div id="section1"></div>
-	      	<div id="section2"></div>
-	      	<div id="section3"></div>
-	      	<div id="section4"></div>
-	      	<div id="section5"></div>
-	      	<div id="pirate0"> <div id="pirate0img"></div> <div id="pirate0txt"></div> <div id="pirate0dmg" class="damage"></div> </div>
-	      	<div id="pirate1"> <div id="pirate1img"></div> <div id="pirate1txt"></div> <div id="pirate1dmg" class="damage"></div> </div>
-	      	<div id="pirate2"> <div id="pirate2img"></div> <div id="pirate2txt"></div> <div id="pirate2dmg" class="damage"></div> </div>
-	      	<div id="pirate3"> <div id="pirate3img"></div> <div id="pirate3txt"></div> <div id="pirate3dmg" class="damage"></div> </div>
-	      	<div id="pirate4"> <div id="pirate4img"></div> <div id="pirate4txt"></div> <div id="pirate4dmg" class="damage"></div> </div>
-	      	<div id="pirate5"> <div id="pirate5img"></div> <div id="pirate5txt"></div> <div id="pirate5dmg" class="damage"></div> </div>      	
+	      	<div id="ship">
+		      	<div id="section0" class="shipsection"></div>
+		      	<div id="section1" class="shipsection"></div>
+		      	<div id="section2" class="shipsection"></div>
+		      	<div id="section3" class="shipsection"></div>
+		      	<div id="section4" class="shipsection"></div>
+		      	<div id="section5" class="shipsection"></div>
+		      </div>
+		      <div id="pirates">
+		      	<div id="pirate0"> <div id="pirate0img"></div> <div id="pirate0txt"></div> </div>
+		      	<div id="pirate1"> <div id="pirate1img"></div> <div id="pirate1txt"></div> </div>
+		      	<div id="pirate2"> <div id="pirate2img"></div> <div id="pirate2txt"></div> </div>
+		      	<div id="pirate3"> <div id="pirate3img"></div> <div id="pirate3txt"></div> </div>
+		      	<div id="pirate4"> <div id="pirate4img"></div> <div id="pirate4txt"></div> </div>
+		      	<div id="pirate5"> <div id="pirate5img"></div> <div id="pirate5txt"></div> </div>
+		      </div>
+	      	<div id="moveup"    class="highlighted c row0"></div>
+  	    	<div id="movedown"  class="highlighted c row7"></div>
 	      </div>
 	      
-      	<div id="crew"    class="crew"></div>
       	<div id="info"></div>
+      	<div id="crew"></div>
+     		<div id="skip">Skip Movement</div>
       	
-      	<div id="dicerolls">
-      		<div id="number1"  class="number"></div>
-      		<div id="number2"  class="number"></div>
-      		<div id="number3"  class="number"></div>
-      		<div id="number4"  class="number"></div>
-      		<div id="number5"  class="number"></div>
-      		<div id="bonus1"   class="bonus"></div>
-      		<div id="bonus2"   class="bonus"></div>
+      	<div id="ablecrewoptions" class="hidden">
+      		<div id="bonus1" class="bonus movement">+1</div>
+      		<div id="bonus2" class="bonus attack">+1</div>
+      		<div id="bonus3" class="bonus defense">+1</div>
       	</div>
-      	
 
       </div>  <!-- end of game div -->            
     </div>    <!-- end of container div -->  
     
-    <div id="version">v0.1</div>
+    <div id="version">v0.1b</div>
     
   </body>                                                                                         
 </html>          

@@ -35,27 +35,39 @@ div {
    
 #sky {
   width:1340px; height:1024px;
-	top: 0px; left: 14px;
+	top: 0px;
   background-color: transparent;
-	transition: top 1s, left 1s, transform 1s;   
+	transition: top 1s, left 2s;  
+	animation-name: SkyMovement;
+	animation-duration: 8s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
 }
 
-.stackl6 { transform: translateX(   0px); }
-.stackl5 { transform: translateX(-100px); }
-.stackl4 { transform: translateX(-200px); }
-.normal  { transform: translateX(-300px); }
-.stackr4 { transform: translateX(-400px); }
-.stackr5 { transform: translateX(-500px); }
-.stackr6 { transform: translateX(-600px); }
+@keyframes SkyMovement {
+    from { transform: translate(20px,  0px) }
+    25%  { transform: translate(22px,  4px) }
+    50%  { transform: translate(24px,  0px) }
+    75%  { transform: translate(22px, -4px) }
+    to   { transform: translate(20px,  0px) }    
+} 
 
-.row0 { top:  70px; }
-.row1 { top: 170px; }
-.row2 { top: 270px; }
-.row3 { top: 370px; }
-.row4 { top: 470px; }
-.row5 { top: 570px; }
-.row6 { top: 670px; }
-.row7 { top: 770px; }
+.stackl6 { left:   00px; }
+.stackl5 { left: -100px; }
+.stackl4 { left: -200px; }
+.normal  { left: -300px; }
+.stackr4 { left: -400px; }
+.stackr5 { left: -500px; }
+.stackr6 { left: -600px; }
+
+.row0 { top: 150px; }
+.row1 { top: 250px; }
+.row2 { top: 350px; }
+.row3 { top: 450px; }
+.row4 { top: 550px; }
+.row5 { top: 650px; }
+.row6 { top: 750px; }
+.row7 { top: 850px; }
 
 .l5 { left:  000px; } 
 .l4 { left:  100px; } 
@@ -74,13 +86,16 @@ div {
 /* ----------------------------------------------------------------------- 
     Ship
    ----------------------------------------------------------------------- */
-
-   
+  
+#ship {
+	width:100px; height:600px; 
+	background-image:url('./img/ship.png');
+	transition: top 1s; 
+} 
    
 .shipsection {
   height:100px; width:100px;
 	border-bottom:1px dashed white;
-	transition: top 1s; 
 }
 
 .counter {
@@ -100,26 +115,31 @@ div {
 .repair         { background-color: rgb(253,176, 23); }
 .hits           { background-color: transparent; }
 
-.gun       { height: 50px; width: 27px; background-size:100%; }
-.gun.left  { transform: rotate(-90deg); top: 55px; left: 0px; }
-.gun.right { transform: rotate( 90deg); top: 55px; left:72px; }
-.gun1      { background-image: url('./img/gun1.png'); }
-.gun2      { background-image: url('./img/gun2.png'); }
-.gun3      { background-image: url('./img/gun3.png'); }
+.gun            { height: 50px; width: 27px; background-size:100%; }
+.gun.left       { transform: rotate(-90deg); top: 55px; left: 0px; }
+.gun.right      { transform: rotate( 90deg); top: 55px; left:72px; }
+.gun1           { background-image: url('./img/gun1.png'); }
+.gun2           { background-image: url('./img/gun2.png'); }
+.gun3           { background-image: url('./img/gun3.png'); }
 	
-
 .shipsection.defendedright:after {
-  height:94px; width:3px;
-  background-color: rgb(0, 85,125);  
-	position: absolute; top: 3px; left: 102px;
-  content:''; 
+  content:'';
+	position: absolute; top: 34px; left: 90px;
+  background-image: url("./img/smoke.png");
+  background-size: 320px 32px; width: 32px; height: 32px;
+  background-position: 0px 0px;
+  animation: PlaySmokeSprite 0.5s steps(10) 1;
+	visibility:hidden;
 }
 
 .shipsection.defendedleft:before {
-  height:94px; width:3px;
-  background-color: rgb(0, 85,125);  
-	position: absolute; top: 3px; left: -6px;
-  content:''; 
+  content:'';
+	position: absolute; top: 34px; left: -10px;
+  background-image: url("./img/smoke.png");
+  background-size: 320px 32px; width: 32px; height: 32px;
+  background-position: 0px 0px;
+  animation: PlaySmokeSprite 0.5s steps(10) 1;
+	visibility:hidden;
 }
 
 .shipsection.attackedright:after {
@@ -140,43 +160,65 @@ div {
   content:''; 
 }
 
-.shipsection.damaged {
-	/*
-	animation-name: SectionDamaged;
-	animation-duration: 0.2s;
-	animation-iteration-count: 2;
-	animation-timing-function: linear;
-	*/
-}
-
 .shipsection.damaged:after {
 	position: absolute; top: 20px; left: 20px;
   content:'';
-  width: 64px;
-  height: 64px;
+  width: 64px; height: 64px;
   background-image: url('./img/explosions.png');
   background-position-x: 0px;
 	background-position-y: -64px;
-  animation: PlaySprite .8s steps(16) 1;
+  animation: PlayExplosionSprite .8s steps(16) 1;
 	visibility:hidden;
 }
 
-.shipsection.defended {
-	background-color: rgb(0, 85,125);
+.shipsection.failed:after {
+	position: absolute; top: 25px; left: 25px;
+  content:'';
+  width: 50px; height: 50px;
+  background-image: url('./img/failed.png');
+	background-size:100%; 
+  animation: PlayFailedAnimation 1s;
 }
 
-@keyframes SectionDamaged {
-    from { transform: translateX( 0%); background-color:rgb(210, 35, 43); }
-    25%  { transform: translateX(-5%); background-color:rgb(210, 35, 43); }
-    50%  { transform: translateX( 0%); background-color:rgb(210, 35, 43); }
-    75%  { transform: translateX( 5%); background-color:rgb(210, 35, 43); }
-    to   { transform: translateX( 0%); background-color:rgb(210, 35, 43); }    
+.shipsection.repaired:after {
+	position: absolute; top: 25px; left: 25px;
+  content:'';
+  width: 50px; height: 50px;
+  background-image: url('./img/repaired.png');
+	background-size:100%; 
+  animation: PlayRepairedAnimation 1s;
+}
+
+@keyframes PlayFailedAnimation {
+   from { opacity: 0.2; }
+    10% { opacity: 1.0; }
+    80% { opacity: 1.0; }
+     to { opacity: 0.5; }
+}
+
+@keyframes PlayRepairedAnimation{
+    from { opacity: 1; transform: translateY(  0px); }
+    50%  { opacity: 1; transform: translateY( -8px); }
+    to   { opacity: 0; transform: translateY(-16px); }    
 } 
 
-@keyframes PlaySprite {
+@keyframes PlayExplosionSprite {
    from { background-position-x:     0px; visibility:visible; }
      to { background-position-x: -1024px; visibility:visible; }
 }
+
+@keyframes PlaySmokeSprite {
+   from { background-position-x:    0px; visibility:visible;}
+     to { background-position-x: -320px; visibility:visible;}
+}
+
+
+#section0 { top:   0px; }
+#section1 { top: 100px; }
+#section2 { top: 200px; }
+#section3 { top: 300px; }
+#section4 { top: 400px; }
+#section5 { top: 500px; }
 
                       
 /* ----------------------------------------------------------------------- 
@@ -232,9 +274,23 @@ div {
     to   { transform: translateY(0%) scaleX(-1); }    
 } 
 
-.damage {
+
+.hit:before {
+	position: absolute; top: 20px; left: 20px;
+  content:'';
+  width: 64px; height: 64px;
+  background-image: url('./img/explosions.png');
+  background-position-x: 0px;
+	background-position-y: -64px;
+  animation: PlayExplosionSprite .8s steps(16) 1;
+	visibility:hidden;
+}
+
+
+.hit:after {
+	content:attr(value);
   height:30px; width:30px;
-  left:50%;
+  position:absolute; left:60px; top:0px;
   line-height:30px;
   font-size: 18px;	    
   text-align:center;
@@ -246,14 +302,23 @@ div {
 	background-color: rgb(210, 35, 43); 
 	color:white; 
 	opacity:0;
-}
-
-.damage.show{
 	animation-name: LoseLife;
 	animation-duration: 1s;
 	animation-iteration-count: 1;
 	animation-timing-function: linear;
 }
+
+.miss:after {
+  content:'';
+	position: absolute; top: 34px; left: 34px;
+  background-image: url("./img/smoke.png");
+  background-size: 320px 32px; width: 32px; height: 32px;
+  background-position: 0px 0px;
+  animation: PlaySmokeSprite 0.5s steps(10) 1;
+//	visibility:hidden;
+}
+
+
 
 @keyframes LoseLife{
     from { opacity: 1; transform: translateY(   0%); }
@@ -265,13 +330,14 @@ div {
     Crew
    ----------------------------------------------------------------------- */
 
-.crew {
-	top:24px; left:644px;
+#crew {
+	top:24px; 
   height:100px; width:100px;
  	background-size:100%; 
 	border-width:1px;
 	border-style:solid;
 	border-color:white; 	
+	transition: left 1s ease-in-out;
 }
 
 .crew1 { background-image:url('./img/crew1.png'); }
@@ -281,15 +347,18 @@ div {
 .crew5 { background-image:url('./img/crew5.png'); }
 .crew6 { background-image:url('./img/crew6.png'); }
 
+#crew.visible { left:644px; }
+#crew.removed { left:790px; }
+
 /* ----------------------------------------------------------------------- 
     Message
    ----------------------------------------------------------------------- */
 
 #info {
 	top:24px; left:40px;
-  height:100px; width:500px;
+  height:100px; width:600px;
   line-height:100px;
-  font-size:28px;
+  font-size:32px;
   text-align:left;
 }
 
@@ -297,46 +366,55 @@ div {
 /* ----------------------------------------------------------------------- 
     Action Selection
    ----------------------------------------------------------------------- */
-
-#attack {
-	top:170px; left:620px;
-	width:100px; height:600px; 
-	background-image:url('./img/ship.png');
-	/*
-	border-width:1px;
-	border-style:solid;
-	border-color:white;
-	*/
-}
-   
+ 
+   /*  
 #moveup {
-	top:120px; left:620px;
 	width: 0; height: 0;
 	border-left: 50px solid transparent;
 	border-right: 50px solid transparent;
 	border-bottom: 40px solid lightgray;
+	transform: translateY(40px);
 }
 
 #movedown {
-	top:780px; left:620px;
 	width: 0; height: 0;
 	border-left: 50px solid transparent;
 	border-right: 50px solid transparent;
 	border-top: 40px solid lightgray;
+	transform: translateY(20px);
+}
+*/
+
+#moveup {
+	width: 100px; height: 100px;
+	background-image:url('./img/uparrow.png'); 
+ 	background-size:100%; 	
+}
+
+#movedown {
+	width: 100px; height: 100px;
+	background-image:url('./img/downarrow.png'); 
+ 	background-size:100%; 
+}
+
+#skip {
+	bottom:20px; right: 40px;
+	height:40px; width:300px; 
+  line-height: 40px;
+  font-size: 24px;	    
+	text-align: right;	
 }
 
 
 /* ----------------------------------------------------------------------- 
-    Dice Roll Info
+    Able Crew Options
    ----------------------------------------------------------------------- */
 
-#number1 { left: 150px; }
-#number2 { left: 250px; }
-#number3 { left: 350px; }
-#number4 { left: 450px; }
-#number5 { left: 550px; }
+#bonus1 { left: 250px; }
+#bonus2 { left: 350px; }
+#bonus3 { left: 450px; }
       
-.number {
+.bonus {
   height:70px; width:70px;
   line-height:70px;
   font-size: 32px;	    
@@ -348,28 +426,10 @@ div {
 	top:915px;
 }
 
-.dice     { border-radius:10px; background-color: white; }
-.attack   { border-radius:100%; background-color: rgb(210, 35, 43); color:white; font-style:bold; }
-.defense  { border-radius:100%; background-color: rgb(  0, 85,125); color:white; font-style:bold; }
-.movement { border-radius:100%; background-color: rgb(125,139, 29); color:white; font-style:bold; }
-.repair   { border-radius:100%; background-color: rgb(253,176, 23); color:white; font-style:bold; }
-.text     { background-color: white; width:300px; border-width:0px; text-align: left;}
-
-.bonus {
-  height:35px; width:35px;
-  line-height:30px;
-  font-size: 18px;	    
-  text-align:center;
-  font-style:italic;
-	border-width:1px;
-	border-style:solid;
-	border-color:lightgrey;
-	top:905px;
-}
-
-#bonus1 { left: 295px; }
-#bonus2 { left: 495px; }
-
+.bonus.attack   { border-radius:100%; background-color: rgb(210, 35, 43); color:white; font-style:bold; }
+.bonus.defense  { border-radius:100%; background-color: rgb(  0, 85,125); color:white; font-style:bold; }
+.bonus.movement { border-radius:100%; background-color: rgb(125,139, 29); color:white; font-style:bold; }
+.bonus.repair   { border-radius:100%; background-color: rgb(253,176, 23); color:white; font-style:bold; }
 
 
 /* 
