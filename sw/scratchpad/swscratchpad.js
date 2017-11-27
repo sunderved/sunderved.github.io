@@ -1,12 +1,16 @@
+// ----------------------------------------------------------- 
+// Date: 	11/27/2017
+// Version: 1.2
+//
+// Notes: 	Added support for board state save and reload
+// ----------------------------------------------------------- 
 
 // On iPad: 980 x 735
-
 
 // var h =     82; // card height
 // var w =  h*1.5; // card width
 // var p =      3; // padding
 
-var newcard;
 var cardlist;
 var board;
 
@@ -54,24 +58,107 @@ function getImagePath(faction, card)
   return '../images/'+faction+'-'+card+'.png';
 }
 
-function createCard(faction, card)
-{
-  var img;
+var imgList  = [];
+var boardState = [];
 
-  if( newcard.childNodes.length == 0 ) {                                               
+function createCard(faction, cardname, wounds, opponent, position)
+{
+  var card;
+  var newCardDiv = document.getElementById("new");
+
+  if( newCardDiv.childNodes.length == 0 ) {                                               
     // if there isn't already an card ready create one 
-    img = document.createElement('img');
-    newcard.appendChild( img ); 
+    card = document.createElement('img');
+	card.id = imgList.length;
+  	imgList.push(card);	
+    newCardDiv.appendChild( card ); 
   } else {
     // otherwise grab the reference to the existing card 
-    img = newcard.childNodes[0];
+    card = newCardDiv.childNodes[0];
   }
-    
+
   // set the card properties (image and style)
-  img.src = getImagePath(faction, card); 
-  img.classList.add('draggable');
-  img.classList.add('card');
-  img.classList.add('cardsize');
+  card.src = getImagePath(faction, cardname); 
+  card.classList.add('draggable');
+  card.classList.add('card');
+  card.classList.add('cardsize');
+  card.classList.toggle('opponent', opponent);
+
+  // put card in the specified div
+  document.getElementById(position).appendChild(card); 	
+
+  // create or update corresponding entry in boardState DB
+  var info = {};
+  info.position = position;
+  info.faction = faction;
+  info.card = cardname;
+  info.wounds = wounds;  
+  info.opponent = opponent;
+  boardState[card.id] = info;
+  saveBoardState(); 
+}
+
+function updateCard(cardId, position)
+{
+	var prev_position = boardState[cardId].position;
+	var card          = boardState[cardId];
+
+    if (prev_position=='new') {
+    	if (position.charAt(4)<4) {
+	    	console.log('Moving new card on opponent side of battlefield');
+	   	  	card.opponent = true;
+	   	} else {
+    		console.log('Moving new card on friendly side of battlefield');
+	   	  	card.opponent = false;
+	   	}
+    }
+	if (position=='new') {
+    	if (cardId>=0) {
+    		console.log('Card '+cardId+' removed from board');	
+    	} else {
+    		console.log('Card not moved to board')
+    	}
+   	  	card.opponent = false;
+	} else {
+	    console.log('Card '+cardId + ' has been dropped in ' + position)	
+	}
+	card.position = position;
+    saveBoardState();
+}
+
+function saveBoardState()
+{
+	localStorage.setItem('sw-scratchpad-boarstate', JSON.stringify(boardState));	
+}
+
+function loadBoardState()
+{
+	var loaded = JSON.parse(localStorage.getItem('sw-scratchpad-boarstate'));
+
+	clearBoardState();	
+
+	for (el of loaded)
+	{
+		console.log('Loading '+el.card+' at position '+el.position);
+		createCard(el.faction, el.card, el.wounds, el.opponent, el.position);
+	}
+
+	saveBoardState();
+}
+
+function clearBoardState()
+{
+	console.log('Clearing board state');
+	for (el of imgList) 
+	{
+		el.parentNode.removeChild(el);
+	}
+	imgList = [];
+	boardState = [];
+
+	loadFaction( Benders );  		
+
+	saveBoardState();
 }
 
 var images = new Array();
@@ -105,12 +192,11 @@ function loadFaction(faction)
   }
   
   // by default, prepare the faction summoner card
-  createCard(faction.name, faction.cards[0]);
+  createCard(faction.name, faction.cards[0], 0, false, 'new');
 }
 
 function init() 
 {
-  newcard  = document.getElementById("new");
   cardlist = document.getElementById("units");
   board    = document.getElementById('board');
 
@@ -138,16 +224,15 @@ function init()
     document.getElementById("container").style.visibility='visible';
   };
      
-  loadFaction( Benders );  
+  loadBoardState();
 }
-
 
 function clickHandler(event) 
 {  
   if (event.target.tagName=="LI") {
     var faction = event.target.getAttribute('data-faction');
     var unit    = event.target.innerHTML; 
-    createCard(faction, unit);   
+    createCard(faction, unit, 0, false, 'new');   
   } 
 }    
 

@@ -14,15 +14,16 @@ interact('.draggable')
       // translate the element
       dragElement.style.webkitTransform =
       dragElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+      // translate and rotate the element if it belongs to the opponent
+      if (dragElement.classList.contains('opponent')) {
+        dragElement.style.webkitTransform =
+        dragElement.style.transform = 'translate(' + x + 'px, ' + y + 'px) rotate(180deg)';  
+      }
       // update the position attributes
       dragElement.setAttribute('data-x', x);
       dragElement.setAttribute('data-y', y);
       // make sure the dragged element is above other divs and visible
-      dragElement.style.zIndex  = 5;  
-      document.getElementById("aaa").textContent  = 'dragging ';          
-      document.getElementById("aaa").textContent += dragElement.id + ' ';          
-      document.getElementById("aaa").textContent += dragElement.style.transform;          
-      document.getElementById("aaa").textContent += dragElement.className;          
+      dragElement.style.zIndex  = 5;    
     },
         
     // call this function on every dragend event
@@ -33,19 +34,8 @@ interact('.draggable')
       dragElement.setAttribute('data-x', x);
       dragElement.setAttribute('data-y', y);
       dragElement.style.webkitTransform =
-      dragElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';    
-      dragElement.style.zIndex = 2; 
-      
-      document.getElementById("aaa").textContent  = window.innerHeight + ' ';
-      document.getElementById("aaa").textContent += document.documentElement.clientHeight + ' ';
-      document.getElementById("aaa").textContent += document.body.clientHeight + ' ';
-      document.getElementById("aaa").textContent += ' || ';
-      document.getElementById("aaa").textContent += window.innerWidth + ' ';
-      document.getElementById("aaa").textContent += document.documentElement.clientWidth + ' ';
-      document.getElementById("aaa").textContent += document.body.clientWidth + ' ';
-         
-      document.getElementById("aaa").textContent += ' - drag ended - ';          
-      document.getElementById("aaa").textContent += dragElement.style.transform;          
+      dragElement.style.transform = ''; // 'translate(' + x + 'px, ' + y + 'px)';    
+      dragElement.style.zIndex = 2;           
     }
   });
 
@@ -69,7 +59,6 @@ interact('.dropzone').dropzone({
     // feedback the possibility of a drop
     dropElement.classList.add('drop-target');
     dragElement.classList.add('can-drop');
-    // console.log(dragElement.id + 'is droppable in ' + dropElement.id);
   },
   ondragleave: function (event) {
     var dragElement = event.relatedTarget;
@@ -77,16 +66,19 @@ interact('.dropzone').dropzone({
     // remove the drop feedback style
     dropElement.classList.remove('drop-target');
     dragElement.classList.remove('can-drop');
-    // console.log(dragElement.id + 'has been dragged out of ' + dropElement.id);
   },
   ondrop: function (event) {
-    var dragElement = event.relatedTarget;
-    var dropElement = event.target;
+    var dragElement = event.relatedTarget; // the card
+    var dropElement = event.target;        // the board space 
     dropElement.classList.remove('drop-target');
     dragElement.classList.remove('can-drop');
-    dropElement.appendChild(dragElement);    
-    // console.log(dragElement.id + ' has been dropped in ' + dropElement.id);
-    document.getElementById("aaa").textContent = dragElement.id + ' has been dropped in ' + dropElement.id;
+
+    // Call updateCard function to update the board state information
+    updateCard(dragElement.id, dropElement.id);
+
+    // Update UI
+    dropElement.appendChild(dragElement);  
+    dragElement.classList.toggle('opponent', boardState[dragElement.id].opponent);
   },
   ondropactivate: function (event) {
     // triggered when an element starts to be dragged
