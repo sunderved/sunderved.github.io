@@ -1,6 +1,6 @@
 CACHE MANIFEST
 # This is a comment.
-# Cache manifest version 1.2.1b
+# Cache manifest version 1.2.2
 # If you change the version number in this comment,
 # the cache manifest is no longer byte-for-byte identical
 index.html
@@ -10,6 +10,16 @@ styles.css
 ./fonts/CaslonAntique.ttf
 ./fonts/CaslonAntique-Bold.ttf
 ../../interact-1.2.6.min.js
+../images/wounds/wounds-0.png
+../images/wounds/wounds-1.png
+../images/wounds/wounds-2.png
+../images/wounds/wounds-3.png
+../images/wounds/wounds-4.png
+../images/wounds/wounds-5.png
+../images/wounds/wounds-6.png
+../images/wounds/wounds-7.png
+../images/wounds/wounds-8.png
+../images/wounds/wounds-9.png
 ../images/Benders-Breaker.png
 ../images/Benders-Controller.png
 ../images/Benders-Deceiver.png

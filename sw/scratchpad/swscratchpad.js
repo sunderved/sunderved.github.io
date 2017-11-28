@@ -215,6 +215,7 @@ function init()
 {
   UI_createBoard();
   
+  // Preload faction images
   preloadImages( Benders          );
   preloadImages( CaveGoblins      );
   preloadImages( Cloaks           );
@@ -231,6 +232,13 @@ function init()
   preloadImages( SwampOrcs        );
   preloadImages( TundraOrcs       );
   preloadImages( Vanguards        );
+
+  // Preload wound images
+  for (var i=0; i<10h; i++) {
+    var tmp = new Image();
+    tmp.src = UI_getWoundPath(i);
+    images.unshift(tmp);
+  }
   
   images[0].onload=function(){
     document.getElementById("loader").style.visibility='hidden';
