@@ -213,6 +213,9 @@ function preloadImages(faction)
 
 function init() 
 {
+document.getElementById("container").style.visibility='visible';	
+/*
+
   UI_createBoard();
   
   // Preload faction images
@@ -246,6 +249,7 @@ function init()
   };
      
   loadBoardState();
+  */
 }
 
 
