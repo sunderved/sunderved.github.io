@@ -18,11 +18,9 @@
   <div id="container">
     <div id="boardpic">
       <div id="board"></div>
-    <div id="new" class="cardspace cardsize dropzone"></div>
     </div>
-
     <div id="selector">
-      <select id="pulldown" onchange="summonerSelectHandler(event)">
+      <select id="pulldown" onchange="selectHandler(event)">
         <option value="Benders">Benders</option>
         <option value="CaveGoblins">Cave Goblins</option>
         <option value="Cloaks">Cloaks</option>
@@ -41,15 +39,10 @@
         <option value="Vanguards">Vanguards</option>
       </select>
             
-      <div id="units" onclick="cardListClickHandler(event)"></div>
+      <div id="units"></div>
+      <div id="new" class="cardspace cardsize dropzone"></div>
       <button id="clear" onclick="clearBoardState()">Clear</button>
     </div>
-      <div id="actions" onclick="actionClickHandler(event)">
-        <li data-action-id=1>+1 Wound</li>
-        <li data-action-id=2>-1 Wound</li>
-        <li data-action-id=3>Rotate</li>
-        <li data-action-id=4>Close</li>
-      </div>    
   </div>
 </body>
 

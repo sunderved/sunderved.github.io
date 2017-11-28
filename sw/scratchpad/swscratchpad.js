@@ -1,8 +1,8 @@
 // ----------------------------------------------------------- 
 // Date: 	11/27/2017
-// Version: 1.2.1
+// Version: 1.2
 //
-// Notes: 	Added support for wounds and card rotation
+// Notes: 	Added support for board state save and reload
 // ----------------------------------------------------------- 
 
 // On iPad: 980 x 735
@@ -11,9 +11,8 @@
 // var w =  h*1.5; // card width
 // var p =      3; // padding
 
-var imgList  = [];
-var boardState = [];
-
+var cardlist;
+var board;
 
 function Faction (name, cards) {
   this.name = name;
@@ -37,11 +36,9 @@ var SwampOrcs       = new Faction("SwampOrcs"       , ["Mugglug", "Wall", "Blerg
 var TundraOrcs      = new Faction("TundraOrcs"      , ["Grognack", "Wall", "Blagog", "Bragg", "Gruggar", "Krung", "Ragnor", "Rukar", "Charger", "Fighter", "Shaman", "Smasher", "Thwarter"] );
 var Vanguards       = new Faction("Vanguards"       , ["SeraEldwyn", "Wall", "Archangel", "ColeenBrighton", "JacobEldwyn", "KalonLightbringer", "LeahGoodwin", "RaechelLoveguard", "Angel", "CavalryKnight", "GuardianKnight", "Priest", "StalwartArcher"] );   
 
-function createBoard() 
+function createboard() 
 {
   var space, id;
-  var board = document.getElementById('board');
-
       
   for (var y=0; y<8; y++) {
     for (var x=0; x<6; x++) {
@@ -61,59 +58,35 @@ function getImagePath(faction, card)
   return '../images/'+faction+'-'+card+'.png';
 }
 
-function getWoundPath(wounds)
-{
-  return '../images/wounds/wounds-'+wounds+'.png';
-}
+var imgList  = [];
+var boardState = [];
 
 function createCard(faction, cardname, wounds, opponent, position)
 {
-  // --------------------------------------------------------
-  // Update UI
-  // --------------------------------------------------------   
-  var div;
-  if( document.getElementById('new').childNodes.length == 0 ) {                                               
-    // if there isn't already an card ready create one 
-    // create div
-    div = document.createElement('div');
-    div.id = imgList.length;
-    // set the card properties (image and style)
-    div.classList.add('draggable');
-    div.classList.add('tappable');
-    div.classList.add('card');
-    div.classList.add('cardsize');    
-    // create card image inside new div
-    img = document.createElement('img');
-    img.id = div.id+'img';
-    img.classList.add('card');
-    img.classList.add('cardsize'); 
-    div.appendChild( img );
-    // create wound image inside new div
-    wnd = document.createElement('img');
-    wnd.id = div.id+'wnd';
-    wnd.classList.add('card');
-    wnd.classList.add('cardsize');
-    div.appendChild( wnd );
+  var card;
+  var newCardDiv = document.getElementById("new");
 
-  	imgList.push(div);	
-    document.getElementById('new').appendChild(div); 
+  if( newCardDiv.childNodes.length == 0 ) {                                               
+    // if there isn't already an card ready create one 
+    card = document.createElement('img');
+	card.id = imgList.length;
+  	imgList.push(card);	
+    newCardDiv.appendChild( card ); 
   } else {
     // otherwise grab the reference to the existing card 
-    div = document.getElementById('new').childNodes[0];
+    card = newCardDiv.childNodes[0];
   }
 
-  // set card image
-  document.getElementById(div.id+'img').src = getImagePath(faction, cardname); 
-  // set wounds image
-  document.getElementById(div.id+'wnd').src = getWoundPath(wounds);
-  // rotate card is it belongs to opponent
-  div.classList.toggle('opponent', opponent);
-  // put card in the specified position
-  document.getElementById(position).appendChild(div); 	
+  // set the card properties (image and style)
+  card.src = getImagePath(faction, cardname); 
+  card.classList.add('draggable');
+  card.classList.add('card');
+  card.classList.add('cardsize');
+  card.classList.toggle('opponent', opponent);
 
-  // --------------------------------------------------------
-  // Update DB
-  // --------------------------------------------------------  
+  // put card in the specified div
+  document.getElementById(position).appendChild(card); 	
+
   // create or update corresponding entry in boardState DB
   var info = {};
   info.position = position;
@@ -121,85 +94,36 @@ function createCard(faction, cardname, wounds, opponent, position)
   info.card = cardname;
   info.wounds = wounds;  
   info.opponent = opponent;
-  boardState[div.id] = info;
+  boardState[card.id] = info;
   saveBoardState(); 
 }
 
-function updateCardPosition(cardId, position)
+function updateCard(cardId, position)
 {
-  // --------------------------------------------------------
-  // Update DB
-  // --------------------------------------------------------  
 	var prev_position = boardState[cardId].position;
 	var card          = boardState[cardId];
 
-  if (prev_position=='new') {
-  	if (position.charAt(4)<4) {
-    	console.log('Moving new card on opponent side of battlefield');
-   	  card.opponent = true;
-   	} else {
-  		console.log('Moving new card on friendly side of battlefield');
-   	  card.opponent = false;
-   	}
-  }
+    if (prev_position=='new') {
+    	if (position.charAt(4)<4) {
+	    	console.log('Moving new card on opponent side of battlefield');
+	   	  	card.opponent = true;
+	   	} else {
+    		console.log('Moving new card on friendly side of battlefield');
+	   	  	card.opponent = false;
+	   	}
+    }
 	if (position=='new') {
-  	if (cardId>=0) {
-  		console.log('Card '+cardId+' removed from board');	
-  	} else {
-  		console.log('Card not moved to board')
-  	}
-   	card.opponent = false;
+    	if (cardId>=0) {
+    		console.log('Card '+cardId+' removed from board');	
+    	} else {
+    		console.log('Card not moved to board')
+    	}
+   	  	card.opponent = false;
 	} else {
-	  console.log('Card '+cardId + ' has been dropped in ' + position)	
+	    console.log('Card '+cardId + ' has been dropped in ' + position)	
 	}
 	card.position = position;
-  saveBoardState();
-
-  // --------------------------------------------------------
-  // Update UI
-  // --------------------------------------------------------
-  // get div corresponding to specific card
-  var cardDiv  = document.getElementById(cardId);
-  // rotate card if it belongs to opponent
-  cardDiv.classList.toggle('opponent', card.opponent);
-  // put card in the specified position
-  document.getElementById(position).appendChild(cardDiv);  
-}
-
-function updateCardWounds(cardId, delta)
-{
-  // --------------------------------------------------------
-  // Update DB
-  // --------------------------------------------------------  
-980  boardState[cardId].wounds = Math.max(0, Math.min(9, boardState[cardId].wounds+delta));
-
-  saveBoardState();
-
-  // --------------------------------------------------------
-  // Update UI
-  // --------------------------------------------------------
-  // set wounds image
-  document.getElementById(cardId+'wnd').src = getWoundPath(boardState[cardId].wounds);  
-}
-
-function updateCardOwner(cardId)
-{
-  console.log(document.getElementById(cardId).classList.contains('opponent'));
-  console.log(boardState[cardId].opponent);
-  // --------------------------------------------------------
-  // Update DB
-  // --------------------------------------------------------  
-  boardState[cardId].opponent = !boardState[cardId].opponent;
-  saveBoardState();
-
-  // --------------------------------------------------------
-  // Update UI
-  // --------------------------------------------------------
-  // set wounds image
-  document.getElementById(cardId).classList.toggle('opponent', boardState[cardId].opponent);
-
-  console.log(document.getElementById(cardId).classList.contains('opponent'));
-  console.log(boardState[cardId].opponent);  
+    saveBoardState();
 }
 
 function saveBoardState()
@@ -253,13 +177,11 @@ function preloadImages(faction)
 
 function loadFaction(faction)
 {  
-  var cardlist = document.getElementById("units");
-
   // clear the contents of the 'units' div
   cardlist.innerHTML='';
   
   // create a new list of cards
-  //cardlist.addEventListener("click", cardListClickHandler);
+  cardlist.addEventListener("click", clickHandler);
   
   // add list items
   for (var i=0; i<faction.cards.length; i++) {
@@ -275,7 +197,10 @@ function loadFaction(faction)
 
 function init() 
 {
-  createBoard();
+  cardlist = document.getElementById("units");
+  board    = document.getElementById('board');
+
+  createboard();
   
   preloadImages( Benders          );
   preloadImages( CaveGoblins      );
@@ -302,36 +227,7 @@ function init()
   loadBoardState();
 }
 
-
-var selectedCardId = undefined;
-
-function selectCardForAction(cardId)
-{
-  selectedCardId = cardId;  
-  console.log('Selected card '+selectedCardId);
-  
-  // show the action menu
-  document.getElementById('actions').classList.toggle('visible', true);
-}
-
-
-function actionClickHandler(event) 
-{  
-  if (event.target.tagName=="LI") {
-    if (selectedCardId !== undefined) {
-      var action = event.target.getAttribute('data-action-id');
-      switch (action)  {
-        case '1': console.log('Adding a wound'); updateCardWounds(selectedCardId, +1); break;
-        case '2': console.log('Removing a wound'); updateCardWounds(selectedCardId, -1); break;
-        case '3': console.log('Switching unit ownership'); updateCardOwner(selectedCardId); break;
-        case '4': console.log('Close menu');   document.getElementById('actions').classList.toggle('visible', false); break;
-        default: console.log('Invalid selection '+action); break;
-      }
-    }
-  } 
-}
-
-function cardListClickHandler(event) 
+function clickHandler(event) 
 {  
   if (event.target.tagName=="LI") {
     var faction = event.target.getAttribute('data-faction');
@@ -340,7 +236,7 @@ function cardListClickHandler(event)
   } 
 }    
 
-function summonerSelectHandler(event) 
+function selectHandler(event) 
 {
   var faction = event.target.value;  
   if (faction=="Benders"         )  loadFaction( Benders         );
@@ -360,8 +256,6 @@ function summonerSelectHandler(event)
   if (faction=="TundraOrcs"      )  loadFaction( TundraOrcs      );
   if (faction=="Vanguards"       )  loadFaction( Vanguards       );
 }
-
-
 
 // When the manifest file has changed and the browser has updated the files, 
 // it won’t use them for the current session. The application must be reloaded 
