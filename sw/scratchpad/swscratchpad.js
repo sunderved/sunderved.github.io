@@ -246,9 +246,11 @@ UI_createBoard();
     document.getElementById("loader").style.visibility='hidden';
     document.getElementById("container").style.visibility='visible';
   };
-     
+  */     
+    document.getElementById("loader").style.visibility='hidden';
+    document.getElementById("container").style.visibility='visible';	
   loadBoardState();
-  */
+
 }
 
 
@@ -284,7 +286,6 @@ function UI_getWoundPath(wounds)
 {
   return '../images/wounds/wounds-'+wounds+'.png';
 }
-
 
 function UI_loadFaction(faction)
 {  
