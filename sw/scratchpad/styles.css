@@ -49,14 +49,23 @@ select {
   margin-left: 5px;
   margin-right: 6px;
   display:inline-block;
+  z-index: 2; 
 }
 
 .card { 
   position: absolute;
+  z-index: 5;
 }
 
 .opponent {
   transform: rotate(180deg);
+}
+
+#boardpic {
+  width:820px;
+  height:735px;
+  background-image: url("../images/board.png"); 
+  z-index: 2; 
 }
 
 #board {
@@ -64,56 +73,86 @@ select {
   top:11px;
   left:11px;
   position:absolute;
-  display:inline-block;   
+  display:inline-block;  
+  z-index: 2; 
 }
 
-#boardpic {
-  width:820px;
-  height:735px;
-  background-image: url("../images/board.png"); 
-  display:inline-block;  
+#new {
+  position: absolute;  
+  top: 580px;
+  left: 835px;
+  border:none; 
+  background-color: #f2f2f2; 
+  z-index: 4;
 }
 
 #selector {
+  position: absolute;  
+  top: 0px;
+  left:820px;
   width: 160px;
   height:100%;
   margin-left: 0px;
-  position: absolute;  
-  display:inline-block;   
   background-color: #e0e0e0;
+  z-index: 1; 
 }
 
 #pulldown {
   width: 100%;
-  display:inline-block;   
-  margin: 5% 0 0 0;  
+  top: 10px;  
+  position: absolute;  
   background-color: #f2f2f2;
 }
 
 #units {
+  position: absolute;  
   width: 100%;
   height: 70%;
-  margin: 5% 0 0 0;
-  display: inline-block;
-  overflow-y: scroll; 
+  top: 55px;
+  overflow-y: auto; 
   background-color: #f2f2f2;
 }
 
-#new {
-  margin-left: 20;
-  margin-top: 20;
-  border:none; 
-  background-color: #f2f2f2; 
+#units::-webkit-scrollbar {
+  width: 6px;
+  background-color: #F5F5F5;
+}
+ 
+#units::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+ 
+#units::-webkit-scrollbar-thumb {
+  background-color: #A5A5A5;
 }
 
 #clear {
-  margin-top: 15;
+  position: absolute;  
+  top: 675px;
   width: 100%;
   height:30px;  
   border:none; 
   background-color: #f2f2f2; 
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 16;  
+  z-index: 4;
+}
+
+#actions {
+  width: 160px;
+  height:135px;  
+  background-color: #f2f2f2;
+  top: 580px;
+  left: 980px;
+  z-index: 10;
+  position: absolute;
+  transition: left 0.5s;  
+  padding-top:10px;
+}
+
+#actions.visible {
+  left: 820px;  
 }
 
 #container {
@@ -124,8 +163,8 @@ select {
   top: 0;
   left: 0;
   position: absolute;  
-  display:inline-block;   
   visibility:hidden;
+  overflow: hidden;  
 }
 
 #loading {

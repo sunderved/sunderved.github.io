@@ -1,3 +1,5 @@
+
+
 // target elements with the "draggable" class
 interact('.draggable')
   .draggable({
@@ -36,10 +38,17 @@ interact('.draggable')
       dragElement.style.webkitTransform =
       dragElement.style.transform = ''; // 'translate(' + x + 'px, ' + y + 'px)';    
       dragElement.style.zIndex = 2;           
-    }
+    },
+
+    onstart: function (event) {
+      var dragElement = event.target;
+          console.log('Starting drag');
+          console.log(event.target);
+//            document.getElementById('board').appendChild(event.target);   
+
+        }
+
   });
-
-
 
 // enable draggables to be dropped into this
 interact('.dropzone').dropzone({
@@ -73,12 +82,8 @@ interact('.dropzone').dropzone({
     dropElement.classList.remove('drop-target');
     dragElement.classList.remove('can-drop');
 
-    // Call updateCard function to update the board state information
-    updateCard(dragElement.id, dropElement.id);
-
-    // Update UI
-    dropElement.appendChild(dragElement);  
-    dragElement.classList.toggle('opponent', boardState[dragElement.id].opponent);
+    // Call updateCard function to update the board state information and UI
+    updateCardPosition(dragElement.id, dropElement.id);
   },
   ondropactivate: function (event) {
     // triggered when an element starts to be dragged
@@ -90,3 +95,14 @@ interact('.dropzone').dropzone({
   }
 });
 
+
+interact('.tappable')
+  // .on('tap', function (event) {
+  //   console.log('Tapped card '+event.target.id);
+  //   event.preventDefault();
+  // })
+  .on('doubletap', function (event) {
+    console.log('Double-tapped card '+event.target.parentNode.id);
+    selectCardForAction(event.target.parentNode.id);
+    event.preventDefault();
+  });
