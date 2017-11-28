@@ -38,16 +38,7 @@ interact('.draggable')
       dragElement.style.webkitTransform =
       dragElement.style.transform = ''; // 'translate(' + x + 'px, ' + y + 'px)';    
       dragElement.style.zIndex = 2;           
-    },
-
-    onstart: function (event) {
-      var dragElement = event.target;
-          console.log('Starting drag');
-          console.log(event.target);
-//            document.getElementById('board').appendChild(event.target);   
-
-        }
-
+    }
   });
 
 // enable draggables to be dropped into this

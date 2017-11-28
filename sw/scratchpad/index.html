@@ -1,13 +1,14 @@
 <html manifest="appcache.manifest" lang="en-US"> 
+  <meta charset="UTF-8">
 
 <head>                                                                                          
   <title>SW Scratchpad</title>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="viewport" content="user-scalable=no"/>
   <link rel="apple-touch-icon" href="../images/icon.jpg" />
   <link rel="stylesheet" href="styles.css" media="screen"/>                             
-  <script type="text/javascript" src="../../interact-1.2.4.min.js"></script> 
+  <script type="text/javascript" src="../../interact-1.2.6.min.js"></script> 
   <script type="text/javascript" src="dnd.js"></script> 
   <script type="text/javascript" src="swscratchpad.js"></script> 
 </head>                                                                                         
@@ -15,7 +16,7 @@
 <body onLoad=init();>    
 
   <div id="loader"></div>
-  <div id="container">
+  <div id="container" class="centered">
     <div id="boardpic">
       <div id="board"></div>
     <div id="new" class="cardspace cardsize dropzone"></div>
@@ -45,9 +46,9 @@
       <button id="clear" onclick="clearBoardState()">Clear</button>
     </div>
       <div id="actions" onclick="actionClickHandler(event)">
-        <li data-action-id=1>+1 Wound</li>
-        <li data-action-id=2>-1 Wound</li>
-        <li data-action-id=3>Rotate</li>
+        <li data-action-id=1>Add Wound</li>
+        <li data-action-id=2>Remove Wound</li>
+        <li data-action-id=3>Rotate Card</li>
         <li data-action-id=4>Close</li>
       </div>    
   </div>
