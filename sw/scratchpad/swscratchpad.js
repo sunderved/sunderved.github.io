@@ -8,13 +8,7 @@
 // - Added support for wounds and card rotation
 // ----------------------------------------------------------- 
 
-// On iPad: 980 x 735
-
-// var h =     82; // card height
-// var w =  h*1.5; // card width
-// var p =      3; // padding
-
-var imgList  = [];
+var imgList    = [];
 var boardState = [];
 
 
@@ -133,29 +127,29 @@ function updateCardPosition(cardId, position)
   // --------------------------------------------------------
   // Update DB
   // --------------------------------------------------------  
-	var prev_position = boardState[cardId].position;
-	var card          = boardState[cardId];
+  var prev_position = boardState[cardId].position;
+  var card          = boardState[cardId];
 
   if (prev_position=='new') {
-  	if (position.charAt(4)<4) {
-    	console.log('Moving new card on opponent side of battlefield');
-   	  card.opponent = true;
-   	} else {
-  		console.log('Moving new card on friendly side of battlefield');
-   	  card.opponent = false;
-   	}
+    if (position.charAt(4)<4) {
+      console.log('Moving new card on opponent side of battlefield');
+      card.opponent = true;
+    } else {
+      console.log('Moving new card on friendly side of battlefield');
+      card.opponent = false;
+    }
   }
-	if (position=='new') {
-  	if (cardId>=0) {
-  		console.log('Card '+cardId+' removed from board');	
-  	} else {
-  		console.log('Card not moved to board')
-  	}
-   	card.opponent = false;
-	} else {
-	  console.log('Card '+cardId + ' has been dropped in ' + position)	
-	}
-	card.position = position;
+  if (position=='new') {
+    if (cardId>=0) {
+      console.log('Card '+cardId+' removed from board');	
+    } else {
+      console.log('Card not moved to board')
+    }
+    card.opponent = false;
+  } else {
+    console.log('Card '+cardId + ' has been dropped in ' + position);	
+  }
+  card.position = position;
   saveBoardState();
 
   // --------------------------------------------------------
@@ -218,8 +212,8 @@ function loadBoardState()
 
   for (el of loaded)
   {
-	 console.log('Loading '+el.card+' at position '+el.position);
-	 createCard(el.faction, el.card, el.wounds, el.opponent, el.position);
+    console.log('Loading '+el.card+' at position '+el.position);
+    createCard(el.faction, el.card, el.wounds, el.opponent, el.position);
   }
 
   saveBoardState();
@@ -367,7 +361,7 @@ function summonerSelectHandler(event)
 
 
 // When the manifest file has changed and the browser has updated the files, 
-// it won’t use them for the current session. The application must be reloaded 
+// it wonâ€™t use them for the current session. The application must be reloaded 
 window.applicationCache.addEventListener('updateready', function(e) {
 	if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
 	  // A changed manifest file has been found and downloaded by
