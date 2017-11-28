@@ -1,8 +1,11 @@
 // ----------------------------------------------------------- 
-// Date: 	11/27/2017
-// Version: 1.2.1
+// Date: 	11/28/2017
 //
-// Notes: 	Added support for wounds and card rotation
+// Version 1.2.1a
+// - Bug fix
+// 
+// Version 1.2.1
+// - Added support for wounds and card rotation
 // ----------------------------------------------------------- 
 
 // On iPad: 980 x 735
@@ -171,7 +174,7 @@ function updateCardWounds(cardId, delta)
   // --------------------------------------------------------
   // Update DB
   // --------------------------------------------------------  
-980  boardState[cardId].wounds = Math.max(0, Math.min(9, boardState[cardId].wounds+delta));
+  boardState[cardId].wounds = Math.max(0, Math.min(9, boardState[cardId].wounds+delta));
 
   saveBoardState();
 
@@ -204,51 +207,51 @@ function updateCardOwner(cardId)
 
 function saveBoardState()
 {
-	localStorage.setItem('sw-scratchpad-boarstate', JSON.stringify(boardState));	
+  localStorage.setItem('sw-scratchpad-boarstate', JSON.stringify(boardState));	
 }
 
 function loadBoardState()
 {
-	var loaded = JSON.parse(localStorage.getItem('sw-scratchpad-boarstate'));
+  var loaded = JSON.parse(localStorage.getItem('sw-scratchpad-boarstate'));
 
-	clearBoardState();	
+  clearBoardState();	
 
-	for (el of loaded)
-	{
-		console.log('Loading '+el.card+' at position '+el.position);
-		createCard(el.faction, el.card, el.wounds, el.opponent, el.position);
-	}
+  for (el of loaded)
+  {
+	 console.log('Loading '+el.card+' at position '+el.position);
+	 createCard(el.faction, el.card, el.wounds, el.opponent, el.position);
+  }
 
-	saveBoardState();
+  saveBoardState();
 }
 
 function clearBoardState()
 {
-	console.log('Clearing board state');
-	for (el of imgList) 
-	{
-		el.parentNode.removeChild(el);
-	}
-	imgList = [];
-	boardState = [];
+  console.log('Clearing board state');
+  for (el of imgList) 
+  {
+    el.parentNode.removeChild(el);
+  }
+  imgList = [];
+  boardState = [];
 
-	loadFaction( Benders );  		
+  loadFaction( Benders );  		
 
-	saveBoardState();
+  saveBoardState();
 }
 
 var images = new Array();
 function preloadImages(faction) 
 {  
   for (var i=0; i<faction.cards.length; i++) {
-		var tmp = new Image();
-		tmp.src = getImagePath(faction.name, faction.cards[i]);
-		images.unshift(tmp);
-    
+    var tmp = new Image();
+    tmp.src = getImagePath(faction.name, faction.cards[i]);
+    images.unshift(tmp);
+
     if (i==0) {
       images[0].onload=function(){ document.getElementById("loader").innerHTML+='Loading '+faction.name+'<br>'; };      
     }
-	}		
+  }		
 }
 
 function loadFaction(faction)
