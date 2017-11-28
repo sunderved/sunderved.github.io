@@ -216,7 +216,7 @@ function init()
 document.getElementById("container").style.visibility='visible';	
 
 UI_createBoard();
-/*  
+
   // Preload faction images
   preloadImages( Benders          );
   preloadImages( CaveGoblins      );
@@ -245,11 +245,8 @@ UI_createBoard();
   images[0].onload=function(){
     document.getElementById("loader").style.visibility='hidden';
     document.getElementById("container").style.visibility='visible';
-  };
-  */     
-    document.getElementById("loader").style.visibility='hidden';
-    document.getElementById("container").style.visibility='visible';	
-    document.getElementById("clear").innerHTML='Clear A';	
+  };	
+    document.getElementById("clear").innerHTML='Clear B';	
   loadBoardState();
 
 }
