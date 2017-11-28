@@ -236,7 +236,7 @@ UI_createBoard();
   preloadImages( Vanguards        );
 
   // Preload wound images
-  for (var i=0; i<10h; i++) {
+  for (var i=0; i<10; i++) {
     var tmp = new Image();
     tmp.src = UI_getWoundPath(i);
     images.unshift(tmp);
