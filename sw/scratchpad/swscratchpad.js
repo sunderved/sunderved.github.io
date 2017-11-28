@@ -214,10 +214,9 @@ function preloadImages(faction)
 function init() 
 {
 document.getElementById("container").style.visibility='visible';	
-/*
 
-  UI_createBoard();
-  
+UI_createBoard();
+/*  
   // Preload faction images
   preloadImages( Benders          );
   preloadImages( CaveGoblins      );
