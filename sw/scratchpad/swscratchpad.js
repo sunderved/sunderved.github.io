@@ -249,6 +249,7 @@ UI_createBoard();
   */     
     document.getElementById("loader").style.visibility='hidden';
     document.getElementById("container").style.visibility='visible';	
+    document.getElementById("clear").innerHTML='Clear A';	
   loadBoardState();
 
 }
