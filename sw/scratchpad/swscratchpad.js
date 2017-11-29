@@ -3,6 +3,7 @@ Version 1.2.2 - 11/28/2017
  - Locked screen orientation on iPad
  - Upgraded to interact 1.2.6
  - Changed font to more closely ressemble SW fonts
+ - Fixed issue with image loader
  - Known issue: wounds aren't properly displayed on walls
 
 Version 1.2.1a - 11/28/2017
@@ -12,25 +13,37 @@ Version 1.2.1 - 11/28/2017
  - Added support for wounds and card rotation
   ----------------------------------------------------------- */
 
-var imgList    = [];
-var boardState = [];
 
-var Benders         = {name:"Benders"         , cards:["Tacullu", "Wall", "Gulldune", "Gwalark", "Kalal", "Sorgwen", "Kalu", "Talu", "Breaker", "Controller", "Deceiver", "MindWitch", "Parasite"] };
-var CaveGoblins     = {name:"CaveGoblins"     , cards:["Sneeks", "Wall", "Blarf", "Krag", "Mook", "Scagg", "Reeker", "TheEater", "BeastRider", "Berserker", "Climber", "Fighter", "Slinger"] };
-var Cloaks          = {name:"Cloaks"          , cards:["Vlox", "Wall", "Dagger", "Hawk", "Scam", "SinSin", "TheAdmiral", "Violet", "Gunner", "Scrapper", "Slasher", "Sniper", "Thief"] };  
-var DeepDwarves     = {name:"DeepDwarves"     , cards:["Tundle", "Wall", "DeepTroll", "Gren", "Kynder", "Lun", "Piclo", "Sprog", "BattleMage", "Crossbowman", "GemMage", "Miner", "Scholar"] };
-var FallenKingdom   = {name:"FallenKingdom"   , cards:["RetTalus", "Wall", "Anica", "Dragos", "ElutBal", "Skhull", "Cultist", "Phantom", "Reaper", "Reaver", "SkeletalArcher", "ZombieWarrior"] };  
-var Filth           = {name:"Filth"           , cards:["TheDemagogue", "Wall", "Her", "TheAbomination", "Vomitus", "AbsorptionMutant", "Anointed", "BestialMutant", "ClawMutant", "CorpulentMutant", "Cultist", "EdibleMutant", "HorrorMutant", "IncanterMutant", "SpellsuckerMutant", "SpewMutant", "StonefleshMutant", "TentacleMutant", "VoidMutant", "WingedMutant", "Zealot"] };  
-var GuildDwarves    = {name:"GuildDwarves"    , cards:["Oldin", "Wall", "Baldar", "Gror", "Grungor", "Halvor", "Thorkur", "Tordok", "Ballista", "Defender", "Engineer", "Guardsman", "Spearman"] };  
-var JungleElves     = {name:"JungleElves"     , cards:["AbuaShi", "Wall", "Kadara", "MakeindaRu", "MitiMumway", "Shikwa", "Archer", "Elephant", "Gorilla", "JungleGuard", "Lioneer", "Lioness"] };  
-var Mercenaries     = {name:"Mercenaries"     , cards:["Rallul", "Wall", "Duggle", "Etch", "Grubs", "Hulgorad", "KhanQueso", "Khexhu", "Kogar", "Magos", "Malevolence", "Mundol", "NaanNashi", "Rath", "Rygos", "Saella", "Sairook", "TheSeer", "Urick", "ApprenticeMage", "Bounder", "BowGrounder", "DemonHand", "OwlFamiliar", "Rogue", "RuneMage", "SpearGrounder", "StoneGolem", "Stonecloak", "SwordGrounder", "TimeMage", "Vermin"] };
-var MountainVargath = {name:"MountainVargath" , cards:["Sunderved", "Wall", "Bellor", "Growden", "Luka", "Quen", "Torodin", "Varn", "Brute", "Rusher", "StormMage", "Warden", "Warrior"] };
-var PhoenixElves    = {name:"PhoenixElves"    , cards:["PrinceElien", "Wall", "FireDrake", "Holleas", "Kaeseeall", "Laleya", "Maelena", "Rahlee", "Archer", "Fencer", "FireBeast", "Guardian", "Warrior"] };
-var SandGoblins     = {name:"SandGoblins"     , cards:["Krusk", "Wall", "Biter", "Kreep", "SandWyrm", "Silts", "Stink", "Tark", "Bomber", "Javelineer", "Scavenger", "Shaman", "Slayer"] };
-var ShadowElves     = {name:"ShadowElves"     , cards:["Selundar", "Wall", "Hydrake", "Kuldrid", "Malidala", "Melek", "Taliya", "Xaserbane", "BladeMaster", "Hunter", "Ranger", "Scout", "Swordsman"] };
-var SwampOrcs       = {name:"SwampOrcs"       , cards:["Mugglug", "Wall", "Blerg", "Glarg", "Glurp", "Murk", "Splack", "Splub", "Conjurer", "Hunter", "Savager", "Shaman", "SwampBeast"] };
-var TundraOrcs      = {name:"TundraOrcs"      , cards:["Grognack", "Wall", "Blagog", "Bragg", "Gruggar", "Krung", "Ragnor", "Rukar", "Charger", "Fighter", "Shaman", "Smasher", "Thwarter"] };
-var Vanguards       = {name:"Vanguards"       , cards:["SeraEldwyn", "Wall", "Archangel", "ColeenBrighton", "JacobEldwyn", "KalonLightbringer", "LeahGoodwin", "RaechelLoveguard", "Angel", "CavalryKnight", "GuardianKnight", "Priest", "StalwartArcher"] };   
+/*
+
+Know issues:
+- The Application Cache API (AppCache) is deprecated and will be removed at a future date.  Please consider using ServiceWorker for offline support.
+- Wounds aren't properly displayed on walls
+
+*/
+
+var imgList        = [];
+var boardState     = [];
+var selectedCardId = undefined;
+
+
+var factions = {}
+factions.Benders         = {name:"Benders"         , cards:["Tacullu", "Wall", "Gulldune", "Gwalark", "Kalal", "Sorgwen", "Kalu", "Talu", "Breaker", "Controller", "Deceiver", "MindWitch", "Parasite"] };
+factions.CaveGoblins     = {name:"CaveGoblins"     , cards:["Sneeks", "Wall", "Blarf", "Krag", "Mook", "Scagg", "Reeker", "TheEater", "BeastRider", "Berserker", "Climber", "Fighter", "Slinger"] };
+factions.Cloaks          = {name:"Cloaks"          , cards:["Vlox", "Wall", "Dagger", "Hawk", "Scam", "SinSin", "TheAdmiral", "Violet", "Gunner", "Scrapper", "Slasher", "Sniper", "Thief"] };  
+factions.DeepDwarves     = {name:"DeepDwarves"     , cards:["Tundle", "Wall", "DeepTroll", "Gren", "Kynder", "Lun", "Piclo", "Sprog", "BattleMage", "Crossbowman", "GemMage", "Miner", "Scholar"] };
+factions.FallenKingdom   = {name:"FallenKingdom"   , cards:["RetTalus", "Wall", "Anica", "Dragos", "ElutBal", "Skhull", "Cultist", "Phantom", "Reaper", "Reaver", "SkeletalArcher", "ZombieWarrior"] };  
+factions.Filth           = {name:"Filth"           , cards:["TheDemagogue", "Wall", "Her", "TheAbomination", "Vomitus", "AbsorptionMutant", "Anointed", "BestialMutant", "ClawMutant", "CorpulentMutant", "Cultist", "EdibleMutant", "HorrorMutant", "IncanterMutant", "SpellsuckerMutant", "SpewMutant", "StonefleshMutant", "TentacleMutant", "VoidMutant", "WingedMutant", "Zealot"] };  
+factions.GuildDwarves    = {name:"GuildDwarves"    , cards:["Oldin", "Wall", "Baldar", "Gror", "Grungor", "Halvor", "Thorkur", "Tordok", "Ballista", "Defender", "Engineer", "Guardsman", "Spearman"] };  
+factions.JungleElves     = {name:"JungleElves"     , cards:["AbuaShi", "Wall", "Kadara", "MakeindaRu", "MitiMumway", "Shikwa", "Archer", "Elephant", "Gorilla", "JungleGuard", "Lioneer", "Lioness"] };  
+factions.Mercenaries     = {name:"Mercenaries"     , cards:["Rallul", "Wall", "Duggle", "Etch", "Grubs", "Hulgorad", "KhanQueso", "Khexhu", "Kogar", "Magos", "Malevolence", "Mundol", "NaanNashi", "Rath", "Rygos", "Saella", "Sairook", "TheSeer", "Urick", "ApprenticeMage", "Bounder", "BowGrounder", "DemonHand", "OwlFamiliar", "Rogue", "RuneMage", "SpearGrounder", "StoneGolem", "Stonecloak", "SwordGrounder", "TimeMage", "Vermin"] };
+factions.MountainVargath = {name:"MountainVargath" , cards:["Sunderved", "Wall", "Bellor", "Growden", "Luka", "Quen", "Torodin", "Varn", "Brute", "Rusher", "StormMage", "Warden", "Warrior"] };
+factions.PhoenixElves    = {name:"PhoenixElves"    , cards:["PrinceElien", "Wall", "FireDrake", "Holleas", "Kaeseeall", "Laleya", "Maelena", "Rahlee", "Archer", "Fencer", "FireBeast", "Guardian", "Warrior"] };
+factions.SandGoblins     = {name:"SandGoblins"     , cards:["Krusk", "Wall", "Biter", "Kreep", "SandWyrm", "Silts", "Stink", "Tark", "Bomber", "Javelineer", "Scavenger", "Shaman", "Slayer"] };
+factions.ShadowElves     = {name:"ShadowElves"     , cards:["Selundar", "Wall", "Hydrake", "Kuldrid", "Malidala", "Melek", "Taliya", "Xaserbane", "BladeMaster", "Hunter", "Ranger", "Scout", "Swordsman"] };
+factions.SwampOrcs       = {name:"SwampOrcs"       , cards:["Mugglug", "Wall", "Blerg", "Glarg", "Glurp", "Murk", "Splack", "Splub", "Conjurer", "Hunter", "Savager", "Shaman", "SwampBeast"] };
+factions.TundraOrcs      = {name:"TundraOrcs"      , cards:["Grognack", "Wall", "Blagog", "Bragg", "Gruggar", "Krung", "Ragnor", "Rukar", "Charger", "Fighter", "Shaman", "Smasher", "Thwarter"] };
+factions.Vanguards       = {name:"Vanguards"       , cards:["SeraEldwyn", "Wall", "Archangel", "ColeenBrighton", "JacobEldwyn", "KalonLightbringer", "LeahGoodwin", "RaechelLoveguard", "Angel", "CavalryKnight", "GuardianKnight", "Priest", "StalwartArcher"] };   
 
 function createCard(faction, cardname, wounds, opponent, position)
 {
@@ -179,7 +192,7 @@ function loadBoardState()
     createCard(el.faction, el.card, el.wounds, el.opponent, el.position);
   }
 
-  UI_loadFaction( Benders );     
+  UI_loadFaction( factions.Benders );     
 
   saveBoardState();
 }
@@ -191,70 +204,36 @@ function clearBoardState()
   {
     el.parentNode.removeChild(el);
   }
-  imgList = [];
-  boardState = [];
+  imgList        = [];
+  boardState     = [];
+  selectedCardId = undefined;
 
   saveBoardState();
 }
 
-var images = new Array();
-function preloadImages(faction) 
-{  
-  for (var i=0; i<faction.cards.length; i++) {
-    var tmp = new Image();
-    tmp.src = UI_getImagePath(faction.name, faction.cards[i]);
-    images.unshift(tmp);
-
-    if (i==0) {
-      images[0].onload=function(){ document.getElementById("loader").innerHTML+='Loading '+faction.name+'<br>'; };      
-    }
-  }		
-}
 
 function init() 
 {
-document.getElementById("container").style.visibility='visible';	
+  UI_createBoard();
+  UI_preloadImages();
 
-UI_createBoard();
-
-  // Preload faction images
-  preloadImages( Benders          );
-  preloadImages( CaveGoblins      );
-  preloadImages( Cloaks           );
-  preloadImages( DeepDwarves      );
-  preloadImages( FallenKingdom    );
-  preloadImages( Filth            );
-  preloadImages( GuildDwarves     );
-  preloadImages( JungleElves      );
-  preloadImages( Mercenaries      );
-  preloadImages( MountainVargath  );
-  preloadImages( PhoenixElves     );
-  preloadImages( SandGoblins      );
-  preloadImages( ShadowElves      );
-  preloadImages( SwampOrcs        );
-  preloadImages( TundraOrcs       );
-  preloadImages( Vanguards        );
-
-  // Preload wound images
-  for (var i=0; i<10; i++) {
-    var tmp = new Image();
-    tmp.src = UI_getWoundPath(i);
-    images.unshift(tmp);
-  }
-  
-  images[0].onload=function(){
-    document.getElementById("loader").style.visibility='hidden';
-    document.getElementById("container").style.visibility='visible';
-  };	
-    document.getElementById("clear").innerHTML='Clear B';	
   loadBoardState();
-
 }
 
 
 // --------------------------------------------------------
 // UI function
 // --------------------------------------------------------
+
+function UI_getImagePath(faction, card)
+{
+  return '../images/'+faction+'-'+card+'.png';
+}
+
+function UI_getWoundPath(wounds)
+{
+  return '../images/wounds/wounds-'+wounds+'.png';
+}
 
 function UI_createBoard() 
 {
@@ -275,14 +254,43 @@ function UI_createBoard()
   }      
 }
 
-function UI_getImagePath(faction, card)
-{
-  return '../images/'+faction+'-'+card+'.png';
-}
+function UI_preloadImages() 
+{  
+  var images = [];
+  for (name in factions)
+  {
+    var faction = factions[name];
+    for (card of faction.cards) {
+      var tmp = new Image();
+      tmp.src = UI_getImagePath(faction.name, card);
+      images.unshift(tmp);      
+    }
+  }
+  for (var i=0; i<10; i++) {
+    var tmp = new Image();
+    tmp.src = UI_getWoundPath(i);
+    images.unshift(tmp);      
+  }
+  
+  var imgCount  = images.length;
+  var imgLoaded = 0;
 
-function UI_getWoundPath(wounds)
-{
-  return '../images/wounds/wounds-'+wounds+'.png';
+  for(var i=0; i<imgCount; i++){
+      images[i].onload = function(){
+        imgLoaded++;
+        var cmp = Math.round(100*imgLoaded/imgCount);
+        console.log(' loading '+ cmp +'%');
+        document.getElementById("loadermsg").innerHTML ='Summoner Wars Scratchpad<BR>';
+        document.getElementById("loadermsg").innerHTML+='<BR>';
+        document.getElementById("loadermsg").innerHTML+='Loading...<BR>';
+        document.getElementById("loadermsg").innerHTML+='Progress ' + cmp + '%<BR>';        
+        if(imgLoaded == imgCount){
+          console.log('All images loaded!');
+          document.getElementById("loader").style.visibility='hidden';
+          document.getElementById("container").style.visibility='visible';          
+        }
+      }
+  }
 }
 
 function UI_loadFaction(faction)
@@ -317,8 +325,6 @@ function UI_hideActions()
 // --------------------------------------------------------
 // UI event handling callbacks
 // --------------------------------------------------------
-
-var selectedCardId = undefined;
 
 function selectCardForAction(cardId)
 {
@@ -357,23 +363,7 @@ function cardListClickHandler(event)
 
 function summonerSelectHandler(event) 
 {
-  var faction = event.target.value;  
-  if (faction=="Benders"         )  UI_loadFaction( Benders         );
-  if (faction=="CaveGoblins"     )  UI_loadFaction( CaveGoblins     );
-  if (faction=="Cloaks"          )  UI_loadFaction( Cloaks          );
-  if (faction=="DeepDwarves"     )  UI_loadFaction( DeepDwarves     );
-  if (faction=="FallenKingdom"   )  UI_loadFaction( FallenKingdom   );
-  if (faction=="Filth"           )  UI_loadFaction( Filth           );
-  if (faction=="GuildDwarves"    )  UI_loadFaction( GuildDwarves    );
-  if (faction=="JungleElves"     )  UI_loadFaction( JungleElves     );
-  if (faction=="Mercenaries"     )  UI_loadFaction( Mercenaries     );
-  if (faction=="MountainVargath" )  UI_loadFaction( MountainVargath );
-  if (faction=="PhoenixElves"    )  UI_loadFaction( PhoenixElves    );
-  if (faction=="SandGoblins"     )  UI_loadFaction( SandGoblins     );
-  if (faction=="ShadowElves"     )  UI_loadFaction( ShadowElves     );
-  if (faction=="SwampOrcs"       )  UI_loadFaction( SwampOrcs       );
-  if (faction=="TundraOrcs"      )  UI_loadFaction( TundraOrcs      );
-  if (faction=="Vanguards"       )  UI_loadFaction( Vanguards       );
+  UI_loadFaction( factions[event.target.value] );  
   UI_hideActions();   
 }
 

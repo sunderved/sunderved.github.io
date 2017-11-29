@@ -21,6 +21,10 @@ body {
   border: none;
 }
 
+div {
+  font-family: CaslonAntique-Bold;   
+}
+
 button {
   font-size: 18; 
   font-family: CaslonAntique-Bold;   
@@ -188,10 +192,16 @@ select {
 }
 
 
-#loading {
+#loader {
+  font-size: 20;
   visibility:visible;
 }
 
+#loadermsg {
+  font-size: 30;
+  text-align: center;
+  position: absolute;
+}
 
 .centered {
   top: 50%;
