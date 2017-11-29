@@ -53,28 +53,10 @@ function createCard(faction, cardname, wounds, opponent, position)
   var div;
   if( document.getElementById('new').childNodes.length == 0 ) {                                               
     // if there isn't already an card ready create one 
-    // create div
-    div = document.createElement('div');
-    div.id = imgList.length;
-    // set the card properties (image and style)
-    div.classList.add('draggable');
-    div.classList.add('tappable');
-    div.classList.add('card');
-    //div.classList.add('centered');
-
-    // create card image inside new div
-    img = document.createElement('img');
-    img.id = div.id+'img';
-    img.classList.add('card');
-    div.appendChild( img );
-    // create wound image inside new div
-    wnd = document.createElement('img');
-    wnd.id = div.id+'wnd';
-    wnd.classList.add('card');
-    div.appendChild( wnd );
-	  
-    imgList.push(div);	
-    document.getElementById('new').appendChild(div); 
+    div = UI_create('div', imgList.length, document.getElementById('new'), ['draggable', 'tappable', 'card']);
+    img = UI_create('img', div.id+'img', div, ['card']);
+    wnd = UI_create('img', div.id+'wnd', div, ['card']);
+  	imgList.push(div);	
   } else {
     // otherwise grab the reference to the existing card 
     div = document.getElementById('new').childNodes[0];
@@ -213,23 +195,16 @@ function clearBoardState()
 
 function init() 
 {
-	console.log('Calling init');
   UI_createBoard();
-  UI_preloadImages();
+  UI_preloadImages(loadBoardState);
 
   for (name in factions)
   {
-	  
     var el = document.createElement('option'); 
     el.setAttribute('value', name); 
     el.innerHTML = name;
-console.log('name');
+    document.getElementById('pulldown').appendChild(el);
   }
-
-
-
-
-  loadBoardState();
 }
 
 
@@ -250,23 +225,19 @@ function UI_getWoundPath(wounds)
 
 function UI_createBoard() 
 {
-  var space, id;
-  var board = document.getElementById('board');
-
+  var board  = document.getElementById('board');
+  var spaces = UI_create('div', 'spaces', board);
       
   for (var y=0; y<8; y++) {
     for (var x=0; x<6; x++) {
-      var id = 'div'+x+y;
-      var space = document.createElement("div");
-      space.id=id;
-      space.classList.add('cardspace');
-      space.classList.add('dropzone');
-      board.appendChild(space);
+      UI_create('div', ('div'+x+y), spaces, ['cardspace', 'dropzone']);
     }
   }      
+
+  UI_create('div', 'new', spaces, ['dropzone']);
 }
 
-function UI_preloadImages() 
+function UI_preloadImages(whendone) 
 {  
   var images = [];
   for (name in factions)
@@ -296,7 +267,6 @@ function UI_preloadImages()
       images[i].onload = function(){
         imgLoaded++;
         var cmp = Math.round(100*imgLoaded/imgCount);
-        //console.log(' loading '+ cmp +'%');
         div.innerHTML ='Summoner Wars Scratchpad<BR>';
         div.innerHTML+='<BR>';
         div.innerHTML+='Loading...<BR>';
@@ -304,7 +274,8 @@ function UI_preloadImages()
         if(imgLoaded == imgCount){
           console.log('All images loaded!');
           document.getElementById("loader").style.visibility='hidden';
-          document.getElementById("container").style.visibility='visible';          
+          document.getElementById("container").style.visibility='visible';    
+          whendone();      
         }
       }
   }
@@ -335,11 +306,27 @@ function UI_loadFaction(faction)
 
 function UI_hideActions()
 {
-  document.getElementById('actions').classList.toggle('visible', false);  
-  document.getElementById(selectedCardId).classList.toggle('can-drop', false);
-  selectedCardId = undefined;
+  document.getElementById('actions').classList.toggle('visible', false); 
+  if (selectedCardId!==undefined) {
+    document.getElementById(selectedCardId).classList.toggle('can-drop', false);
+    selectedCardId = undefined;
+  }
 }
 
+
+function UI_create(typ, id, parent, classes)
+{
+  var el = document.createElement(typ);
+  el.id = id;
+  parent.appendChild(el)
+  // set the div classes, if available
+  if (classes!==undefined) {
+    for(cl of classes) {
+      el.classList.add(cl);
+    }
+  }
+  return el;
+}
 
 // --------------------------------------------------------
 // UI event handling callbacks
@@ -348,9 +335,7 @@ function UI_hideActions()
 function selectCardForAction(cardId)
 {
 
-  if (selectedCardId!==undefined) {
-      document.getElementById(selectedCardId).classList.toggle('can-drop', false);
-  }
+  UI_hideActions();
 
   selectedCardId = cardId;  
   console.log('Selected card '+selectedCardId);

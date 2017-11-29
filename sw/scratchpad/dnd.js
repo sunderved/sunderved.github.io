@@ -27,6 +27,11 @@ interact('.draggable')
       // make sure the dragged element is above other divs and visible
       dragElement.style.zIndex  = 5;    
     },
+
+    // call this function on every dragstart event
+    onstart: function (event) {        
+      UI_hideActions();
+    },
         
     // call this function on every dragend event
     onend: function (event) {
