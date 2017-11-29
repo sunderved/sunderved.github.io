@@ -296,7 +296,7 @@ function UI_preloadImages()
       images[i].onload = function(){
         imgLoaded++;
         var cmp = Math.round(100*imgLoaded/imgCount);
-        console.log(' loading '+ cmp +'%');
+        //console.log(' loading '+ cmp +'%');
         div.innerHTML ='Summoner Wars Scratchpad<BR>';
         div.innerHTML+='<BR>';
         div.innerHTML+='Loading...<BR>';
