@@ -195,9 +195,7 @@ function clearBoardState()
 
 function init() 
 {
-  UI_createBoard();
-  UI_preloadImages(loadBoardState);
-
+  //document.getElementById('pulldown').innerHTML='';
   for (name in factions)
   {
     var el = document.createElement('option'); 
@@ -205,6 +203,9 @@ function init()
     el.innerHTML = name;
     document.getElementById('pulldown').appendChild(el);
   }
+
+  UI_createBoard();
+  UI_preloadImages(loadBoardState);
 }
 
 
