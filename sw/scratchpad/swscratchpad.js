@@ -213,6 +213,7 @@ function clearBoardState()
 
 function init() 
 {
+	console.log('Calling init');
   UI_createBoard();
   UI_preloadImages();
 
