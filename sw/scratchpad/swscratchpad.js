@@ -195,7 +195,7 @@ function clearBoardState()
 
 function init() 
 {
-  //document.getElementById('pulldown').innerHTML='';
+  document.getElementById('pulldown').innerHTML='';
   for (name in factions)
   {
     var el = document.createElement('option'); 
