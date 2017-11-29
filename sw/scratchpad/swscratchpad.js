@@ -72,8 +72,8 @@ function createCard(faction, cardname, wounds, opponent, position)
     wnd.id = div.id+'wnd';
     wnd.classList.add('card');
     div.appendChild( wnd );
-
-  	imgList.push(div);	
+	  
+    imgList.push(div);	
     document.getElementById('new').appendChild(div); 
   } else {
     // otherwise grab the reference to the existing card 
@@ -218,10 +218,11 @@ function init()
 
   for (name in factions)
   {
+	  
     var el = document.createElement('option'); 
     el.setAttribute('value', name); 
     el.innerHTML = name;
-    document.getElementById('pulldown').appendChild(el);
+console.log('name');
   }
 
 
@@ -237,8 +238,8 @@ function init()
 
 function UI_getImagePath(faction, card)
 {
-  return 'http://sunderved.github.io/sw/images/'+faction+'-'+card+'.png';
-  // return '../images/'+faction+'-'+card+'.png';
+  // return 'http://sunderved.github.io/sw/images/'+faction+'-'+card+'.png';
+  return '../images/'+faction+'-'+card+'.png';
 }
 
 function UI_getWoundPath(wounds)
