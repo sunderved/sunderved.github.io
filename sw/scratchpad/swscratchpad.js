@@ -2,7 +2,7 @@
 Version 1.2.2 - 11/28/2017
  - Locked screen orientation on iPad
  - Upgraded to interact 1.2.6
- - Changed font to more closely ressemble SW fonts
+ - Changed font to more closely resemble SW fonts
  - Fixed issue with image loader
  - Known issue: wounds aren't properly displayed on walls
 
@@ -61,6 +61,8 @@ function createCard(faction, cardname, wounds, opponent, position)
     div.classList.add('tappable');
     div.classList.add('card');
     div.classList.add('cardsize');    
+    //div.classList.add('centered');
+
     // create card image inside new div
     img = document.createElement('img');
     img.id = div.id+'img';
@@ -217,6 +219,17 @@ function init()
   UI_createBoard();
   UI_preloadImages();
 
+  for (name in factions)
+  {
+    var el = document.createElement('option'); 
+    el.setAttribute('value', name); 
+    el.innerHTML = name;
+    document.getElementById('pulldown').appendChild(el);
+  }
+
+
+
+
   loadBoardState();
 }
 
@@ -247,7 +260,6 @@ function UI_createBoard()
       var space = document.createElement("div");
       space.id=id;
       space.classList.add('cardspace');
-      space.classList.add('cardsize');
       space.classList.add('dropzone');
       board.appendChild(space);
     }
@@ -319,6 +331,8 @@ function UI_loadFaction(faction)
 function UI_hideActions()
 {
   document.getElementById('actions').classList.toggle('visible', false);  
+  document.getElementById(selectedCardId).classList.toggle('can-drop', false);
+  selectedCardId = undefined;
 }
 
 
@@ -328,11 +342,17 @@ function UI_hideActions()
 
 function selectCardForAction(cardId)
 {
+
+  if (selectedCardId!==undefined) {
+      document.getElementById(selectedCardId).classList.toggle('can-drop', false);
+  }
+
   selectedCardId = cardId;  
   console.log('Selected card '+selectedCardId);
   
   // show the action menu
   document.getElementById('actions').classList.toggle('visible', true);
+  document.getElementById(selectedCardId).classList.toggle('can-drop', true);  
 }
 
 function actionClickHandler(event) 

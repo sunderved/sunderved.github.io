@@ -16,35 +16,17 @@
 <body onLoad=init();>    
 
   <div id="loader">
-    <div id="loadermsg">
-    </div>    
+    <div id="loadermsg" class="centered"></div>    
   </div>
   <div id="container" class="centered">
     <div id="boardpic">
-      <div id="board"></div>
-    <div id="new" class="cardspace cardsize dropzone"></div>
+      <div id="board">
+      <div id="new" class="dropzone"></div>
+      </div>
     </div>
 
     <div id="selector">
-      <select id="pulldown" onchange="summonerSelectHandler(event)">
-        <option value="Benders">Benders</option>
-        <option value="CaveGoblins">Cave Goblins</option>
-        <option value="Cloaks">Cloaks</option>
-        <option value="DeepDwarves">Deep Dwarves</option>
-        <option value="FallenKingdom">Fallen Kingdom</option>
-        <option value="Filth">Filth</option>
-        <option value="GuildDwarves">Guild Dwarves</option>
-        <option value="JungleElves">Jungle Elves</option>
-        <option value="Mercenaries">Mercenaries</option>
-        <option value="MountainVargath">Mountain Vargath</option>
-        <option value="PhoenixElves">Phoenix Elves</option>
-        <option value="SandGoblins">Sand Goblins</option>
-        <option value="ShadowElves">Shadow Elves</option>
-        <option value="SwampOrcs">Swamp Orcs</option>
-        <option value="TundraOrcs">Tundra Orcs</option>
-        <option value="Vanguards">Vanguards</option>
-      </select>
-            
+      <select id="pulldown" onchange="summonerSelectHandler(event)"></select>
       <div id="units" onclick="cardListClickHandler(event)"></div>
       <button id="clear" onclick="clearBoardState()">Clear</button>
     </div>
