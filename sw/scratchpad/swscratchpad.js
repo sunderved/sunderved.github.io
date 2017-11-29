@@ -60,20 +60,17 @@ function createCard(faction, cardname, wounds, opponent, position)
     div.classList.add('draggable');
     div.classList.add('tappable');
     div.classList.add('card');
-    div.classList.add('cardsize');    
     //div.classList.add('centered');
 
     // create card image inside new div
     img = document.createElement('img');
     img.id = div.id+'img';
     img.classList.add('card');
-    img.classList.add('cardsize'); 
     div.appendChild( img );
     // create wound image inside new div
     wnd = document.createElement('img');
     wnd.id = div.id+'wnd';
     wnd.classList.add('card');
-    wnd.classList.add('cardsize');
     div.appendChild( wnd );
 
   	imgList.push(div);	
@@ -240,7 +237,8 @@ function init()
 
 function UI_getImagePath(faction, card)
 {
-  return '../images/'+faction+'-'+card+'.png';
+  return 'http://sunderved.github.io/sw/images/'+faction+'-'+card+'.png';
+  // return '../images/'+faction+'-'+card+'.png';
 }
 
 function UI_getWoundPath(wounds)
@@ -287,15 +285,20 @@ function UI_preloadImages()
   var imgCount  = images.length;
   var imgLoaded = 0;
 
+  var div = document.createElement('div');
+  div.id = 'loadermsg';  
+  document.getElementById('loader').appendChild(div);
+  div.classList.add('centered');
+
   for(var i=0; i<imgCount; i++){
       images[i].onload = function(){
         imgLoaded++;
         var cmp = Math.round(100*imgLoaded/imgCount);
         console.log(' loading '+ cmp +'%');
-        document.getElementById("loadermsg").innerHTML ='Summoner Wars Scratchpad<BR>';
-        document.getElementById("loadermsg").innerHTML+='<BR>';
-        document.getElementById("loadermsg").innerHTML+='Loading...<BR>';
-        document.getElementById("loadermsg").innerHTML+='Progress ' + cmp + '%<BR>';        
+        div.innerHTML ='Summoner Wars Scratchpad<BR>';
+        div.innerHTML+='<BR>';
+        div.innerHTML+='Loading...<BR>';
+        div.innerHTML+='Progress ' + cmp + '%<BR>';        
         if(imgLoaded == imgCount){
           console.log('All images loaded!');
           document.getElementById("loader").style.visibility='hidden';
